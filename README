@@ -1,0 +1,8 @@
+
+ $> aclocal; automake -a; autoheader; autoconf
+ $> mkdir obj
+ $> ../configure
+ $> make
+ $> make install
+
+ 

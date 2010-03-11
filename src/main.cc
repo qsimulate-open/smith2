@@ -25,9 +25,9 @@ list<RefListPreTensor>  read_input(string filename);
 list<RefListPreTensor>  read_input(list<string> content);
 Spaces generate_spaces() {
   const long num_occ_blocks = 1;
-  const long num_vir_blocks = 5;
-  const vector<long> num_occ_orb(num_occ_blocks, 5); 
-  const vector<long> num_vir_orb(num_vir_blocks, 10); 
+  const long num_vir_blocks = 1;
+  const vector<long> num_occ_orb(num_occ_blocks, 4); 
+  const vector<long> num_vir_orb(num_vir_blocks, 9); 
   const vector<long> sym_occ(num_occ_blocks, 0); 
   const vector<long> sym_vir(num_vir_blocks, 0); 
 

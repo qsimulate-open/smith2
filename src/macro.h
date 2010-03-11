@@ -8,8 +8,8 @@
 
 #include <complex>
 
-typedef std::complex<double> DataType;
-//typedef double DataType;
+//typedef std::complex<double> DataType;
+typedef double DataType;
 
 #endif
 

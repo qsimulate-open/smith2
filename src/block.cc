@@ -11,7 +11,7 @@ using namespace boost;
 
 const string Block::show() const {
   stringstream ss;
-  ss << tag_ << "_" << sindex_ << "(" << target_tensor_ << "," << my_tensor_ << ") " ;
+  ss << tag_ << "_[" << sindex_ << restore_sindex_ << "](" << target_tensor_ << "," << my_tensor_ << ") " ;
   return ss.str();
 }
  

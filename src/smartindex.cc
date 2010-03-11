@@ -171,9 +171,11 @@ const vector<vector<Block> > SmartIndex::blocklist() const {
   } 
 
   // adding boost::shared_ptr<Tensor> target_tensor_.
+  // adding sindex information for restoring
   for (vector<vector<Block> >::iterator iter = out.begin(); iter != out.end(); ++iter) {
     for (vector<Block>::iterator iiter = iter->begin(); iiter != iter->end(); ++iiter) {
       iiter->set_my_tensor(my_tensor_->depth());
+      iiter->set_restore_sindex(this->sindex());
       if (target_tensor_)
         iiter->set_target_tensor(target_tensor_->depth());
       else

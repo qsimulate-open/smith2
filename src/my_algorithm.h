@@ -9,6 +9,8 @@
 #include <map>
 #include <complex>
 #include <vector>
+#include <stdexcept>
+#include <sstream>
 #include <src/macro.h>
 #include <src/f77.h>
 
@@ -34,12 +36,26 @@ namespace ts {
     zscal_(&ssize, &factor, data, &unit);
   }; 
 
+  template<class T>
+  void gemm(const long, const long, const long, const T*, const T*, T*, T) {
+    std::stringstream ss;
+    ss << "This type of gemm is not supported. File: " << __FILE__ << " Line: " << __LINE__;
+    throw std::logic_error(ss.str());
+  };
+
+  template<>
+  void gemm(const long t1, const long t2, const long c, const double* w1, const double* w2, double* target, double coeff) {
+    const long unit = 1L;
+    const double one = 1.0;
+    dgemm_("T", "N", &t1, &t2, &c, &one, w1, &c, w2, &c, &coeff, target, &t1);
+  };
+
   // Sort function.
   // T should be an iterator or a pointer...
   // (-1)^parity is gonna be a permutation factor.
   // This is just a simple bubble sort; therfore, can be used for std::list also.
   template<class T>
-  std::pair<bool, std::vector<int> > sort(const T& start, const T& end) {
+  std::pair<bool, std::vector<int> > sort(const T& start, const T& end, const bool restore = false) {
     
     const size_t num_elements = end - start;
     assert(num_elements > 0);
@@ -69,22 +85,22 @@ namespace ts {
     // ordering means that we will sort the tensor as 
     // (0, 1, 2, 3) => (ordering[0], ordering[1], ordering[2], ordering[3]) such as (1, 0, 2, 3).
 
-#if 0
     // if we want to...
     // ordering means that we will sort the tensor as 
     // 0->ordering[0], 1->ordering[1], 2->ordering[2], 3->ordering[3] and so on.
     // setup std::map for inverting this map
-    std::map<int, int> util;
-    int i = 0;
-    for (std::vector<int>::const_iterator iter = ordering.begin(); iter != ordering.end(); ++iter, ++i)
-      util[*iter] = i; 
+    if (restore) {
+      std::map<int, int> util;
+      int i = 0;
+      for (std::vector<int>::const_iterator iter = ordering.begin(); iter != ordering.end(); ++iter, ++i)
+        util[*iter] = i; 
 
-    // util is already sorted, so extract an info
-    std::vector<int>::iterator oiter = ordering.begin();
-    for (std::map<int, int>::const_iterator miter = util.begin(); miter != util.end(); ++miter, ++oiter) {
-      *oiter = miter->second;
+      // util is already sorted, so extract an info
+      std::vector<int>::iterator oiter = ordering.begin();
+      for (std::map<int, int>::const_iterator miter = util.begin(); miter != util.end(); ++miter, ++oiter) {
+        *oiter = miter->second;
+      }
     }
-#endif
 
     return make_pair(parity, ordering);
   };
@@ -104,7 +120,6 @@ namespace ts {
 
     // TODO should be better to devise a generic algorithm... Blame me.
     if (blocksizes.size() == 2) {
-      assert(ordering[0] != 0); // shouldn't come here in this case
       const size_t b0 = blocksizes[0];
       const size_t b1 = blocksizes[1];
       for (size_t i1 = 0; i1 != b1; ++i1) {

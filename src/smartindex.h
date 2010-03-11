@@ -29,6 +29,8 @@ class SmartIndex {
     boost::shared_ptr<Tensor> my_tensor_; 
     boost::shared_ptr<Tensor> target_tensor_;
 
+    int sindex_;
+
   public:
     SmartIndex(const std::list<Index>, boost::shared_ptr<Tensor>, boost::shared_ptr<Tensor>);
     ~SmartIndex();
@@ -80,6 +82,12 @@ class SmartIndex {
     ////////////////////////////////////////////
     /// for implementation
     const std::vector<std::vector<Block> > blocklist() const;
+
+    /// Setting sindex which will be used in implementation
+    void set_sindex(const int s) { sindex_ = s; };
+
+    /// Returns sindex
+    int sindex() const { return sindex_; };
 
 };
 

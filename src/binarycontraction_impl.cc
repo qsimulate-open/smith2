@@ -32,7 +32,7 @@ void BinaryContraction::set_innerloop() {
   }
 
   // for debug
-#define LOCAL_DEBUG
+//#define LOCAL_DEBUG
 #ifdef LOCAL_DEBUG
   perform();
 #endif

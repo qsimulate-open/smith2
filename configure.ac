@@ -25,5 +25,6 @@ AC_C_CONST
 AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/dg/Makefile
-                 src/ig/Makefile])
+                 src/ig/Makefile
+                 src/storage/Makefile])
 AC_OUTPUT

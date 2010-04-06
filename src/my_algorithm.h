@@ -108,15 +108,16 @@ namespace ts {
 
   // Tensor sort function; variable dimension.
   // DateType signifies either double or complex<double>.
+  template<class T>
   void sort_multidimensional_array
-                (const DataType* const inp,
-                 DataType* out,
+                (const T* const inp,
+                 T* out,
                  const std::vector<size_t>& blocksizes,
                  const std::vector<int>& ordering)
  {
     assert(blocksizes.size() == ordering.size());
 
-    const DataType* current = inp; 
+    const T* current = inp; 
 
     // TODO should be better to devise a generic algorithm... Blame me.
     if (blocksizes.size() == 2) {

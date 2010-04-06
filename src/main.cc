@@ -15,6 +15,7 @@
 #include <src/ig/inputgenerator.h>
 #include <src/block.h>
 #include <src/spaces.h>
+#include <src/storage/memorygrp.h>
 
 using namespace std;
 using namespace boost;
@@ -35,39 +36,52 @@ Spaces generate_spaces() {
   return sp;
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char** argv) {
+
+  // to be initialized by reading input
+  const size_t memory_each = 200000000LU;
+
+  shared_ptr<MemoryGrp> memgrp(new MemoryGrp(argc, argv, memory_each)); 
+
+  const int myrank = memgrp->n();
+
+  cout << myrank << endl;
+
+  memgrp->wait();
 
   try {
-
+    
     if (argc < 2) {
       throw std::runtime_error("Please specify an input file");
     } 
     string filename = argv[1];
   
-   // those will be controlled by the suffix of the input files
-    InputGenerator ig(filename);
-    DiagramGenerator dg(ig.generate());
-    //DiagramGenerator dg(filename);
-    list<RefListPreTensor> listpretensor=read_input(dg.generate());
-    //list<RefListPreTensor> listpretensor=read_input(filename);
+    // those will be controlled by the suffix of the input files
+    if (myrank == 0) {
+      InputGenerator ig(filename);
+      DiagramGenerator dg(ig.generate());
+      //DiagramGenerator dg(filename);
+      list<RefListPreTensor> listpretensor=read_input(dg.generate());
+      //list<RefListPreTensor> listpretensor=read_input(filename);
     
-    if (listpretensor.empty()) return 1;
-    list<RefVecTensor> listvectensor;
+      if (listpretensor.empty()) return 1;
+      list<RefVecTensor> listvectensor;
    
-    list<RefListPreTensor>::iterator iter;
-    for (iter = listpretensor.begin(); iter != listpretensor.end() ;++iter) { 
-      RefVecTensor newvectensor = (*iter)->analyze();
-      listvectensor.push_back(newvectensor);
-    }
+      list<RefListPreTensor>::iterator iter;
+      for (iter = listpretensor.begin(); iter != listpretensor.end() ;++iter) { 
+        RefVecTensor newvectensor = (*iter)->analyze();
+        listvectensor.push_back(newvectensor);
+      }
     
-    Equation equation(listvectensor);
-    const bool opt_memory = false;
-    equation.strength_reduction(opt_memory);
-    equation.form_tree();
-    equation.factorize();
-    cout << equation.tree_root()->show() << endl;
+      Equation equation(listvectensor);
+      const bool opt_memory = false;
+      equation.strength_reduction(opt_memory);
+      equation.form_tree();
+      equation.factorize();
+      cout << equation.tree_root()->show() << endl;
 
-    equation.startup();
+      equation.startup();
+    }
 
   } catch (const runtime_error& e) {
     cout << "  ----" << endl;
@@ -82,6 +96,7 @@ int main(int argc, char* argv[]) {
     cout << "  Error" << endl;
     cout << endl;
   }  
+
   return 0;
 }
 

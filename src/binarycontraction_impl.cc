@@ -112,8 +112,8 @@ void BinaryContraction::perform() {
           restore_block_sizes2.push_back(biter->size()); 
 
         // sort data
-        ts::sort_multidimensional_array(work1_tmp, work1, restore_block_sizes1, fpair.second);
-        ts::sort_multidimensional_array(work2_tmp, work2, restore_block_sizes2, spair.second);
+        ts::sort_multidimensional_array<DataType>(work1_tmp, work1, restore_block_sizes1, fpair.second);
+        ts::sort_multidimensional_array<DataType>(work2_tmp, work2, restore_block_sizes2, spair.second);
 
         // evaluating dgemm parameters
         long contract_size = 1L; 
@@ -148,7 +148,7 @@ void BinaryContraction::perform() {
       DataType factor = tensor_.at(1)->factor() * (opair.first ? -1.0 : 1.0);
  
       // sort indices of the target tensor
-      ts::sort_multidimensional_array(target_tmp, target, store_block_sizes, opair.second);
+      ts::sort_multidimensional_array<DataType>(target_tmp, target, store_block_sizes, opair.second);
       ts::scale<DataType>(target, store_size, factor);
 
       // store a target tile, finally!

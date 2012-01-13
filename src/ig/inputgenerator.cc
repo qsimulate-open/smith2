@@ -89,11 +89,10 @@ const list<string> InputGenerator::generate() {
     const list<Operator> lin_generals = extract_operator(lin_general_str, 0);
 
     const int target = bra_rank - ket_rank; 
-    list<Operator>::const_iterator i, j, k, l;
     list<list<Operator> > totallist;
-    for (i = lin_deexcitations.begin(); i != lin_deexcitations.end(); ++i) {
-      for (j = lin_generals.begin(); j != lin_generals.end(); ++j) {
-        for (k = lin_excitations.begin(); k != lin_excitations.end(); ++k) {
+    for (auto i = lin_deexcitations.begin(); i != lin_deexcitations.end(); ++i) {
+      for (auto j = lin_generals.begin(); j != lin_generals.end(); ++j) {
+        for (auto k = lin_excitations.begin(); k != lin_excitations.end(); ++k) {
           list<Operator> outlist;
           outlist.push_back(*i);
           outlist.push_back(*j);
@@ -106,7 +105,7 @@ const list<string> InputGenerator::generate() {
       }
     } 
 
-    for (list<list<Operator> >::iterator i = totallist.begin(); i != totallist.end(); ++i) { 
+    for (auto i = totallist.begin(); i != totallist.end(); ++i) { 
       const string tmp_str = print_input(*i, bra_rank, ket_rank);
  cout << tmp_str << endl;
       out.push_back(tmp_str);
@@ -133,14 +132,14 @@ const list<list<Operator> > make_explist(const list<Operator>& init, const list<
     list<Operator> tmp = init;
     unsigned int combination = i;
     unsigned int ex = 0;
-    for (list<Operator>::const_iterator j = expop.begin(); j != expop.end(); ++j) {
+    for (auto j = expop.begin(); j != expop.end(); ++j) {
       ex += (combination % 5) * j->rank(); 
       combination /= 5;
     }
     if (ex > high || ex < low) continue; 
 
     combination = i;
-    for (list<Operator>::const_iterator j = expop.begin(); j != expop.end(); ++j) {
+    for (auto j = expop.begin(); j != expop.end(); ++j) {
       unsigned int dup = combination % 5; 
       for (unsigned int k = 0; k != dup; ++k) {
         tmp.push_back(*j);
@@ -199,7 +198,7 @@ const string print_input(list<Operator> lo, const int bra, const int ket) {
     op += "} ";
   }
 
-  for (list<Operator>::iterator i = lo.begin(); i != lo.end(); ++i) {
+  for (auto i = lo.begin(); i != lo.end(); ++i) {
     if (i->symbol() == "dummy") continue;
     if (i->general()) {
       op += "{ ";

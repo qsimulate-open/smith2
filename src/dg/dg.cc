@@ -30,9 +30,9 @@ list<string> DiagramGenerator::generate() {
   string tamp("t");
   rules.push_back(make_pair(tamp, general));
 
-  for (list<Diagram>::iterator i = listD.begin(); i != listD.end(); ++i) {
+  for (auto i = listD.begin(); i != listD.end(); ++i) {
     bool disconnected = false; 
-    for (list<pair<string, list<string> > >::iterator j = rules.begin(); j != rules.end(); ++j) {
+    for (auto j = rules.begin(); j != rules.end(); ++j) {
       if (!(i->connected(*j))) disconnected = true;
       break;
     }
@@ -68,7 +68,7 @@ list<Diagram> DiagramGenerator::read_input(string filen) {
     int i = 0;
 
     while (i < length) {
-      for (list<Diagram>::iterator diter = current.begin(); diter != current.end(); ++diter) {
+      for (auto diter = current.begin(); diter != current.end(); ++diter) {
         list<Diagram> tmp = diter->contract_one();
         next.insert(next.end(), tmp.begin(), tmp.end()); 
       }
@@ -87,7 +87,7 @@ list<Diagram> DiagramGenerator::read_input(list<string> inp) {
 
   list<Diagram> out;
 
-  for (list<string>::iterator siter = inp.begin(); siter != inp.end(); ++siter) {
+  for (auto siter = inp.begin(); siter != inp.end(); ++siter) {
     string stmp(*siter);
 
     Diagram dgrm(stmp);
@@ -98,7 +98,7 @@ list<Diagram> DiagramGenerator::read_input(list<string> inp) {
     int i = 0;
 
     while (i < length) {
-      for (list<Diagram>::iterator diter = current.begin(); diter != current.end(); ++diter) {
+      for (auto diter = current.begin(); diter != current.end(); ++diter) {
         list<Diagram> tmp = diter->contract_one();
         next.insert(next.end(), tmp.begin(), tmp.end()); 
       }

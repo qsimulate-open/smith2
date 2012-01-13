@@ -23,6 +23,7 @@ using namespace IG;
 
 list<RefListPreTensor>  read_input(string filename);
 list<RefListPreTensor>  read_input(list<string> content);
+
 Spaces generate_spaces() {
   const long num_occ_blocks = 1;
   const long num_vir_blocks = 1;

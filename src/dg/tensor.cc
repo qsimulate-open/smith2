@@ -49,7 +49,7 @@ const string Tensor::show() const {
   string out;
   out += symbol();
   out += " ( ";
-  for (list<Indices>::const_iterator i = listindices_.begin(); i != listindices_.end(); ++i)
+  for (auto i = listindices_.begin(); i != listindices_.end(); ++i)
     out += i->show();
   out += ") ";
   return out;
@@ -60,7 +60,7 @@ void Tensor::assign_dagger() {
   int size = listindices_.size();
   assert(size % 2 == 0);
 
-  list<Indices>::iterator iiter = listindices_.begin();
+  auto iiter = listindices_.begin();
   for (int i = 0; i < size/2; ++i, ++iiter) iiter->set_dagger(true);
 
 }
@@ -73,7 +73,7 @@ const bool Tensor::connected(const Tensor& other, const pair<string, list<string
   /// quick return if possible
   if (symbol() != first) return out; 
   const string osymbol = other.symbol(); 
-  list<string>::const_iterator ofind = find(second.begin(), second.end(), osymbol);
+  auto ofind = find(second.begin(), second.end(), osymbol);
   if (ofind == second.end()) return out; 
 
   if (!connected_(other)) out = false;
@@ -89,18 +89,18 @@ const bool Tensor::connected_(const Tensor& other) const {
   list<Indices> otmp = other.listindices();
   list<int> listnums, olistnums;
 
-  for (list<Indices>::const_iterator i = tmp.begin(); i != tmp.end(); ++i) {
+  for (auto i = tmp.begin(); i != tmp.end(); ++i) {
     list<int> tmp_nums = i->nums();
     listnums.merge(tmp_nums);
   }
   
-  for (list<Indices>::const_iterator j = otmp.begin(); j != otmp.end(); ++j) {
+  for (auto j = otmp.begin(); j != otmp.end(); ++j) {
     list<int> tmp_nums = j->nums();
     olistnums.merge(tmp_nums);
   }
 
-  for (list<int>::const_iterator i = listnums.begin(); i != listnums.end(); ++i) {
-    for (list<int>::const_iterator j = olistnums.begin(); j != olistnums.end(); ++j) {
+  for (auto i = listnums.begin(); i != listnums.end(); ++i) {
+    for (auto j = olistnums.begin(); j != olistnums.end(); ++j) {
       if (*i == *j) { 
         out = true;
         break;

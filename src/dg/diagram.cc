@@ -51,7 +51,7 @@ Diagram::Diagram(string input) {
 
 void Diagram::assign_dagger() {
   // assuming number conserving operators 
-  for (list<Tensor>::iterator titer = tensors_.begin(); titer != tensors_.end(); ++titer)
+  for (auto titer = tensors_.begin(); titer != tensors_.end(); ++titer)
     titer->assign_dagger();
 }
 
@@ -64,10 +64,10 @@ Diagram::~Diagram() {
 const string Diagram::show() const { 
   string out;
   
-  for (list<Tensor>::const_iterator i = tensors_.begin(); i != tensors_.end(); ++i)
+  for (auto i = tensors_.begin(); i != tensors_.end(); ++i)
     out += i->show();
 
-  for (list<Operator>::const_iterator i = operators_.begin(); i != operators_.end(); ++i)
+  for (auto i = operators_.begin(); i != operators_.end(); ++i)
     out += i->show();
 
   return out;
@@ -78,7 +78,7 @@ const string Diagram::show_only_tensors() const {
   string out;
   const string project("_");
   
-  for (list<Tensor>::const_iterator i = tensors_.begin(); i != tensors_.end(); ++i) {
+  for (auto i = tensors_.begin(); i != tensors_.end(); ++i) {
     if (i->symbol() != project) out += i->show();
   }
 
@@ -88,9 +88,9 @@ const string Diagram::show_only_tensors() const {
 
 const int Diagram::count_creation_indices() const {
   int out = 0;
-  for (list<Operator>::const_iterator i = operators_.begin(); i != operators_.end(); ++i) { 
+  for (auto i = operators_.begin(); i != operators_.end(); ++i) { 
     list<Indices> iindices = i->listindices();
-    for (list<Indices>::const_iterator j = iindices.begin(); j != iindices.end(); ++j) { 
+    for (auto j = iindices.begin(); j != iindices.end(); ++j) { 
       if (j->dagger()) ++out; 
     }
   }
@@ -103,9 +103,9 @@ const list<Diagram> Diagram::contract_one() {
   list<Diagram> out;
 
   vector<Indices> creation, annihilation;
-  for (list<Operator>::iterator i = operators_.begin(); i != operators_.end(); ++i) { 
+  for (auto i = operators_.begin(); i != operators_.end(); ++i) { 
     list<Indices> iindices = i->listindices();
-    for (list<Indices>::iterator j = iindices.begin(); j != iindices.end(); ++j) { 
+    for (auto j = iindices.begin(); j != iindices.end(); ++j) { 
       if (j->dagger()) creation.push_back(*j);
       else annihilation.push_back(*j);
     }
@@ -115,11 +115,10 @@ const list<Diagram> Diagram::contract_one() {
     int dim_index = creation.front().nums().size();
     int dim_boxes = annihilation.size();
     vector<int> combination; 
-    vector<int>::iterator middle;
     for (int ii = 0; ii < dim_boxes + dim_index - 1; ++ii) combination.push_back(ii);
     int count = 0;
-    middle = combination.end();
-    for (vector<int>::iterator ii = combination.begin(); ii != combination.end(); ++ii, ++count) {
+    auto middle = combination.end();
+    for (auto ii = combination.begin(); ii != combination.end(); ++ii, ++count) {
       if (count == dim_index) middle = ii; 
     }
   
@@ -133,7 +132,7 @@ const list<Diagram> Diagram::contract_one() {
       vector<string> ctype;
 
       count = 0;
-      for (vector<int>::iterator ii = combination.begin(); ii != middle; ++ii, ++count) {
+      for (auto ii = combination.begin(); ii != middle; ++ii, ++count) {
         const int block = *ii - count;
         if (an.at(block).nums().empty() 
          || an.at(block).source() == creation.front().source()
@@ -170,16 +169,16 @@ const list<Diagram> Diagram::contract_one() {
 
 
 void Diagram::update_contracted_indices(const list<pair<int, int> > index_map, const vector<string> ctype) {
-  vector<string>::const_iterator j = ctype.begin();
-  for (list<pair<int, int> >::const_iterator i = index_map.begin(); i != index_map.end(); ++i, ++j) {
+  auto j = ctype.begin();
+  for (auto i = index_map.begin(); i != index_map.end(); ++i, ++j) {
     const string current_type = *j;
     const int first  = i->first;
     const int second = i->second;
 
-    for (list<Tensor>::iterator titer = tensors_.begin(); titer != tensors_.end(); ++titer) 
+    for (auto titer = tensors_.begin(); titer != tensors_.end(); ++titer) 
       titer->replace_indices(first, second, current_type);
 
-    for (list<Operator>::iterator oiter = operators_.begin(); oiter != operators_.end(); ++oiter)
+    for (auto oiter = operators_.begin(); oiter != operators_.end(); ++oiter)
       oiter->delete_indices(first, second);
   } 
 }
@@ -190,9 +189,8 @@ const bool Diagram::connected(const pair<string, list<string> > rule) const {
   string source = rule.first;
   list<string> target = rule.second;
  
-  list<Tensor>::const_iterator i, j;
-  for (i = tensors_.begin(); i != tensors_.end(); ++i) {
-    for (j = tensors_.begin(); j != tensors_.end(); ++j) {
+  for (auto i = tensors_.begin(); i != tensors_.end(); ++i) {
+    for (auto j = tensors_.begin(); j != tensors_.end(); ++j) {
       if (!i->connected(*j, rule)) out = false;
     }
   } 

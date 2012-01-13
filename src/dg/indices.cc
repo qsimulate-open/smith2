@@ -44,7 +44,7 @@ Indices::~Indices() {
 
 const string Indices::show() const {
   string out;
-  for (list<int>::const_iterator i = nums_.begin(); i != nums_.end(); ++i) { 
+  for (auto i = nums_.begin(); i != nums_.end(); ++i) { 
     out += type() + lexical_cast<string>(*i);
     if (dagger()) out += "+"; 
   }
@@ -87,7 +87,7 @@ const std::string Indices::cindex(const Indices& other) const {
 
 void Indices::replace_index(const int first, const int second, const string ctype) {
 
-  for (list<int>::iterator iiter = nums_.begin(); iiter != nums_.end(); ++iiter) {
+  for (auto iiter = nums_.begin(); iiter != nums_.end(); ++iiter) {
     const int num = *iiter;
     if (num == first) {
       type_ = ctype; 
@@ -102,12 +102,12 @@ void Indices::replace_index(const int first, const int second, const string ctyp
 void Indices::delete_index(const int first, const int second) {
 
   vector<list<int>::iterator> remove;
-  for (list<int>::iterator iiter = nums_.begin(); iiter != nums_.end(); ++iiter) {
+  for (auto iiter = nums_.begin(); iiter != nums_.end(); ++iiter) {
     const int num = *iiter;
     if (num == first || num == second) remove.push_back(iiter); 
   } 
 
-  for (vector<list<int>::iterator>::iterator i = remove.begin(); i != remove.end(); ++i) 
+  for (auto i = remove.begin(); i != remove.end(); ++i) 
     nums_.erase(*i);
 }
 

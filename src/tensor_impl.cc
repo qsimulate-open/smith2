@@ -20,7 +20,7 @@ size_t Tensor::memory_size_needed() const {
   
   // then calculate
   size_t out = 1lu;
-  for (list<Index>::const_iterator iter = indexlist.begin(); iter != indexlist.end(); ++iter)
+  for (auto iter = indexlist.begin(); iter != indexlist.end(); ++iter)
     out *= iter->max_block_size();
 
   return out;

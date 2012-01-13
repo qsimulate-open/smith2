@@ -63,10 +63,9 @@ class Cost {
     ~Cost() {};
 
     bool operator<(const Cost& other) const {
-      std::vector<PCost>::iterator i, j; 
       std::vector<PCost> otherc = other.cost();
       std::vector<PCost> myc = cost();
-      for (i = myc.begin(), j = otherc.begin(); i != myc.end(); ++i, ++j) {
+      for (auto i = myc.begin(), j = otherc.begin(); i != myc.end(); ++i, ++j) {
         if (j == otherc.end()) return false;
         if      (*i < *j)      return true; 
         else if (*i > *j)      return false;
@@ -77,11 +76,10 @@ class Cost {
 #define use_old_code_cost 0
 #if use_old_code_cost
     bool operator==(const Cost& other) const { 
-      std::vector<PCost>::iterator i, j; 
       std::vector<PCost> otherc = other.cost();
       std::vector<PCost> myc = cost();
       if (myc.size() != otherc.size()) return false;
-      for (i = myc.begin(), j = otherc.begin(); i != myc.end(); ++i, ++j) {
+      for (auto i = myc.begin(), j = otherc.begin(); i != myc.end(); ++i, ++j) {
         if (*i != *j ) return false;
       }
       return true;

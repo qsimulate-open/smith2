@@ -65,11 +65,11 @@ namespace ts {
     std::vector<int> ordering(num_elements);
     {
       int tmp = 0; 
-      for (std::vector<int>::iterator iter = ordering.begin(); iter != ordering.end(); ++iter, ++tmp) *iter = tmp; 
+      for (auto iter = ordering.begin(); iter != ordering.end(); ++iter, ++tmp) *iter = tmp; 
     }
 
     // defining the start iterators for vector<int> ordering
-    const std::vector<int>::iterator ostart = ordering.begin(); 
+    const auto ostart = ordering.begin(); 
     
     int innerloop_end = num_elements;
     for (T target = start; target != end-1; ++target, --innerloop_end) { 
@@ -92,12 +92,12 @@ namespace ts {
     if (restore) {
       std::map<int, int> util;
       int i = 0;
-      for (std::vector<int>::const_iterator iter = ordering.begin(); iter != ordering.end(); ++iter, ++i)
+      for (auto iter = ordering.begin(); iter != ordering.end(); ++iter, ++i)
         util[*iter] = i; 
 
       // util is already sorted, so extract an info
-      std::vector<int>::iterator oiter = ordering.begin();
-      for (std::map<int, int>::const_iterator miter = util.begin(); miter != util.end(); ++miter, ++oiter) {
+      auto oiter = ordering.begin();
+      for (auto miter = util.begin(); miter != util.end(); ++miter, ++oiter) {
         *oiter = miter->second;
       }
     }

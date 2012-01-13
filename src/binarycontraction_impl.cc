@@ -64,26 +64,25 @@ void BinaryContraction::perform() {
     cout << this->show() << endl;
 
     // we can parallelize loop in here.
-    for (vector<vector<Block> >::const_iterator viter = outerloop_.begin(); viter != outerloop_.end(); ++viter) {
+    for (auto viter = outerloop_.begin(); viter != outerloop_.end(); ++viter) {
 
       // setting up restore tables (partial)
       vector<Block> target_first, target_second;
-      for (vector<Block>::const_iterator iter = viter->begin(); iter != viter->end(); ++iter) {
+      for (auto iter = viter->begin(); iter != viter->end(); ++iter) {
         if (firstd == iter->my_tensor()) target_first.push_back(*iter);
         else target_second.push_back(*iter);
       }
 
       // store size
       long store_size = 1L; 
-      for (vector<Block>::const_iterator biter = viter->begin(); biter != viter->end(); ++biter)
+      for (auto biter = viter->begin(); biter != viter->end(); ++biter)
         store_size *= biter->size();
 
       // filling out zero to target memory, which assumes implicit conversion from double to DataType
       fill(target_tmp, target_tmp+store_size, 0.0); 
 
       // contractions will come here....
-      for (vector<vector<Block> >::const_iterator iiter1 = innerloop1_.begin(), iiter2 = innerloop2_.begin();
-                                                  iiter1 != innerloop1_.end(); ++iiter1, ++iiter2) {
+      for (auto iiter1 = innerloop1_.begin(), iiter2 = innerloop2_.begin(); iiter1 != innerloop1_.end(); ++iiter1, ++iiter2) {
 
         // restore input tiles 
         // :::::::::: here ::::::::::
@@ -95,8 +94,8 @@ void BinaryContraction::perform() {
         second.insert(second.end(), iiter2->begin(), iiter2->end());
 
         // switching to sindex for restore
-        for (vector<Block>::iterator iter = first.begin(); iter != first.end(); ++iter) iter->swap_sindex();
-        for (vector<Block>::iterator iter = second.begin(); iter != second.end(); ++iter) iter->swap_sindex();
+        for (auto iter = first.begin(); iter != first.end(); ++iter) iter->swap_sindex();
+        for (auto iter = second.begin(); iter != second.end(); ++iter) iter->swap_sindex();
 
         // obtain mapping
         const pair<bool, vector<int> > fpair = ts::sort(first.begin(), first.end(), true);
@@ -105,9 +104,9 @@ void BinaryContraction::perform() {
 
         // gathering block size information...
         vector<size_t> restore_block_sizes1, restore_block_sizes2;
-        for (vector<Block>::const_iterator biter = first.begin(); biter != first.end(); ++biter)
+        for (auto biter = first.begin(); biter != first.end(); ++biter)
           restore_block_sizes1.push_back(biter->size()); 
-        for (vector<Block>::const_iterator biter = second.begin(); biter != second.end(); ++biter)
+        for (auto biter = second.begin(); biter != second.end(); ++biter)
           restore_block_sizes2.push_back(biter->size()); 
 
         // sort data
@@ -116,10 +115,10 @@ void BinaryContraction::perform() {
 
         // evaluating dgemm parameters
         long contract_size = 1L; 
-        for (vector<Block>::const_iterator biter = iiter1->begin(); biter != iiter1->end(); ++biter)
+        for (auto biter = iiter1->begin(); biter != iiter1->end(); ++biter)
           contract_size *= biter->size();
         long target1_size = 1L; 
-        for (vector<Block>::const_iterator biter = target_first.begin(); biter != target_first.end(); ++biter)
+        for (auto biter = target_first.begin(); biter != target_first.end(); ++biter)
           target1_size *= biter->size();
         const long target2_size = target_size / target1_size;
 
@@ -137,7 +136,7 @@ void BinaryContraction::perform() {
 
       // block info for sorting
       vector<size_t> store_block_sizes;
-      for (vector<Block>::const_iterator biter = sorted.begin(); biter != sorted.end(); ++biter)
+      for (auto biter = sorted.begin(); biter != sorted.end(); ++biter)
         store_block_sizes.push_back(biter->size()); 
 
       // creating a map

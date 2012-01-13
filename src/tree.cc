@@ -39,10 +39,10 @@ void Tree::init(vector<shared_ptr<Tensor> >& vectensor, shared_ptr<Tensor> par) 
   list<RefTree> a;
   pair<list<RefTree>, list<RefTree> > prevtree = make_pair(a, a);
 
-  vector<shared_ptr<Tensor> >::reverse_iterator titer_end = vectensor.rend();
+  auto titer_end = vectensor.rend();
   --titer_end;
 
-  for (vector<shared_ptr<Tensor> >::reverse_iterator titer = vectensor.rbegin(); titer != titer_end; ++titer) { 
+  for (auto titer = vectensor.rbegin(); titer != titer_end; ++titer) { 
     if (titer != vectensor.rbegin()) {
       current = *titer; 
       shared_ptr<Tensor> target(new Tensor("i"));
@@ -57,10 +57,10 @@ void Tree::init(vector<shared_ptr<Tensor> >& vectensor, shared_ptr<Tensor> par) 
       RefTree tmptree(new Tree(bc, prevtree));
       
       list<RefTree> first = prevtree.first;
-      for (list<RefTree>::iterator titer = first.begin(); titer != first.end(); ++titer) 
+      for (auto titer = first.begin(); titer != first.end(); ++titer) 
         (*titer)->set_parent(tmptree); 
       list<RefTree> second = prevtree.second;
-      for (list<RefTree>::iterator titer = second.begin(); titer != second.end(); ++titer) 
+      for (auto titer = second.begin(); titer != second.end(); ++titer) 
         (*titer)->set_parent(tmptree); 
 
       list<RefTree> b(1, tmptree);
@@ -97,16 +97,15 @@ void Tree::factorize() {
   /// therefore, we are now starting with the second subtrees
 
   vector<list<RefTree>::iterator> remove_list;
-  list<RefTree>::iterator i, j, tmpi; 
 
-  for (i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i) { 
+  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i) { 
     if (find(remove_list.begin(), remove_list.end(), i) != remove_list.end()) continue;
-    tmpi = i;
+    auto tmpi = i;
     ++tmpi;
     RefTree mysubtree = *i; 
     BinaryContraction mybinc = mysubtree->binc();
 
-    for (j = tmpi; j != subtrees_.second.end(); ++j) {
+    for (auto j = tmpi; j != subtrees_.second.end(); ++j) {
       if (find(remove_list.begin(), remove_list.end(), j) != remove_list.end()) continue;
       RefTree othersubtree = *j;
       BinaryContraction otherbinc = othersubtree->binc();
@@ -118,12 +117,12 @@ void Tree::factorize() {
     }
   }
 
-  for (vector<list<RefTree>::iterator>::iterator k = remove_list.begin(); k != remove_list.end(); ++k)
+  for (auto k = remove_list.begin(); k != remove_list.end(); ++k)
     subtrees_.second.erase(*k);
 
 
   /// recursive calls
-  for (i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->factorize();
+  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->factorize();
   assert(subtrees_.first.empty());
   
 
@@ -145,7 +144,7 @@ void Tree::merge_second_subtree(RefTree other) {
   list<SmartIndex> target_permutables = permutables_in_factorize(other);
   target->set_permutables(target_permutables);
 
-  for (list<RefTree>::iterator i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i) 
+  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i) 
     (*i)->renew_binc_target(target); 
 
 }
@@ -156,17 +155,15 @@ const list<SmartIndex> Tree::permutables_in_factorize(RefTree other) {
   list<SmartIndex> permutables2 = othersub.front()->target_tensor()->permutables()->si();
   list<SmartIndex> permutables1 = subtrees_.second.front()->target_tensor()->permutables()->si();
 
-  list<SmartIndex>::iterator i, j;
-
 
   list<SmartIndex> primitive1;
-  for (i = permutables1.begin(); i != permutables1.end(); ++i) {
+  for (auto i = permutables1.begin(); i != permutables1.end(); ++i) {
     list<SmartIndex> ps = i->extract();
     primitive1.insert(primitive1.end(), ps.begin(), ps.end());
   }
 
   list<SmartIndex> primitive2;
-  for (i = permutables2.begin(); i != permutables2.end(); ++i) {
+  for (auto i = permutables2.begin(); i != permutables2.end(); ++i) {
     list<SmartIndex> ps = i->extract();
     primitive2.insert(primitive2.end(), ps.begin(), ps.end());
   }
@@ -177,9 +174,9 @@ const list<SmartIndex> Tree::permutables_in_factorize(RefTree other) {
 
   SmartIndex s1 = primitive1.front();
   SmartIndex s2 = primitive2.front();
-  list<SmartIndex>::iterator ia = primitive1.begin(); ++ia;
-  list<SmartIndex>::iterator ja = primitive2.begin(); ++ja;
-  for (i = ia, j = ja; i != primitive1.end(); ++i, ++j) {
+  auto ia = primitive1.begin(); ++ia;
+  auto ja = primitive2.begin(); ++ja;
+  for (auto i = ia, j = ja; i != primitive1.end(); ++i, ++j) {
     if (s1.permutable(*i) && s2.permutable(*j)) {
       s1.merge(*i);
       s2.merge(*j);
@@ -218,10 +215,9 @@ const int Tree::num_nodes() const {
 //  cout << binc_.show() << endl; 
   list<RefTree> subtree1 = subtrees_.first;
   list<RefTree> subtree2 = subtrees_.second;
-  list<RefTree>::iterator titer;
 
-  for (titer = subtree1.begin(); titer != subtree1.end(); ++titer) out += (*titer)->num_nodes();
-  for (titer = subtree2.begin(); titer != subtree2.end(); ++titer) out += (*titer)->num_nodes();
+  for (auto titer = subtree1.begin(); titer != subtree1.end(); ++titer) out += (*titer)->num_nodes();
+  for (auto titer = subtree2.begin(); titer != subtree2.end(); ++titer) out += (*titer)->num_nodes();
 
   return out;
 }
@@ -236,14 +232,13 @@ const string Tree::show(const int i) const {
   out += "\n";
 
   list<RefTree> s1, s2;
-  list<RefTree>::iterator titer;
   s1 = subtrees_.first; 
   s2 = subtrees_.second;
 
   int next = i;
   ++next;
-  for (titer = s1.begin(); titer != s1.end(); ++titer) out += (*titer)->show(next);
-  for (titer = s2.begin(); titer != s2.end(); ++titer) out += (*titer)->show(next);
+  for (auto titer = s1.begin(); titer != s1.end(); ++titer) out += (*titer)->show(next);
+  for (auto titer = s2.begin(); titer != s2.end(); ++titer) out += (*titer)->show(next);
 
   return out;
 }
@@ -253,7 +248,7 @@ void Tree::set_outerloop() {
   binc_.set_outerloop();
 
   /// recursive calls
-  for (list<RefTree>::iterator i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->set_outerloop();
+  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->set_outerloop();
 
   if (!subtrees_.first.empty()) {
     const string filename = __FILE__;
@@ -268,7 +263,7 @@ void Tree::set_innerloop() {
   binc_.set_innerloop();
 
   /// recursive calls
-  for (list<RefTree>::iterator i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->set_innerloop();
+  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->set_innerloop();
 
   if (!subtrees_.first.empty()) {
     const string filename = __FILE__;

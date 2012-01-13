@@ -20,8 +20,7 @@ Tensor::Tensor(const string symb, const list<SmartIndex> sindx, const int dep, c
   }
 
   rank_ = 0;
-  for (list<SmartIndex>::const_iterator iter = indexinfo_->smartindices()->begin();
-                                        iter != indexinfo_->smartindices()->end(); ++iter) 
+  for (auto iter = indexinfo_->smartindices()->begin(); iter != indexinfo_->smartindices()->end(); ++iter) 
     rank_ += iter->length();
 
   set_permutables_for_input(sindx);
@@ -62,13 +61,12 @@ Tensor::~Tensor() {
 
 bool Tensor::operator==(const Tensor& other) const {
   if (symbol() != other.symbol()) return false;
-  list<SmartIndex>::iterator i, j;
   list<SmartIndex> mine  = smartindices()->si();
   list<SmartIndex> yours = other.smartindices()->si();
 
   if(mine.size() != yours.size()) return false;
 
-  for (i = mine.begin(), j = yours.begin(); i != mine.end(); ++i, ++j) { 
+  for (auto i = mine.begin(), j = yours.begin(); i != mine.end(); ++i, ++j) { 
     if (*i != *j) return false;
   }
 
@@ -124,8 +122,7 @@ void Tensor::index_init(const list<SmartIndex> sindx) {
     indexinfo_ = tmp2;
   }
   rank_ = 0;
-  for (list<SmartIndex>::iterator iter=indexinfo_->smartindices()->begin();
-                                  iter!=indexinfo_->smartindices()->end(); ++iter) 
+  for (auto iter=indexinfo_->smartindices()->begin(); iter!=indexinfo_->smartindices()->end(); ++iter) 
     rank_ += iter->length();
 
   set_permutables_for_input(sindx);
@@ -136,15 +133,14 @@ void Tensor::index_init(const list<SmartIndex> sindx) {
 
 void Tensor::set_permutables_for_input(const list<SmartIndex>& sinp) {
   list<SmartIndex> si = sinp;
-  list<SmartIndex>::iterator siter, siter2, tmp;
   vector<list<SmartIndex>::iterator> remove;
 
   // permutable indices are merged and registered to remove
-  for (siter = si.begin(); siter != si.end(); ++siter) {
+  for (auto siter = si.begin(); siter != si.end(); ++siter) {
     if (find(remove.begin(), remove.end(), siter) != remove.end()) continue;
-    tmp = siter;
+    auto tmp = siter;
     ++tmp;
-    for (siter2 = tmp; siter2 != si.end(); ++siter2) {
+    for (auto siter2 = tmp; siter2 != si.end(); ++siter2) {
       if (siter->type() == siter2->type() && siter->dagger() == siter2->dagger() &&
           siter->my_tensor() == siter2->my_tensor() ) {
         siter->merge(*siter2); 
@@ -154,7 +150,7 @@ void Tensor::set_permutables_for_input(const list<SmartIndex>& sinp) {
   } 
 
   // removing merged indices
-  for (vector<list<SmartIndex>::iterator>::iterator i = remove.begin(); i != remove.end(); ++i)
+  for (auto i = remove.begin(); i != remove.end(); ++i)
     si.erase(*i); 
 
   // sorting indices
@@ -168,12 +164,11 @@ const string Tensor::show() const {
   string out; 
   out += symbol() + "(";
 
-  list<SmartIndex>::const_iterator siter;
-  for (siter = indexinfo_->smartindices()->begin(); siter != indexinfo_->smartindices()->end(); ++siter) 
+  for (auto siter = indexinfo_->smartindices()->begin(); siter != indexinfo_->smartindices()->end(); ++siter) 
     out += siter->show() + " ";
 
   out += "; ";
-  for (siter = indexinfo_->permutables()->begin(); siter != indexinfo_->permutables()->end(); ++siter) 
+  for (auto siter = indexinfo_->permutables()->begin(); siter != indexinfo_->permutables()->end(); ++siter) 
     out += siter->show() + " ";
 
   if (!indexinfo_->smartindices()->empty()) out.erase(out.size()-1,1);
@@ -188,8 +183,7 @@ const vector<int> Tensor::num_values(const int dagger) const {
 /// dagger = 1 returns only those with dagger,
 /// dagger = -1 returns only those without dagger
   vector<int> out;
-  list<SmartIndex>::const_iterator siter;
-  for (siter = indexinfo_->smartindices()->begin(); siter != indexinfo_->smartindices()->end(); ++siter) {
+  for (auto siter = indexinfo_->smartindices()->begin(); siter != indexinfo_->smartindices()->end(); ++siter) {
     vector<int> tmp = siter->num_values(dagger);
     out.insert(out.end(), tmp.begin(), tmp.end());    
   }
@@ -201,8 +195,7 @@ const vector<int> Tensor::num_values_external(const int dagger) const {
 /// dagger = 1 returns only those with dagger,
 /// dagger = -1 returns only those without dagger
   vector<int> out;
-  list<SmartIndex>::const_iterator siter;
-  for (siter = indexinfo_->smartindices()->begin(); siter != indexinfo_->smartindices()->end(); ++siter) {
+  for (auto siter = indexinfo_->smartindices()->begin(); siter != indexinfo_->smartindices()->end(); ++siter) {
     if (!siter->target_tensor()) {
       vector<int> tmp = siter->num_values(dagger);
       out.insert(out.end(), tmp.begin(), tmp.end());    
@@ -216,8 +209,7 @@ const vector<int> Tensor::num_values_hole() const {
 /// dagger = 1 returns only those with dagger,
 /// dagger = -1 returns only those without dagger
   vector<int> out;
-  list<SmartIndex>::const_iterator siter;
-  for (siter = indexinfo_->smartindices()->begin(); siter != indexinfo_->smartindices()->end(); ++siter) {
+  for (auto siter = indexinfo_->smartindices()->begin(); siter != indexinfo_->smartindices()->end(); ++siter) {
     if (siter->type() == "h") {
       vector<int> tmp = siter->num_values(0);
       out.insert(out.end(), tmp.begin(), tmp.end());    
@@ -234,10 +226,9 @@ const bool Tensor::identical(shared_ptr<Tensor> other) const {
   if (symbol() != other->symbol()) out = false;
   if (smartindices()->size() != other->smartindices()->size()) out = false;
 
-  list<SmartIndex>::const_iterator i, j;
   const list<SmartIndex> mine  = smartindices()->si();
   const list<SmartIndex> yours = other->smartindices()->si();
-  for (i = mine.begin(), j = yours.begin(); i != mine.end(); ++i, ++j) {
+  for (auto i = mine.begin(), j = yours.begin(); i != mine.end(); ++i, ++j) {
     if (!i->identical(*j)) { 
       out = false;
       break;

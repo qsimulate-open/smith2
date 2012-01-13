@@ -32,7 +32,7 @@ void Cost::sort_pcost() {
 
 const string Cost::show() const { 
   string out;
-  for (vector<PCost>::const_iterator i = cost_.begin(); i != cost_.end(); ++i) out += i->show() + " ";
+  for (auto i = cost_.begin(); i != cost_.end(); ++i) out += i->show() + " ";
   return out;
 }
 

@@ -16,13 +16,13 @@ Spaces::Spaces(const long num_occ_blocks, const long num_vir_blocks,
   int offset = 0;
   // occupied blocks
   vector<Block> occ_blocks;
-  for (vector<long>::const_iterator iter = num_occ_orb.begin(), siter = sym_occ.begin();    
+  for (auto iter = num_occ_orb.begin(), siter = sym_occ.begin();    
         iter != num_occ_orb.end(); ++iter, ++siter, ++tag) {
     Block current(tag, offset, offset+*iter, 0, *siter); // tag, orb_start, orb_end, spin, symm
     occ_blocks.push_back(current);
     offset += *iter;
   }
-  for (vector<long>::const_iterator iter = num_occ_orb.begin(), siter = sym_occ.begin();
+  for (auto iter = num_occ_orb.begin(), siter = sym_occ.begin();
         iter != num_occ_orb.end(); ++iter, ++siter, ++tag) {
     Block current(tag, offset, offset+*iter, 1, *siter);
     occ_blocks.push_back(current);
@@ -30,13 +30,13 @@ Spaces::Spaces(const long num_occ_blocks, const long num_vir_blocks,
   }
   // virtual blocks
   vector<Block> vir_blocks;
-  for (vector<long>::const_iterator iter = num_vir_orb.begin(), siter = sym_vir.begin();
+  for (auto iter = num_vir_orb.begin(), siter = sym_vir.begin();
         iter != num_vir_orb.end(); ++iter, ++siter, ++tag) {
     Block current(tag, offset, offset+*iter, 0, *siter);
     vir_blocks.push_back(current);
     offset += *iter;
   }
-  for (vector<long>::const_iterator iter = num_vir_orb.begin(), siter = sym_vir.begin();
+  for (auto iter = num_vir_orb.begin(), siter = sym_vir.begin();
         iter != num_vir_orb.end(); ++iter, ++siter, ++tag) {
     Block current(tag, offset, offset+*iter, 1, *siter);
     vir_blocks.push_back(current);

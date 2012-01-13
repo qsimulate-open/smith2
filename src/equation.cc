@@ -20,20 +20,19 @@ Equation::~Equation() {
 }
 
 void Equation::strength_reduction(const bool opt_memory) {
-  list<RefVecTensor>::iterator vtiter, otiter;
   vector<list<RefVecTensor>::iterator> remove;
 
   // currently we are only looking for the sequential multiplications
-  for (vtiter = vectensor_.begin(); vtiter != vectensor_.end(); ++vtiter) {
+  for (auto vtiter = vectensor_.begin(); vtiter != vectensor_.end(); ++vtiter) {
     (*vtiter)->strength_reduction(opt_memory);
-    for (otiter = vectensor_.begin(); otiter != vtiter; ++otiter) {
+    for (auto otiter = vectensor_.begin(); otiter != vtiter; ++otiter) {
       if ((*vtiter)->identical(*(*otiter))) {
         remove.push_back(vtiter);
         break;
       }
     } 
   }
-  for (vector<list<RefVecTensor>::iterator>::iterator i = remove.begin(); i != remove.end(); ++i)
+  for (auto i = remove.begin(); i != remove.end(); ++i)
     vectensor_.erase(*i);
 }
 
@@ -48,7 +47,7 @@ void Equation::form_tree() {
   shared_ptr<Tensor> target(new Tensor("D"));
   target->push_back_regtensors(target); 
 
-  for (list<RefVecTensor>::iterator vtiter = vectensor_.begin(); vtiter != vectensor_.end(); ++vtiter){ 
+  for (auto vtiter = vectensor_.begin(); vtiter != vectensor_.end(); ++vtiter){ 
     RefVecTensor current = *vtiter;
     RefTree tmptree(new Tree(current, target));
     listtmptree.push_back(tmptree);
@@ -59,7 +58,7 @@ void Equation::form_tree() {
 
   RefTree root(new Tree(rootb, make_pair(a, listtmptree)));
   list<RefTree> child = listtmptree; 
-  for (list<RefTree>::iterator titer = child.begin(); titer != child.end(); ++titer) 
+  for (auto titer = child.begin(); titer != child.end(); ++titer) 
     (*titer)->set_parent(root);
 
 

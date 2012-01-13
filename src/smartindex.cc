@@ -1,6 +1,6 @@
 //
-// Author :: Toru Shiozaki
-// Date   :: Feb 2009
+// Author : Toru Shiozaki
+// Date   : Feb 2009
 //
 #include <cassert>
 #include <algorithm>
@@ -91,7 +91,7 @@ void SmartIndex::merge(SmartIndex& other) {
 
 const list<SmartIndex> SmartIndex::extract() const {
   list<SmartIndex> out;
-  for (list<Index>::const_iterator i = indices_.begin(); i != indices_.end(); ++i) {
+  for (auto i = indices_.begin(); i != indices_.end(); ++i) {
     list<Index> li(1, *i);
     SmartIndex s(li, my_tensor(), target_tensor());
     out.push_back(s); 
@@ -103,8 +103,7 @@ const list<SmartIndex> SmartIndex::extract() const {
 
 const string SmartIndex::show() const {
   string out;
-  list<Index>::const_iterator iiter;
-  for (iiter = indices_.begin(); iiter != indices_.end(); ++iiter) 
+  for (auto iiter = indices_.begin(); iiter != indices_.end(); ++iiter) 
     out += iiter->show(); 
   return out;
 }
@@ -128,8 +127,7 @@ vector<shared_ptr<int> > SmartIndex::num_pointers(const int dagger) {
 /// dagger = 1 returns only those with dagger,
 /// dagger = -1 returns only those without dagger
   vector<shared_ptr<int> > out;
-  list<Index>::iterator iiter;
-  for (iiter = indices_.begin(); iiter != indices_.end(); ++iiter)
+  for (auto iiter = indices_.begin(); iiter != indices_.end(); ++iiter)
     if (dagger == 0 || (dagger == 1 && (*iiter).dagger()) || (dagger == -1 && !(*iiter).dagger()))
       out.push_back(iiter->num_pointer());    
   return out;
@@ -140,8 +138,7 @@ const vector<int> SmartIndex::num_values(const int dagger) const {
 /// dagger = 1 returns only those with dagger,
 /// dagger = -1 returns only those without dagger
   vector<int> out;
-  list<Index>::const_iterator iiter;
-  for (iiter = indices_.begin(); iiter != indices_.end(); ++iiter) {
+  for (auto iiter = indices_.begin(); iiter != indices_.end(); ++iiter) {
     if (dagger == 0 || (dagger == 1 && (*iiter).dagger()) || (dagger == -1 && !(*iiter).dagger()))
       out.push_back(iiter->num());    
   }
@@ -153,7 +150,7 @@ const vector<vector<Block> > SmartIndex::blocklist() const {
   vector<vector<Block> > out;
   vector<Block> bks = indices_.front().indexspace().blocks();
   if (indices_.size() == 1) {
-    for (vector<Block>::const_iterator iter = bks.begin(); iter != bks.end(); ++iter) {
+    for (auto iter = bks.begin(); iter != bks.end(); ++iter) {
       vector<Block> tmp(1, *iter); // vector of length 1
       out.push_back(tmp);
     }
@@ -171,8 +168,8 @@ const vector<vector<Block> > SmartIndex::blocklist() const {
 
   // adding shared_ptr<Tensor> target_tensor_.
   // adding sindex information for restoring
-  for (vector<vector<Block> >::iterator iter = out.begin(); iter != out.end(); ++iter) {
-    for (vector<Block>::iterator iiter = iter->begin(); iiter != iter->end(); ++iiter) {
+  for (auto iter = out.begin(); iter != out.end(); ++iter) {
+    for (auto iiter = iter->begin(); iiter != iter->end(); ++iiter) {
       iiter->set_my_tensor(my_tensor_->depth());
       iiter->set_restore_sindex(this->sindex());
       if (target_tensor_)

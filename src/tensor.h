@@ -103,7 +103,7 @@ class Tensor {
     /// Utility for tensor matching to the vector of tensors.
     const bool in_list(const std::vector<std::shared_ptr<Tensor> > vect) const {
       std::vector<const Tensor*> tmp;
-      for (std::vector<std::shared_ptr<Tensor> >::const_iterator iter = vect.begin(); iter != vect.end(); ++iter)
+      for (auto iter = vect.begin(); iter != vect.end(); ++iter)
         tmp.push_back(iter->get());
       return std::find(tmp.begin(), tmp.end(), this) != tmp.end();
     };

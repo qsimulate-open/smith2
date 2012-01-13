@@ -66,8 +66,7 @@ int main(int argc, char** argv) {
       if (listpretensor.empty()) return 1;
       list<RefVecTensor> listvectensor;
    
-      list<RefListPreTensor>::iterator iter;
-      for (iter = listpretensor.begin(); iter != listpretensor.end() ;++iter) { 
+      for (auto iter = listpretensor.begin(); iter != listpretensor.end() ;++iter) { 
         RefVecTensor newvectensor = (*iter)->analyze();
         listvectensor.push_back(newvectensor);
       }
@@ -150,7 +149,7 @@ list<RefListPreTensor> read_input(list<string> content) {
   list<RefListPreTensor> out;
   boost::regex tensor_reg("(\\S+?)\\s\\(.*?\\)");
    
-  for(list<string>::iterator i = content.begin(); i != content.end(); ++i) {
+  for(auto i = content.begin(); i != content.end(); ++i) {
     const string stmp = *i;
  
     boost::smatch what;

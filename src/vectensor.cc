@@ -22,8 +22,7 @@ VecTensor::~VecTensor() {
 
 const string VecTensor::show() const {
   string out;
-  vector<shared_ptr<Tensor> >::const_iterator titer;
-  for (titer = tensor_.begin(); titer != tensor_.end(); ++titer) 
+  for (auto titer = tensor_.begin(); titer != tensor_.end(); ++titer) 
     out += (*titer)->show() + " ";
   out.erase(out.size()-1,1);
   return out;
@@ -102,19 +101,17 @@ void VecTensor::strength_reduction(const bool opt_memory) {
 const pair<Cost, Cost> VecTensor::cost_evaluater(const vector<shared_ptr<Tensor> > tensors) const {
 
   list<SmartIndex> current;
-  vector<shared_ptr<Tensor> >::const_iterator titer;
   vector<shared_ptr<Tensor> > finished;
   Cost cop;
   Cost cmem; 
-  for (titer = tensors.begin(); titer != tensors.end(); ++titer) {
+  for (auto titer = tensors.begin(); titer != tensors.end(); ++titer) {
     if (titer != tensors.begin()) {
       // evaluate cost here
       PCost pcop(0,0,0);
       PCost pcmem(0,0,0);
       list<SmartIndex> next; 
 
-      list<SmartIndex>::iterator siter;
-      for (siter = current.begin(); siter != current.end(); ++siter) {
+      for (auto siter = current.begin(); siter != current.end(); ++siter) {
         if (siter->target_tensor().get() != titer->get()) { // if not contraction indices
           next.push_back(*siter);
           siter->add_to_pcost(pcmem);
@@ -122,7 +119,7 @@ const pair<Cost, Cost> VecTensor::cost_evaluater(const vector<shared_ptr<Tensor>
         } 
       }
       list<SmartIndex> newlist = (*titer)->smartindices()->si();
-      for (siter = newlist.begin(); siter != newlist.end(); ++siter) {
+      for (auto siter = newlist.begin(); siter != newlist.end(); ++siter) {
         siter->add_to_pcost(pcop);
         if (!siter->target_tensor() || !siter->target_tensor()->in_list(finished)) { // if not contraction indices 
           next.push_back(*siter);
@@ -149,9 +146,8 @@ const pair<Cost, Cost> VecTensor::cost_evaluater(const vector<shared_ptr<Tensor>
 
 
 void VecTensor::refresh_tensor_depth() {
-  vector<shared_ptr<Tensor> >::iterator titer;
   int depth = 0;
-  for (titer = tensor_.begin(); titer != tensor_.end(); ++titer, ++depth)
+  for (auto titer = tensor_.begin(); titer != tensor_.end(); ++titer, ++depth)
     (*titer)->set_depth(depth);
 }
 
@@ -161,18 +157,16 @@ void VecTensor::refresh_indices() {
 /// pretty complicated; but works. // info for number matching will be
 /// storeted in map<shared_ptr<int>, vector<shared_ptr<int> > >
 
-  vector<shared_ptr<Tensor> >::iterator titer;
 
   map<shared_ptr<int> , vector<shared_ptr<int> > > dupl;
   vector<shared_ptr<int> > eh, ep, ecp; 
   vector<pair<shared_ptr<int> , shared_ptr<Tensor> > > ih, ip, icp; // internal
-  for (titer = tensor_.begin(); titer != tensor_.end(); ++titer) { 
+  for (auto titer = tensor_.begin(); titer != tensor_.end(); ++titer) { 
     shared_ptr<Tensor> current_tensor = *titer;
     current_tensor->sort_indices();
 
-    list<SmartIndex>::iterator siter;
     list<SmartIndex>* smartindices = current_tensor->smartindices_pointer(); 
-    for (siter = smartindices->begin(); siter != smartindices->end(); ++siter) {
+    for (auto siter = smartindices->begin(); siter != smartindices->end(); ++siter) {
       SmartIndex* current_si = &*siter;
 
       if (current_si->target_tensor().get() == NULL) {
@@ -188,17 +182,16 @@ void VecTensor::refresh_indices() {
         }
       } else {
        // internal indices come here
-        vector<shared_ptr<int> >::iterator iiter;
         vector<shared_ptr<int> > tmp = current_si->num_pointers(); 
         vector<pair<shared_ptr<int> , shared_ptr<Tensor> > > iveci;
         if (current_si->type() == "h")  iveci =  ih;
         else if (current_si->type() == "p") iveci =  ip;
         else if (current_si->type() == "P") iveci =  icp;
-        for (iiter = tmp.begin(); iiter != tmp.end(); ++iiter) { 
+        for (auto iiter = tmp.begin(); iiter != tmp.end(); ++iiter) { 
           bool find_ = false;
-          for (vector<pair<shared_ptr<int> , shared_ptr<Tensor> > >::iterator i = iveci.begin(); i != iveci.end(); ++i) { 
+          for (auto i = iveci.begin(); i != iveci.end(); ++i) { 
             if (*((*i).first) == *(*iiter)) { 
-              map<shared_ptr<int> , vector<shared_ptr<int> > >::iterator mapiter = dupl.find((*i).first);
+              auto mapiter = dupl.find((*i).first);
               if (mapiter == dupl.end()) {
                 vector<shared_ptr<int> > tmpv(1, *iiter);
                 dupl.insert(make_pair((*i).first, tmpv));
@@ -221,44 +214,42 @@ void VecTensor::refresh_indices() {
 
   int count = 1;
   {
-    vector<shared_ptr<int> >::iterator iiter;
     /// numbering external indices
-    for (iiter = eh.begin(); iiter != eh.end(); ++iiter, ++count)   {*(*iiter) = count;} 
-    for (iiter = ep.begin(); iiter != ep.end(); ++iiter, ++count)   {*(*iiter) = count;}
-    for (iiter = ecp.begin(); iiter != ecp.end(); ++iiter, ++count) {*(*iiter) = count;}
+    for (auto iiter = eh.begin(); iiter != eh.end(); ++iiter, ++count)   {*(*iiter) = count;} 
+    for (auto iiter = ep.begin(); iiter != ep.end(); ++iiter, ++count)   {*(*iiter) = count;}
+    for (auto iiter = ecp.begin(); iiter != ecp.end(); ++iiter, ++count) {*(*iiter) = count;}
   }
   
     /// numbering internal indices
-  for (titer = tensor_.begin(); titer != tensor_.end(); ++titer) 
+  for (auto titer = tensor_.begin(); titer != tensor_.end(); ++titer) 
   {
-    vector<pair<shared_ptr<int> , shared_ptr<Tensor> > >::iterator iiter;
-    for (iiter = ih.begin(); iiter != ih.end(); ++iiter)   {
+    for (auto iiter = ih.begin(); iiter != ih.end(); ++iiter)   {
       if (*titer != (*iiter).second) continue;
   
       *((*iiter).first) = count;
-      map<shared_ptr<int> , vector<shared_ptr<int> > >::iterator mapiter = dupl.find((*iiter).first);
+      auto mapiter = dupl.find((*iiter).first);
       if (mapiter != dupl.end()) {
-        for (vector<shared_ptr<int> >::iterator ii = (*mapiter).second.begin(); ii != (*mapiter).second.end(); ++ii) *(*ii) = count;
+        for (auto ii = (*mapiter).second.begin(); ii != (*mapiter).second.end(); ++ii) *(*ii) = count;
       }
       ++count;
     }
-    for (iiter = ip.begin(); iiter != ip.end(); ++iiter)   {
+    for (auto iiter = ip.begin(); iiter != ip.end(); ++iiter)   {
       if (*titer != (*iiter).second) continue;
   
       *((*iiter).first) = count;
-      map<shared_ptr<int> , vector<shared_ptr<int> > >::iterator mapiter = dupl.find((*iiter).first);
+      auto mapiter = dupl.find((*iiter).first);
       if (mapiter != dupl.end()) {
-        for (vector<shared_ptr<int> >::iterator ii = (*mapiter).second.begin(); ii != (*mapiter).second.end(); ++ii) *(*ii) = count;
+        for (auto ii = (*mapiter).second.begin(); ii != (*mapiter).second.end(); ++ii) *(*ii) = count;
       }
       ++count;
     }
-    for (iiter = icp.begin(); iiter != icp.end(); ++iiter) {
+    for (auto iiter = icp.begin(); iiter != icp.end(); ++iiter) {
       if (*titer != (*iiter).second) continue;
   
       *((*iiter).first) = count;
-      map<shared_ptr<int> , vector<shared_ptr<int> > >::iterator mapiter = dupl.find((*iiter).first);
+      auto mapiter = dupl.find((*iiter).first);
       if (mapiter != dupl.end()) {
-        for (vector<shared_ptr<int> >::iterator ii = (*mapiter).second.begin(); ii != (*mapiter).second.end(); ++ii) *(*ii) = count;
+        for (auto ii = (*mapiter).second.begin(); ii != (*mapiter).second.end(); ++ii) *(*ii) = count;
       }
       ++count;
     }
@@ -287,11 +278,10 @@ void VecTensor::refresh_factor() {
   double factor = 1.0;
 
   vector<shared_ptr<Tensor> > tensors = tensor();
-  vector<shared_ptr<Tensor> >::iterator titer, titer2, tmp, tmpiter; 
 
-  for (titer = tensors.begin(); titer != tensors.end(); ++titer) { 
-    tmp = titer;
-    for (titer2 = (++tmp); titer2 != tensors.end(); ++titer2) {
+  for (auto titer = tensors.begin(); titer != tensors.end(); ++titer) { 
+    auto tmp = titer;
+    for (auto titer2 = (++tmp); titer2 != tensors.end(); ++titer2) {
 
       /// most of the time, **titer == **titer2 is sufficient
       /// but in case if **titer has an index that point **titer and those are
@@ -301,7 +291,7 @@ void VecTensor::refresh_factor() {
 //    Tensor v0(*(*titer)), v1(*(*titer2));
       v.push_back(*titer);
       v.push_back(*titer2);
-      for (tmpiter = tensors.begin(); tmpiter != tensors.end();  ++tmpiter) {
+      for (auto tmpiter = tensors.begin(); tmpiter != tensors.end();  ++tmpiter) {
         if (tmpiter != titer && tmpiter != titer2) v.push_back(*tmpiter);
       }
       (*titer)->sort_indices();
@@ -321,7 +311,7 @@ const int VecTensor::count_loops() {
 
   while (!indexpair.empty()) {
 
-    map<int, int>::iterator a = indexpair.begin();
+    auto a = indexpair.begin();
     vector<map<int, int>::iterator> used(1, a);
     const int target = (*a).first;
     int current = (*a).second; 
@@ -334,7 +324,7 @@ const int VecTensor::count_loops() {
       used.push_back(a);
     }
 
-    for (vector<map<int, int>::iterator>::iterator mi = used.begin(); mi != used.end(); ++mi)
+    for (auto mi = used.begin(); mi != used.end(); ++mi)
       indexpair.erase(*mi);
 
     ++out;
@@ -347,10 +337,10 @@ const int VecTensor::count_loops() {
 const int VecTensor::count_holes() {
   vector<shared_ptr<Tensor> > tensors = tensor();
   vector<int> temp;
-  for (vector<shared_ptr<Tensor> >::iterator titer = tensors.begin(); titer != tensors.end(); ++titer) {
+  for (auto titer = tensors.begin(); titer != tensors.end(); ++titer) {
     vector<int> holelines = (*titer)->num_values_hole(); 
 
-    for (vector<int>::iterator iiter = holelines.begin(); iiter != holelines.end(); ++iiter) { 
+    for (auto iiter = holelines.begin(); iiter != holelines.end(); ++iiter) { 
       if (find(temp.begin(), temp.end(), *iiter) == temp.end())
         temp.push_back(*iiter);
     }
@@ -366,7 +356,7 @@ const map<int, int> VecTensor::index_num_pair() const {
   vector<shared_ptr<Tensor> > tensors = tensor(); 
   vector<int> edag;
   vector<int> endag;
-  for (vector<shared_ptr<Tensor> >::iterator titer = tensors.begin(); titer != tensors.end(); ++titer) {
+  for (auto titer = tensors.begin(); titer != tensors.end(); ++titer) {
     vector<int> dag = (*titer)->num_values(1);
     vector<int> ndag = (*titer)->num_values(-1);
     vector<int> tmp_ed = (*titer)->num_values_external(1);
@@ -377,8 +367,7 @@ const map<int, int> VecTensor::index_num_pair() const {
       endag.insert(endag.end(), tmp_en.begin(), tmp_en.end());
     assert(dag.size() == ndag.size());
 
-    vector<int>::iterator i,j;
-    for (i = dag.begin(), j = ndag.begin(); i != dag.end(); ++i, ++j) { 
+    for (auto i = dag.begin(), j = ndag.begin(); i != dag.end(); ++i, ++j) { 
       pair<map<int, int>::iterator, bool> a = out.insert(make_pair(*i, *j));
       assert(a.second);
     } 
@@ -386,8 +375,7 @@ const map<int, int> VecTensor::index_num_pair() const {
 
   // probably need to modify in case of non-number-conserving theory such as IP and EA
   assert(edag.size() == endag.size());
-  vector<int>::iterator i, j;
-  for (i = edag.begin(), j = endag.begin(); i != edag.end(); ++i, ++j) {
+  for (auto i = edag.begin(), j = endag.begin(); i != edag.end(); ++i, ++j) {
     // adding dummy indices that makes diagrams closed
     pair<map<int, int>::iterator, bool> a = out.insert(make_pair(*j, *i));
     assert(a.second);
@@ -398,11 +386,10 @@ const map<int, int> VecTensor::index_num_pair() const {
 
 
 const bool VecTensor::identical(const VecTensor& o) const {
-  vector<shared_ptr<Tensor> > otensor_ = o.tensor();
+  const vector<shared_ptr<Tensor> > otensor_ = o.tensor();
   if (tensor_.size() != otensor_.size()) return false;
 
-  vector<shared_ptr<Tensor> >::const_iterator i, j;
-  for (i = tensor_.begin(), j = otensor_.begin(); i != tensor_.end(); ++i, ++j) {
+  for (auto i = tensor_.begin(), j = otensor_.begin(); i != tensor_.end(); ++i, ++j) {
     if (!((*i)->identical(*j))) return false;
   }
 

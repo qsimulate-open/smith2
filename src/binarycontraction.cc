@@ -21,13 +21,12 @@ BinaryContraction::BinaryContraction(vector<shared_ptr<Tensor> >& tensr, shared_
 
 cout << "=======" << endl;
 cout << targt->show() << endl;
-for (list<SmartIndex>::iterator iter = loop_indices()->si_pointer()->begin();
-                                iter != loop_indices()->si_pointer()->end(); ++iter) 
+for (auto iter = loop_indices()->si_pointer()->begin(); iter != loop_indices()->si_pointer()->end(); ++iter) 
 cout << iter->show() << " "; 
 cout << endl;
 
-for (list<SmartIndex>::iterator iter = target_tensor_->indexinfo()->permutables()->si_pointer()->begin();
-                                iter != target_tensor_->indexinfo()->permutables()->si_pointer()->end(); ++iter) 
+for (auto iter = target_tensor_->indexinfo()->permutables()->si_pointer()->begin();
+          iter != target_tensor_->indexinfo()->permutables()->si_pointer()->end(); ++iter) 
 cout << iter->show() << " "; 
 cout << endl;
 
@@ -44,20 +43,19 @@ BinaryContraction::~BinaryContraction(){
 pair<PCost, PCost>  BinaryContraction::cost_evaluater(const vector<shared_ptr<Tensor> >& tensors) {
   PCost pcop(0,0,0);
   PCost pcmem(0,0,0);
-  list<SmartIndex>::iterator siter;
 
   if (one())  
     return make_pair(pcop, pcmem);
 
   list<SmartIndex> si_first = tensors.at(0)->smartindices()->si();
-  for (siter = si_first.begin(); siter != si_first.end(); ++siter) {
+  for (auto siter = si_first.begin(); siter != si_first.end(); ++siter) {
     if (siter->target_tensor().get() != tensors.at(1).get()) { // if not contraction indices
       siter->add_to_pcost(pcmem);
       siter->add_to_pcost(pcop);
     } 
   }
   list<SmartIndex> si_second = tensors.at(1)->smartindices()->si();
-  for (siter = si_second.begin(); siter != si_second.end(); ++siter) {
+  for (auto siter = si_second.begin(); siter != si_second.end(); ++siter) {
     siter->add_to_pcost(pcop);
     if (siter->target_tensor() != tensors.at(0))  // if not contraction indices 
       siter->add_to_pcost(pcmem);
@@ -84,7 +82,6 @@ const string BinaryContraction::show() const {
 
 
 void BinaryContraction::determine_target_indices(const vector<shared_ptr<Tensor> >& tensors) {
-  list<SmartIndex>::iterator siter, siter2, tmp;
   list<SmartIndex> target_indices, prod, prod2;
   list<SmartIndex> si_first = tensors.at(0)->smartindices()->si();
 
@@ -98,7 +95,7 @@ void BinaryContraction::determine_target_indices(const vector<shared_ptr<Tensor>
 
     // collecting indices that are not going to be summed...
     int counter = 0;
-    for (siter = si_first.begin(); siter != si_first.end(); ++siter, ++counter) {
+    for (auto siter = si_first.begin(); siter != si_first.end(); ++siter, ++counter) {
       siter->set_sindex(counter);
       if (!siter->target_tensor() || !siter->target_tensor()->in_list(tensors.at(1)->regtensors()) )  // if not contraction indices
         target_indices.push_back(*siter);
@@ -107,7 +104,7 @@ void BinaryContraction::determine_target_indices(const vector<shared_ptr<Tensor>
     }
     list<SmartIndex> si_second = tensors.at(1)->smartindices()->si();
     counter = 0;
-    for (siter = si_second.begin(); siter != si_second.end(); ++siter, ++counter) {
+    for (auto siter = si_second.begin(); siter != si_second.end(); ++siter, ++counter) {
       siter->set_sindex(counter);
       if (!siter->target_tensor() || !siter->target_tensor()->in_list(tensors.at(0)->regtensors()) ) // if not contraction indices 
         target_indices.push_back(*siter);
@@ -119,9 +116,9 @@ void BinaryContraction::determine_target_indices(const vector<shared_ptr<Tensor>
   
     // merging indices
     vector<list<SmartIndex>::iterator> removelist;
-    for (siter = target_indices_p.begin(); siter != target_indices_p.end(); ++siter) {
-      tmp = siter;
-      for (siter2 = (++tmp); siter2 != target_indices_p.end(); ++siter2) {
+    for (auto siter = target_indices_p.begin(); siter != target_indices_p.end(); ++siter) {
+      auto tmp = siter;
+      for (auto siter2 = (++tmp); siter2 != target_indices_p.end(); ++siter2) {
         if (siter->permutable(*siter2)) {
           removelist.push_back(siter2);
           siter->merge(*siter2);
@@ -129,7 +126,7 @@ void BinaryContraction::determine_target_indices(const vector<shared_ptr<Tensor>
       }
     }
     
-    for (vector<list<SmartIndex>::iterator>::iterator i = removelist.begin(); i != removelist.end(); ++i) 
+    for (auto i = removelist.begin(); i != removelist.end(); ++i) 
       target_indices_p.erase(*i);
   
     shared_ptr<SmartIndexList> tmp(new SmartIndexList(target_indices));
@@ -161,41 +158,40 @@ void BinaryContraction::refresh_indices() {
   vector<shared_ptr<Tensor> > r2 = t2->regtensors();
   list<SmartIndex>* s1 = t1->smartindices_pointer();
   list<SmartIndex>* s2 = t2->smartindices_pointer();
-  list<SmartIndex>::iterator siter, siter2, tmp;
-  for (siter = s1->begin(); siter != s1->end(); ++siter) {
+  for (auto siter = s1->begin(); siter != s1->end(); ++siter) {
     if (find(r2.begin(), r2.end(), siter->target_tensor()) != r2.end())
       siter->set_target_tensor(t2); 
   } 
   vector<list<SmartIndex>::iterator> removelist;
-  for (siter = s1->begin(); siter != s1->end(); ++siter) {
-    tmp = siter;
+  for (auto siter = s1->begin(); siter != s1->end(); ++siter) {
+    auto tmp = siter;
     ++tmp;
-    for (siter2 = tmp; siter2 != s1->end(); ++siter2) {
+    for (auto siter2 = tmp; siter2 != s1->end(); ++siter2) {
       if (siter->permutable(*siter2)) { 
         siter->merge(*siter2);
         removelist.push_back(siter2); 
       }
     }
   }
-  for (vector<list<SmartIndex>::iterator>::iterator i = removelist.begin(); i != removelist.end(); ++i)
+  for (auto i = removelist.begin(); i != removelist.end(); ++i)
     s1->erase(*i);
   removelist.clear();
 
-  for (siter = s2->begin(); siter != s2->end(); ++siter) {
+  for (auto siter = s2->begin(); siter != s2->end(); ++siter) {
     if (find(r1.begin(), r1.end(), siter->target_tensor()) != r1.end())
       siter->set_target_tensor(t1); 
   } 
-  for (siter = s2->begin(); siter != s2->end(); ++siter) {
-    tmp = siter;
+  for (auto siter = s2->begin(); siter != s2->end(); ++siter) {
+    auto tmp = siter;
     ++tmp;
-    for (siter2 = tmp; siter2 != s2->end(); ++siter2) {
+    for (auto siter2 = tmp; siter2 != s2->end(); ++siter2) {
       if (siter->permutable(*siter2)) { 
         siter->merge(*siter2);
         removelist.push_back(siter2); 
       }
     }
   }
-  for (vector<list<SmartIndex>::iterator>::iterator i = removelist.begin(); i != removelist.end(); ++i)
+  for (auto i = removelist.begin(); i != removelist.end(); ++i)
     s2->erase(*i);
 
   t1->sort_indices(); 
@@ -217,7 +213,6 @@ const bool BinaryContraction::factorizable(BinaryContraction& other) {
 
   return out;
 }
-
 
 
 

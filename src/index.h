@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <src/spaces.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class Index {
 
@@ -17,7 +17,7 @@ class Index {
     // basic info for deriving equations.
     bool dagger_;
     std::string type_;
-    boost::shared_ptr<int> num_; 
+    std::shared_ptr<int> num_; 
 
     // runtime-information for CC etc. IndexSpace is basically vector<Block>
     IndexSpace indexspace_;
@@ -33,7 +33,7 @@ class Index {
     // returns num_
     int num() const { return *num_; };
     // pointer to num_, which is used for updating num_ in Wick's theorem
-    boost::shared_ptr<int> num_pointer() { return num_; };
+    std::shared_ptr<int> num_pointer() { return num_; };
 
     // returns maximum block size
     size_t max_block_size() const { return indexspace_.max_block_size(); };

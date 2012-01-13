@@ -11,28 +11,27 @@
 #include <boost/lexical_cast.hpp>
 
 using namespace std;
-using namespace boost;
 
 Index::Index(const string indx, const Spaces& sp) {
 
-  const regex dagger_reg("\\+");
-  smatch what;
-  if (regex_search(indx.begin(), indx.end(), what, dagger_reg)) 
+  const boost::regex dagger_reg("\\+");
+  boost::smatch what;
+  if (boost::regex_search(indx.begin(), indx.end(), what, dagger_reg)) 
     dagger_=true;
   else
     dagger_=false;
 
-  const regex type_reg("([^0-9]+)([0-9]+)");
-  if (regex_search(indx.begin(), indx.end(), what, type_reg)) {
+  const boost::regex type_reg("([^0-9]+)([0-9]+)");
+  if (boost::regex_search(indx.begin(), indx.end(), what, type_reg)) {
     const string num_str(what[2].first,what[2].second); 
-    shared_ptr<int> tnum(new int(lexical_cast<int>(num_str)));
+    shared_ptr<int> tnum(new int(boost::lexical_cast<int>(num_str)));
     num_ = tnum;
 
     const string type_str(what[1].first,what[1].second); 
     type_=type_str;
   } else {
-    const string error_message = lexical_cast<string>("Something is wrong...: ")
-                                 + __FILE__ + " line: " + lexical_cast<string>(__LINE__);
+    const string error_message = boost::lexical_cast<string>("Something is wrong...: ")
+                                 + __FILE__ + " line: " + boost::lexical_cast<string>(__LINE__);
     throw std::invalid_argument(error_message);
   }
 
@@ -41,8 +40,8 @@ Index::Index(const string indx, const Spaces& sp) {
   } else if (type_ == "p") {
     indexspace_ = sp.vir_space();
   } else {
-    const string error_message = lexical_cast<string>("index other than holes and particles hasn't been implemented in file: ")
-                                 + __FILE__ + " line: " + lexical_cast<string>(__LINE__);
+    const string error_message = boost::lexical_cast<string>("index other than holes and particles hasn't been implemented in file: ")
+                                 + __FILE__ + " line: " + boost::lexical_cast<string>(__LINE__);
     throw logic_error(error_message);
   }
 

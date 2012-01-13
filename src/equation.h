@@ -8,10 +8,10 @@
 #include <list>
 #include <src/vectensor.h>
 #include <src/tree.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class Equation {
-  typedef boost::shared_ptr<Tree> RefTree;
+  typedef std::shared_ptr<Tree> RefTree;
 
   protected:
     std::list<RefVecTensor> vectensor_;

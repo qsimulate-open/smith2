@@ -12,7 +12,6 @@
 #include <src/macro.h>
 
 using namespace std;
-using namespace boost;
 
 // setting up (vector<vector<Tile> >)outerloop_ that is a protected member.
 void BinaryContraction::set_outerloop() {

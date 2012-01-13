@@ -11,7 +11,7 @@
 #include <src/index.h>
 #include <src/cost.h>
 #include <src/tensor.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class Tensor;
 class SmartIndexList;
@@ -26,13 +26,13 @@ class SmartIndex {
   protected:
     std::list<Index> indices_; 
 
-    boost::shared_ptr<Tensor> my_tensor_; 
-    boost::shared_ptr<Tensor> target_tensor_;
+    std::shared_ptr<Tensor> my_tensor_; 
+    std::shared_ptr<Tensor> target_tensor_;
 
     int sindex_;
 
   public:
-    SmartIndex(const std::list<Index>, boost::shared_ptr<Tensor>, boost::shared_ptr<Tensor>);
+    SmartIndex(const std::list<Index>, std::shared_ptr<Tensor>, std::shared_ptr<Tensor>);
     ~SmartIndex();
 
     bool operator==(const SmartIndex& o) const;
@@ -50,11 +50,11 @@ class SmartIndex {
     const int length() const {return indices_.size();};
 
     /// Returns the pointer to the tensor in which this SmartIndex is attached.
-    boost::shared_ptr<Tensor> my_tensor() const {return my_tensor_;};
+    std::shared_ptr<Tensor> my_tensor() const {return my_tensor_;};
     /// Returns the pointer to the tensor to which this SmartIndex will be contracted. 
-    boost::shared_ptr<Tensor> target_tensor() const {return target_tensor_;};
+    std::shared_ptr<Tensor> target_tensor() const {return target_tensor_;};
     /// Renew target_tensor
-    void set_target_tensor(boost::shared_ptr<Tensor> n) {target_tensor_ = n; };
+    void set_target_tensor(std::shared_ptr<Tensor> n) {target_tensor_ = n; };
 
     /// returns whether two SmartIndex can be seen as identical in the factorization step
     const bool identical(const SmartIndex&) const;
@@ -72,7 +72,7 @@ class SmartIndex {
     /// Returns the "num" of the first index
     const int num() const { return indices().front().num(); }; 
     /// Returns the pointers of "num" of indices 
-    std::vector<boost::shared_ptr<int> > num_pointers(const int dagger = 0);
+    std::vector<std::shared_ptr<int> > num_pointers(const int dagger = 0);
     /// Returns the values (copy) of "num" of indices 
     const std::vector<int> num_values(const int dagger = 0) const;
 

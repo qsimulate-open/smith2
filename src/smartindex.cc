@@ -1,6 +1,6 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Feb 2009
+// Author :: Toru Shiozaki
+// Date   :: Feb 2009
 //
 #include <cassert>
 #include <algorithm>
@@ -10,7 +10,6 @@
 #include <boost/algorithm/combination.hpp>
 
 using namespace std;
-using namespace boost;
 
 SmartIndex::SmartIndex(const list<Index> indx, shared_ptr<Tensor> mytensr, shared_ptr<Tensor> targettensr)
   : indices_(indx), my_tensor_(mytensr), target_tensor_(targettensr) {
@@ -167,10 +166,10 @@ const vector<vector<Block> > SmartIndex::blocklist() const {
       vector<Block> tmp(num_index);
       for (int i = 0; i != num_index; ++i) tmp[i] = bks[buffer[i]-i];
       out.push_back(tmp);
-    } while (next_combination(buffer.begin(), buffer.begin()+num_index, buffer.end()));
+    } while (boost::next_combination(buffer.begin(), buffer.begin()+num_index, buffer.end()));
   } 
 
-  // adding boost::shared_ptr<Tensor> target_tensor_.
+  // adding shared_ptr<Tensor> target_tensor_.
   // adding sindex information for restoring
   for (vector<vector<Block> >::iterator iter = out.begin(); iter != out.end(); ++iter) {
     for (vector<Block>::iterator iiter = iter->begin(); iiter != iter->end(); ++iiter) {

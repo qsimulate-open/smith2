@@ -15,10 +15,9 @@
 #include <src/ig/inputgenerator.h>
 #include <src/block.h>
 #include <src/spaces.h>
-#include <src/storage/memorygrp.h>
+//#include <src/storage/memorygrp.h>
 
 using namespace std;
-using namespace boost;
 using namespace DG;
 using namespace IG;
 
@@ -38,16 +37,16 @@ Spaces generate_spaces() {
 
 int main(int argc, char** argv) {
 
+#if 0
   // to be initialized by reading input
   const size_t memory_each = 200000000LU;
-
   shared_ptr<MemoryGrp> memgrp(new MemoryGrp(argc, argv, memory_each)); 
-
   const int myrank = memgrp->n();
-
   cout << myrank << endl;
-
   memgrp->wait();
+#else
+  const int myrank = 0;
+#endif
 
   try {
     
@@ -80,7 +79,9 @@ int main(int argc, char** argv) {
       equation.factorize();
       cout << equation.tree_root()->show() << endl;
 
+#if 0
       equation.startup();
+#endif
     }
 
   } catch (const runtime_error& e) {
@@ -107,7 +108,7 @@ list<RefListPreTensor> read_input(string filename) {
   list<RefListPreTensor> out;
  
   ifstream ifs(filename.c_str());
-  regex tensor_reg("(\\S+?)\\s\\(.*?\\)");
+  boost::regex tensor_reg("(\\S+?)\\s\\(.*?\\)");
   if (!ifs.is_open()) {
     cout <<  "FILE " << filename << " CANNOT BE OPENED" << endl;
     return out;
@@ -118,13 +119,13 @@ list<RefListPreTensor> read_input(string filename) {
     getline(ifs,stmp);
     if (stmp.empty()) continue;
  
-    smatch what;
+    boost::smatch what;
  
     string::const_iterator start = stmp.begin();
     string::const_iterator end   = stmp.end();
  
     list<RefPreTensor> pretensors;
-    while ( regex_search(start, end, what, tensor_reg) ) {
+    while ( boost::regex_search(start, end, what, tensor_reg) ) {
  
       string symbol(what[1].first,what[1].second);
  
@@ -147,18 +148,18 @@ list<RefListPreTensor> read_input(string filename) {
 list<RefListPreTensor> read_input(list<string> content) {
 
   list<RefListPreTensor> out;
-  regex tensor_reg("(\\S+?)\\s\\(.*?\\)");
+  boost::regex tensor_reg("(\\S+?)\\s\\(.*?\\)");
    
   for(list<string>::iterator i = content.begin(); i != content.end(); ++i) {
     const string stmp = *i;
  
-    smatch what;
+    boost::smatch what;
  
     string::const_iterator start = stmp.begin();
     string::const_iterator end   = stmp.end();
  
     list<RefPreTensor> pretensors;
-    while ( regex_search(start, end, what, tensor_reg) ) {
+    while ( boost::regex_search(start, end, what, tensor_reg) ) {
  
       string symbol(what[1].first,what[1].second);
  

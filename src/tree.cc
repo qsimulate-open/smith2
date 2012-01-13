@@ -8,7 +8,6 @@
 #include <vector>
 
 using namespace std;
-using namespace boost;
 
 Tree::Tree(const BinaryContraction& bc, const pair<list<RefTree>, list<RefTree> >& sub, RefTree par) 
  : binc_(bc), subtrees_(sub), parent_(par) {
@@ -259,7 +258,7 @@ void Tree::set_outerloop() {
   if (!subtrees_.first.empty()) {
     const string filename = __FILE__;
     const string error_message = "Currently Tree::subtree_.first is supposed to be empty. See file: "
-                               + filename + " line: " + lexical_cast<string>(__LINE__); 
+                               + filename + " line: " + boost::lexical_cast<string>(__LINE__); 
     throw logic_error(error_message);
   }
 }
@@ -274,7 +273,7 @@ void Tree::set_innerloop() {
   if (!subtrees_.first.empty()) {
     const string filename = __FILE__;
     const string error_message = "Currently Tree::subtree_.first is supposed to be empty. See file: "
-                               + filename + " line: " + lexical_cast<string>(__LINE__); 
+                               + filename + " line: " + boost::lexical_cast<string>(__LINE__); 
     throw logic_error(error_message);
   }
 }

@@ -8,7 +8,6 @@
 #include <cassert>
 
 using namespace std;
-using namespace boost;
 
 BinaryContraction::BinaryContraction(vector<shared_ptr<Tensor> >& tensr, shared_ptr<Tensor> targt)
  : tensor_(tensr), target_tensor_(targt) {

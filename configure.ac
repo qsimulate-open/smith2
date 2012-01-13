@@ -8,6 +8,7 @@ AC_CONFIG_SRCDIR([src/main.cc])
 AC_CONFIG_HEADER([config.h])
 
 # Checks for programs.
+CXXFLAGS="$CXXFLAGS -std=c++0x -O3"
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_RANLIB

@@ -10,7 +10,6 @@
 #include <src/tree.h>
 
 using namespace std;
-using namespace boost;
 
 Equation::Equation(const list<RefVecTensor> lvt) : vectensor_(lvt) {
 
@@ -61,7 +60,7 @@ void Equation::form_tree() {
   RefTree root(new Tree(rootb, make_pair(a, listtmptree)));
   list<RefTree> child = listtmptree; 
   for (list<RefTree>::iterator titer = child.begin(); titer != child.end(); ++titer) 
-    (*titer)->set_parent(root); 
+    (*titer)->set_parent(root);
 
 
   tree_root_ = root;

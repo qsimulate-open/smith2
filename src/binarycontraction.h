@@ -9,13 +9,13 @@
 
 class BinaryContraction {
   protected:
-    std::vector<boost::shared_ptr<Tensor> > tensor_;
-    boost::shared_ptr<Tensor> target_tensor_;
+    std::vector<std::shared_ptr<Tensor> > tensor_;
+    std::shared_ptr<Tensor> target_tensor_;
 
     std::pair<PCost, PCost> cost_;
 
-    std::pair<PCost, PCost> cost_evaluater(const std::vector<boost::shared_ptr<Tensor> >&);
-    void determine_target_indices(const std::vector<boost::shared_ptr<Tensor> >&);
+    std::pair<PCost, PCost> cost_evaluater(const std::vector<std::shared_ptr<Tensor> >&);
+    void determine_target_indices(const std::vector<std::shared_ptr<Tensor> >&);
     void refresh_indices();
 
     // For implementation
@@ -23,12 +23,12 @@ class BinaryContraction {
     std::vector<std::vector<Block> > innerloop1_;
     std::vector<std::vector<Block> > innerloop2_;
     // Loop indices that reflects which index has come from which tensor etc.
-    boost::shared_ptr<SmartIndexList> loop_indices_; 
-    boost::shared_ptr<SmartIndexList> prod_indices_; 
-    boost::shared_ptr<SmartIndexList> prod_indices2_; 
+    std::shared_ptr<SmartIndexList> loop_indices_; 
+    std::shared_ptr<SmartIndexList> prod_indices_; 
+    std::shared_ptr<SmartIndexList> prod_indices2_; 
 
   public:
-    BinaryContraction(std::vector<boost::shared_ptr<Tensor> >&, boost::shared_ptr<Tensor>);
+    BinaryContraction(std::vector<std::shared_ptr<Tensor> >&, std::shared_ptr<Tensor>);
     BinaryContraction() {};
     ~BinaryContraction();
 
@@ -41,17 +41,17 @@ class BinaryContraction {
     const PCost mem() const {return cost_.second; };
 
     /// A pair of tensor for this binary contraction
-    const std::vector<boost::shared_ptr<Tensor> > tensor() const {return tensor_; };
+    const std::vector<std::shared_ptr<Tensor> > tensor() const {return tensor_; };
     /// returns tensors
-    boost::shared_ptr<Tensor> first() { return tensor_.at(0); };
-    boost::shared_ptr<Tensor> second() { return tensor_.at(1); };
+    std::shared_ptr<Tensor> first() { return tensor_.at(0); };
+    std::shared_ptr<Tensor> second() { return tensor_.at(1); };
     /// set the second tensor
-    void set_second(boost::shared_ptr<Tensor> i) { tensor_.at(1) = i; };
+    void set_second(std::shared_ptr<Tensor> i) { tensor_.at(1) = i; };
 
     /// pointer to the target tensor
-    boost::shared_ptr<Tensor> target_tensor() {return target_tensor_; };
+    std::shared_ptr<Tensor> target_tensor() {return target_tensor_; };
     /// set target tensor
-    void set_target_tensor(boost::shared_ptr<Tensor> t) { target_tensor_ = t; };
+    void set_target_tensor(std::shared_ptr<Tensor> t) { target_tensor_ = t; };
 
     /// for printing out
     const std::string show() const;
@@ -66,7 +66,7 @@ class BinaryContraction {
     /// peform contraction runtime
     void perform();
     /// Returns loop_indices_
-    const boost::shared_ptr<SmartIndexList> loop_indices() const { return loop_indices_; };
+    const std::shared_ptr<SmartIndexList> loop_indices() const { return loop_indices_; };
 };
 
 #endif

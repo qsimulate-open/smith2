@@ -8,11 +8,11 @@
 #include <list>
 #include <src/binarycontraction.h>
 #include <src/vectensor.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 
 class Tree {
-  typedef boost::shared_ptr<Tree> RefTree;
+  typedef std::shared_ptr<Tree> RefTree;
 
   protected:
     /// A node corresponds to a binary contraction that is programmable.
@@ -34,11 +34,11 @@ class Tree {
     /// A constructer for the bottom node; there is no contraction; no parent. 
     //Tree(std::pair<std::list<RefTree>, std::list<RefTree> >);
     /// for the first construction from the VecTensor;
-    Tree(RefVecTensor, boost::shared_ptr<Tensor>); 
+    Tree(RefVecTensor, std::shared_ptr<Tensor>); 
     /// deallocater
     ~Tree();
     /// for Tree(RefVecTensor)
-    void init(std::vector<boost::shared_ptr<Tensor> >&, boost::shared_ptr<Tensor>);
+    void init(std::vector<std::shared_ptr<Tensor> >&, std::shared_ptr<Tensor>);
 
     /// returns binarycontraction 
     BinaryContraction binc() { return binc_; }; 
@@ -59,7 +59,7 @@ class Tree {
     RefTree parent() { return parent_; }; 
 
     /// renew the target tensor of binc_;
-    void renew_binc_target(boost::shared_ptr<Tensor> t) { binc_.set_target_tensor(t); }; 
+    void renew_binc_target(std::shared_ptr<Tensor> t) { binc_.set_target_tensor(t); }; 
 
     /// factirize
     void factorize();
@@ -77,7 +77,7 @@ class Tree {
     const std::string show(const int i = 0) const;  
 
     /// returns target tensor of binc_
-    boost::shared_ptr<Tensor> target_tensor() { return binc_.target_tensor(); };
+    std::shared_ptr<Tensor> target_tensor() { return binc_.target_tensor(); };
 
     ////// functions for implementation
     /// set outerloop

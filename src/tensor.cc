@@ -9,7 +9,6 @@
 #include <boost/lexical_cast.hpp>
 
 using namespace std;
-using namespace boost;
 
 
 Tensor::Tensor(const string symb, const list<SmartIndex> sindx, const int dep, const double fac)
@@ -46,11 +45,11 @@ Tensor::Tensor(const Tensor& a)
     index_initialized_(a.index_initialized()), regtensors_(a.regtensors())  { 
 
   list<SmartIndex> si = a.smartindices()->si();
-  boost::shared_ptr<SmartIndexList> sil_si(new SmartIndexList(si));
+  shared_ptr<SmartIndexList> sil_si(new SmartIndexList(si));
   list<SmartIndex> perm = a.permutables()->si();
-  boost::shared_ptr<SmartIndexList> sil_perm(new SmartIndexList(perm));
+  shared_ptr<SmartIndexList> sil_perm(new SmartIndexList(perm));
 
-  boost::shared_ptr<IndexInfo> tmp(new IndexInfo(sil_si, sil_perm));
+  shared_ptr<IndexInfo> tmp(new IndexInfo(sil_si, sil_perm));
   indexinfo_ = tmp; 
 
 }
@@ -120,8 +119,8 @@ void Tensor::index_init(const list<SmartIndex> sindx) {
   assert(!index_initialized_);
 
   {
-    boost::shared_ptr<SmartIndexList> tmp(new SmartIndexList(sindx));
-    boost::shared_ptr<IndexInfo> tmp2(new IndexInfo(tmp));
+    shared_ptr<SmartIndexList> tmp(new SmartIndexList(sindx));
+    shared_ptr<IndexInfo> tmp2(new IndexInfo(tmp));
     indexinfo_ = tmp2;
   }
   rank_ = 0;
@@ -180,7 +179,7 @@ const string Tensor::show() const {
   if (!indexinfo_->smartindices()->empty()) out.erase(out.size()-1,1);
   out += ")";
   if (factor() != 1.0)
-    out += " * " + lexical_cast<string>(factor());
+    out += " * " + boost::lexical_cast<string>(factor());
   return out;
 }
 
@@ -204,7 +203,7 @@ const vector<int> Tensor::num_values_external(const int dagger) const {
   vector<int> out;
   list<SmartIndex>::const_iterator siter;
   for (siter = indexinfo_->smartindices()->begin(); siter != indexinfo_->smartindices()->end(); ++siter) {
-    if (siter->target_tensor() == NULL) {
+    if (!siter->target_tensor()) {
       vector<int> tmp = siter->num_values(dagger);
       out.insert(out.end(), tmp.begin(), tmp.end());    
     }

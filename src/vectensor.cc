@@ -9,7 +9,6 @@
 #include <src/cost.h>
 
 using namespace std;
-using namespace boost;
 
 VecTensor::VecTensor(const vector<shared_ptr<Tensor> >& tensr): tensor_(tensr) {
 
@@ -150,7 +149,7 @@ const pair<Cost, Cost> VecTensor::cost_evaluater(const vector<shared_ptr<Tensor>
 
 
 void VecTensor::refresh_tensor_depth() {
-  vector<boost::shared_ptr<Tensor> >::iterator titer;
+  vector<shared_ptr<Tensor> >::iterator titer;
   int depth = 0;
   for (titer = tensor_.begin(); titer != tensor_.end(); ++titer, ++depth)
     (*titer)->set_depth(depth);

@@ -9,7 +9,6 @@
 #include <src/pretensor.h>
 
 using namespace std;
-using namespace boost;
 
 PreTensor::PreTensor(const string tensor_str, const Spaces& sp) {
  
@@ -40,7 +39,7 @@ void PreTensor::find_com_num(RefPreTensor o) {
   for (iiter = indices_.begin(); iiter != indices_.end(); ++iiter) { 
     for (iiter2 = o->indices_.begin(); iiter2 != o->indices_.end(); ++iiter2) { 
       if (iiter->num() == iiter2->num()) {
-        boost::shared_ptr<int> num2 = iiter2->num_pointer();
+        shared_ptr<int> num2 = iiter2->num_pointer();
         num2 = iiter->num_pointer();
       } 
     }

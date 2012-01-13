@@ -7,7 +7,6 @@
 
 #include <vector>
 #include <src/block.h>
-#include <boost/shared_ptr.hpp>
 #include <string>
 
 class IndexSpace {

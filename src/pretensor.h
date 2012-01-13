@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 #include <list>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <src/index.h>
 #include <src/vectensor.h>
 #include <src/spaces.h>
@@ -16,7 +16,7 @@
 class PreTensor {
   /// temporary object which interfaces the input strings and the tensor objects
 
-  typedef boost::shared_ptr<PreTensor> RefPreTensor;
+  typedef std::shared_ptr<PreTensor> RefPreTensor;
 
   protected:
     std::string symbol_;  
@@ -33,7 +33,7 @@ class PreTensor {
 
     void find_com_num(RefPreTensor);
 };
-typedef boost::shared_ptr<PreTensor> RefPreTensor;
+typedef std::shared_ptr<PreTensor> RefPreTensor;
      
 
 class ListPreTensor {
@@ -51,7 +51,7 @@ class ListPreTensor {
     void find_com_num(); 
 };
 
-typedef boost::shared_ptr<ListPreTensor> RefListPreTensor;
+typedef std::shared_ptr<ListPreTensor> RefListPreTensor;
 
 #endif
 

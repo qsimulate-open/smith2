@@ -7,10 +7,9 @@
 #include <src/tensor.h>
 #include <string>
 #include <stdexcept>
-#include <boost/lexical_cast.hpp>
+#include <sstream>
 
 using namespace std;
-using namespace boost;
 
 vector<vector<Block> > SmartIndexList::create_loop(const SmartIndexList& perm) {
   // "this" has a list of SmartIndex in si_
@@ -26,10 +25,9 @@ vector<vector<Block> > SmartIndexList::create_loop(const SmartIndexList& perm) {
       ++piter;
       current_perm -= thissize;
       if (current_perm < 0) {
-        const string filename = __FILE__;
-        const string error_message = "Complicated permutation has not been considered yet. See file: "
-                                      + filename + " line: " + lexical_cast<string>(__LINE__); 
-        throw logic_error(error_message);
+        stringstream error_message; error_message << "Complicated permutation has not been considered yet. See file: "
+                                      << __FILE__ <<  " line: " << __LINE__; 
+        throw logic_error(error_message.str());
       }
     } else {
       current_perm -= thissize;

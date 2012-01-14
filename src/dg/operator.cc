@@ -1,10 +1,11 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Mar 2009
+// Author : Toru Shiozaki
+// Date   : Mar 2009
 //
+
 #include <boost/regex.hpp>
 #include <iostream>
-#include "operator.h"
+#include <src/dg/operator.h>
 
 using namespace std;
 using namespace boost;

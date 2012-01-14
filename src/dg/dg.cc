@@ -1,17 +1,16 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Mar 2009
+// Author : Toru Shiozaki
+// Date   : Mar 2009
 //
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
-#include <boost/lexical_cast.hpp>
+#include <sstream>
 #include <stdexcept>
 #include <src/dg/dg.h>
 
 using namespace std;
-using namespace boost;
 using namespace DG;
 
 list<string> DiagramGenerator::generate() {
@@ -51,8 +50,8 @@ list<Diagram> DiagramGenerator::read_input(string filen) {
 
   ifstream ifs(filen.c_str());
   if (!ifs.is_open()) {
-    const string error_message = "\"" + filen + "\" cannot be opened in file: " + __FILE__ + " line: " + lexical_cast<string>(__LINE__);
-    throw std::runtime_error(error_message);
+    stringstream ss; ss << "\"" + filen + "\" cannot be opened in file: " + __FILE__ + " line: " << __LINE__; 
+    throw std::runtime_error(ss.str());
   }
   
   while (!ifs.eof()) {

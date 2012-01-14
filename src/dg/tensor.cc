@@ -1,25 +1,24 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Mar 2009
+// Author : Toru Shiozaki
+// Date   : Mar 2009
 //
 #include <boost/regex.hpp>
 #include <iostream>
 #include <cassert>
-#include "tensor.h"
+#include <src/dg/tensor.h>
 
 using namespace std;
-using namespace boost;
 using namespace DG;
 
 Tensor::Tensor(string input) {
-  regex symbl("(\\S+)\\(");
+  boost::regex symbl("(\\S+)\\(");
 
-  smatch what;
+  boost::smatch what;
   string::const_iterator start = input.begin(); 
   string::const_iterator end = input.end(); 
 
   bool found; 
-  found = regex_search(start, end, what, symbl);
+  found = boost::regex_search(start, end, what, symbl);
   assert(found);
 
   string tmp(what[1].first, what[1].second);
@@ -27,9 +26,9 @@ Tensor::Tensor(string input) {
 
   start = what[0].second;
 
-  regex reg("\\s(\\S+?)\\s");
+  boost::regex reg("\\s(\\S+?)\\s");
   int count = 0;
-  while ( regex_search(start, end, what, reg) ) {
+  while ( boost::regex_search(start, end, what, reg) ) {
     string indx(what[1].first,what[1].second);
     Indices tmp(indx, count);
     listindices_.push_back(tmp); 
@@ -58,6 +57,7 @@ const string Tensor::show() const {
 
 void Tensor::assign_dagger() {
   int size = listindices_.size();
+  // TODO this is generally not true... (but perhaps there is a way to avoid changing this function as well...)
   assert(size % 2 == 0);
 
   auto iiter = listindices_.begin();

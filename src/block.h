@@ -8,7 +8,6 @@
 #include <string>
 #include <sstream>
 #include <boost/shared_ptr.hpp>
-#include <boost/lexical_cast.hpp>
 
 class Block {
   protected:

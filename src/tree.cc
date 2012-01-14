@@ -251,10 +251,9 @@ void Tree::set_outerloop() {
   for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->set_outerloop();
 
   if (!subtrees_.first.empty()) {
-    const string filename = __FILE__;
-    const string error_message = "Currently Tree::subtree_.first is supposed to be empty. See file: "
-                               + filename + " line: " + boost::lexical_cast<string>(__LINE__); 
-    throw logic_error(error_message);
+    stringstream error_message; error_message <<  "Currently Tree::subtree_.first is supposed to be empty. See file: "
+                               << __FILE__ << " line: " << __LINE__; 
+    throw logic_error(error_message.str());
   }
 }
 
@@ -266,10 +265,9 @@ void Tree::set_innerloop() {
   for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->set_innerloop();
 
   if (!subtrees_.first.empty()) {
-    const string filename = __FILE__;
-    const string error_message = "Currently Tree::subtree_.first is supposed to be empty. See file: "
-                               + filename + " line: " + boost::lexical_cast<string>(__LINE__); 
-    throw logic_error(error_message);
+    stringstream error_message; error_message << "Currently Tree::subtree_.first is supposed to be empty. See file: "
+                               << __FILE__ << " line: " << __LINE__; 
+    throw logic_error(error_message.str());
   }
 }
 

@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <iostream>
 #include <src/tensor.h>
-#include <boost/lexical_cast.hpp>
 
 using namespace std;
 
@@ -173,9 +172,10 @@ const string Tensor::show() const {
 
   if (!indexinfo_->smartindices()->empty()) out.erase(out.size()-1,1);
   out += ")";
-  if (factor() != 1.0)
-    out += " * " + boost::lexical_cast<string>(factor());
-  return out;
+
+  stringstream sout; sout << out;
+  if (factor() != 1.0) sout << " * " << factor();
+  return sout.str();
 }
 
 

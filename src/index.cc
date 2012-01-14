@@ -1,12 +1,13 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Feb 2009
+// Author : Toru Shiozaki
+// Date   : Feb 2009
 //
 
 #include <iostream>
 #include <string>
 #include <stdexcept>
 #include <src/index.h>
+#include <sstream>
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -30,9 +31,8 @@ Index::Index(const string indx, const Spaces& sp) {
     const string type_str(what[1].first,what[1].second); 
     type_=type_str;
   } else {
-    const string error_message = boost::lexical_cast<string>("Something is wrong...: ")
-                                 + __FILE__ + " line: " + boost::lexical_cast<string>(__LINE__);
-    throw std::invalid_argument(error_message);
+    stringstream error_message; error_message << "Something is wrong...: " <<  __FILE__ << " line: " << __LINE__;
+    throw std::invalid_argument(error_message.str());
   }
 
   if (type_ == "h") {
@@ -40,9 +40,9 @@ Index::Index(const string indx, const Spaces& sp) {
   } else if (type_ == "p") {
     indexspace_ = sp.vir_space();
   } else {
-    const string error_message = boost::lexical_cast<string>("index other than holes and particles hasn't been implemented in file: ")
-                                 + __FILE__ + " line: " + boost::lexical_cast<string>(__LINE__);
-    throw logic_error(error_message);
+    stringstream error_message; error_message << "index other than holes and particles hasn't been implemented in file: "
+                                 << __FILE__ << " line: " << __LINE__;
+    throw logic_error(error_message.str());
   }
 
 }

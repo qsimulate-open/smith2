@@ -10,9 +10,7 @@
 #include <string>
 #include <algorithm>
 #include <functional>
-#include <boost/lexical_cast.hpp>
-#include <boost/tuple/tuple.hpp>
-#include <boost/tuple/tuple_comparison.hpp>
+#include <tuple>
 
 #include <iostream>
 
@@ -25,11 +23,11 @@
 class PCost {
   
   protected: 
-    boost::tuple<int,int,int> pcost_;// hole, particle, complete particle 
+    std::tuple<int,int,int> pcost_;// hole, particle, complete particle 
  
   public:
-    PCost(const boost::tuple<int,int,int>& pcst): pcost_(pcst) { };
-    PCost(int i, int j, int k): pcost_(boost::make_tuple(i,j,k)) {};
+    PCost(const std::tuple<int,int,int>& pcst): pcost_(pcst) { };
+    PCost(int i, int j, int k): pcost_(std::make_tuple(i,j,k)) {};
     PCost() { };
     ~PCost() { };
 
@@ -39,11 +37,11 @@ class PCost {
     bool operator!=(const PCost& other) const { return !(*this == other);};
 
     const double pcost_total() const { return
-       ::log(static_cast<double>(NUM_HOLE         ))*boost::get<0>(pcost_) 
-     + ::log(static_cast<double>(NUM_PARTICLE     ))*boost::get<1>(pcost_)
-     + ::log(static_cast<double>(NUM_COMP_PARTICLE))*boost::get<2>(pcost_);
+       ::log(static_cast<double>(NUM_HOLE         ))*std::get<0>(pcost_) 
+     + ::log(static_cast<double>(NUM_PARTICLE     ))*std::get<1>(pcost_)
+     + ::log(static_cast<double>(NUM_COMP_PARTICLE))*std::get<2>(pcost_);
     }
-    const boost::tuple<int,int,int> pcost() const { return pcost_;};
+    const std::tuple<int,int,int> pcost() const { return pcost_;};
 
     void add(int, int, int); 
 

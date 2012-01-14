@@ -1,13 +1,14 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Mar 2009
+// Author : Toru Shiozaki
+// Date   : Mar 2009
 //
+
 #ifndef _dg_operator_h
 #define _dg_operator_h
 
 #include <string>
 #include <list>
-#include "indices.h"
+#include <src/dg/indices.h>
 
 namespace DG {
 

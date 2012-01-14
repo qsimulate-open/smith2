@@ -6,10 +6,8 @@
 #include <algorithm>
 #include <iostream>
 #include <src/tensor.h>
-#include <boost/lexical_cast.hpp>
 
 using namespace std;
-using namespace boost;
 
 size_t Tensor::memory_size_needed() const {
   // one can do either with smartindex or permutable

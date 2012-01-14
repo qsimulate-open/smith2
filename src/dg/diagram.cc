@@ -1,10 +1,11 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Mar 2009
+// Author : Toru Shiozaki
+// Date   : Mar 2009
 //
+
 #include <boost/regex.hpp>
 #include <iostream>
-#include "diagram.h"
+#include <src/dg/diagram.h>
 /// this is included only in the boost_devel
 #include <boost/algorithm/combination.hpp>
 
@@ -51,6 +52,7 @@ Diagram::Diagram(string input) {
 
 void Diagram::assign_dagger() {
   // assuming number conserving operators 
+  // TODO this should be updated
   for (auto titer = tensors_.begin(); titer != tensors_.end(); ++titer)
     titer->assign_dagger();
 }
@@ -63,13 +65,8 @@ Diagram::~Diagram() {
 
 const string Diagram::show() const { 
   string out;
-  
-  for (auto i = tensors_.begin(); i != tensors_.end(); ++i)
-    out += i->show();
-
-  for (auto i = operators_.begin(); i != operators_.end(); ++i)
-    out += i->show();
-
+  for (auto i = tensors_.begin();   i != tensors_.end();   ++i) out += i->show();
+  for (auto i = operators_.begin(); i != operators_.end(); ++i) out += i->show();
   return out;
 }
 
@@ -98,7 +95,7 @@ const int Diagram::count_creation_indices() const {
 }
 
 
-const list<Diagram> Diagram::contract_one() {
+const list<Diagram> Diagram::contract_one() const {
 
   list<Diagram> out;
 

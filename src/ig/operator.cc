@@ -4,10 +4,9 @@
 //
  
 #include <src/ig/operator.h>
-#include <boost/lexical_cast.hpp>
+#include <sstream>
 
 using namespace std;
-using namespace boost;
 using namespace IG;
 
 Operator::Operator(const string symbl, const int rnk, const bool gnrl, const bool de)
@@ -20,8 +19,8 @@ Operator::~Operator() {
 }
 
 const string Operator::show() const {
-  string out; 
-  out += symbol_ + lexical_cast<string>(rank_);
-  return out;
+  stringstream out; 
+  out << symbol_ << rank_;
+  return out.str();
 }
 

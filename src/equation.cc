@@ -5,7 +5,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <boost/lexical_cast.hpp>
 #include <src/equation.h>
 #include <src/tree.h>
 

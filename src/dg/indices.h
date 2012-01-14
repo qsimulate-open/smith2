@@ -1,6 +1,6 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Mar 2009
+// Author : Toru Shiozaki
+// Date   : Mar 2009
 //
 #ifndef _dg_indices_h
 #define _dg_indices_h

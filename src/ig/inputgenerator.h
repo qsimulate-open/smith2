@@ -18,8 +18,10 @@ class InputGenerator {
     InputGenerator(std::string);
     ~InputGenerator();
 
+    // returns private members
     const std::string filename() const {return filename_;};
 
+    // each entry in the returned list is a "DG::Diagram" object without any contraction 
     const std::list<std::string> generate();
 
 };

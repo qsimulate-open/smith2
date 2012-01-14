@@ -1,8 +1,9 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Mar 2009
+// Author : Toru Shiozaki
+// Date   : Mar 2009
 //
-#include "indices.h"
+
+#include <src/dg/indices.h>
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>

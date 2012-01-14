@@ -50,14 +50,6 @@ class BinaryContraction {
     /// returns if two BC can be factorized or not.
     const bool factorizable(BinaryContraction&);
 
-    //////////////////////////////////////////////////////////////////////////////////////////
-    /// for implementation
-    void set_outerloop();
-    void set_innerloop();
-    /// peform contraction runtime
-    void perform();
-    /// Returns loop_indices_
-    const std::shared_ptr<SmartIndexList> loop_indices() const { return loop_indices_; };
 };
 
 #endif

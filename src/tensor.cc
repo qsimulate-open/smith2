@@ -2,10 +2,12 @@
 // Author : Toru Shiozaki
 // Date   : Feb 2009
 //
+
 #include <cassert>
 #include <algorithm>
 #include <iostream>
 #include <src/tensor.h>
+#include <sstream>
 
 using namespace std;
 

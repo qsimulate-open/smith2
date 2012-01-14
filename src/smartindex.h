@@ -12,6 +12,7 @@
 #include <src/cost.h>
 #include <src/tensor.h>
 #include <memory>
+#include <cassert>
 
 class Tensor;
 class SmartIndexList;
@@ -32,10 +33,13 @@ class SmartIndex {
     SmartIndex(const std::list<Index>, std::shared_ptr<Tensor>, std::shared_ptr<Tensor>);
     ~SmartIndex();
 
+    // Overloaded operators. They are needed for canonicalization 
     bool operator==(const SmartIndex& o) const;
-    bool operator!=(const SmartIndex& o) const {return !((*this) == o);};
+    bool operator!=(const SmartIndex& o) const { return !(*this == o);};
     bool operator<(const SmartIndex& o) const; 
-    bool operator>(const SmartIndex& o) const { return !((*this) < o); }; // no equal here.
+    bool operator>(const SmartIndex& o) const  { return !(*this < o || *this == o); };
+    bool operator<=(const SmartIndex& o) const { return !(*this > o); }; 
+    bool operator>=(const SmartIndex& o) const { return !(*this < o); }; 
 
     /// Returns a copy of indices.
     const std::list<Index> indices() const { return indices_;}; 

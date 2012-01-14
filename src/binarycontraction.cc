@@ -16,22 +16,6 @@ BinaryContraction::BinaryContraction(vector<shared_ptr<Tensor> >& tensr, shared_
   determine_target_indices(tensor_);
   if (!one()) refresh_indices();
 
-//#define LOCAL_DEBUG_PRINT
-#ifdef LOCAL_DEBUG_PRINT
-
-cout << "=======" << endl;
-cout << targt->show() << endl;
-for (auto iter = loop_indices()->si_pointer()->begin(); iter != loop_indices()->si_pointer()->end(); ++iter) 
-cout << iter->show() << " "; 
-cout << endl;
-
-for (auto iter = target_tensor_->indexinfo()->permutables()->si_pointer()->begin();
-          iter != target_tensor_->indexinfo()->permutables()->si_pointer()->end(); ++iter) 
-cout << iter->show() << " "; 
-cout << endl;
-
-#endif
-
 }
 
 
@@ -89,8 +73,6 @@ void BinaryContraction::determine_target_indices(const vector<shared_ptr<Tensor>
     target_tensor_->set_smartindices(si_first);
     target_tensor_->set_permutables(si_first);
     shared_ptr<SmartIndexList> tmp(new SmartIndexList(si_first));
-    loop_indices_ = tmp;
-    loop_indices_->sort();
   } else { 
 
     // collecting indices that are not going to be summed...
@@ -127,21 +109,10 @@ void BinaryContraction::determine_target_indices(const vector<shared_ptr<Tensor>
     for (auto i = removelist.begin(); i != removelist.end(); ++i) 
       target_indices_p.erase(*i);
   
-    shared_ptr<SmartIndexList> tmp(new SmartIndexList(target_indices));
-    loop_indices_ = tmp;
-    shared_ptr<SmartIndexList> tmp2(new SmartIndexList(prod));
-    prod_indices_ = tmp2;
-    if (!one()) {
-      shared_ptr<SmartIndexList> tmp3(new SmartIndexList(prod2));
-      prod_indices2_ = tmp3;
-    }
     target_tensor_->set_smartindices(target_indices_p);
 
     // sort here!
     target_tensor_->sort_indices();
-    loop_indices_->sort();
-    prod_indices_->sort();
-    if (!one()) prod_indices2_->sort();
   }
 
   

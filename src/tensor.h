@@ -11,7 +11,6 @@
 #include <src/index.h>
 #include <src/cost.h>
 #include <src/indexinfo.h>
-#include <src/block.h>
 #include <src/smartindexlist.h>
 #include <src/smartindex.h>
 #include <memory>

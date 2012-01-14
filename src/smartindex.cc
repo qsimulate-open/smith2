@@ -2,6 +2,7 @@
 // Author : Toru Shiozaki
 // Date   : Feb 2009
 //
+
 #include <cassert>
 #include <algorithm>
 #include <iostream>
@@ -25,42 +26,55 @@ SmartIndex::~SmartIndex() {
 bool SmartIndex::operator<(const SmartIndex& o) const { 
   // in a canonical ordering, daggered quantity comes first
   if (dagger() != o.dagger()) return dagger(); 
+
   // next, we use the orbital orderings
-  // closed < hole < particle < complete-particle
+  // hole < active < particle < complete-particle
   if (type() != o.type()) {
-    if (type() == "h")        return true;
-    else if (type() == "P")   return false;
-    if (o.type() == "h")      return false;
-    else if (o.type() == "P") return true;
+    if (type() == "h" || type() == "a" && o.type() != "h" || type() == "p" && o.type() == "P")
+      return true;
+    else
+      return false;
   }
+
+  // and then, sort with "target tensors"
+  // 1) external lines come first
   if (target_tensor().get() == NULL && o.target_tensor().get() != NULL)  return true; 
   if (target_tensor().get() != NULL && o.target_tensor().get() == NULL) return false; 
+  // 2) then tensor depths
   if (target_tensor().get() != o.target_tensor().get()) return target_tensor()->depth() < o.target_tensor()->depth(); 
+
+  // if everything is the same, sort by numbers (rarely happens)
   return num() < o.num();
 }
 
 
 bool SmartIndex::operator==(const SmartIndex& other) const {
 
-  if (type() != other.type()) return false;
-  if (dagger() != other.dagger()) return false;
-  if (length() != other.length()) return false;
+  bool out = true;
+  if (type() != other.type() || dagger() != other.dagger() || length() != other.length()) out = false;
 
   if ((target_tensor().get() != other.target_tensor().get()) 
-   && (target_tensor().get() != other.my_tensor().get() || other.target_tensor().get() != my_tensor().get())) return false; 
+   && (target_tensor().get() != other.my_tensor().get() || other.target_tensor().get() != my_tensor().get())) out = false; 
 
-  return true;
+  return out;
 }
 
 
 const bool SmartIndex::identical(const SmartIndex& other) const {
 
+#if 0
   if (type() != other.type()) return false;
   if (dagger() != other.dagger()) return false;
   if (length() != other.length()) return false;
 
   if (num_values() != other.num_values()) return false;
   return true;
+#else
+  return type() == other.type()
+      && dagger() == other.dagger()
+      && length() == other.length()
+      && num_values() == other.num_values();
+#endif
 }
 
 

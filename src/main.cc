@@ -23,8 +23,6 @@ list<RefListPreTensor>  read_input(list<string> content);
 
 int main(int argc, char** argv) {
 
-  const int myrank = 0;
-
   try {
     
     if (argc < 2) {
@@ -33,29 +31,26 @@ int main(int argc, char** argv) {
     string filename = argv[1];
   
     // those will be controlled by the suffix of the input files
-    if (myrank == 0) {
-      InputGenerator ig(filename);
-      DiagramGenerator dg(ig.generate());
-      //DiagramGenerator dg(filename);
-      list<RefListPreTensor> listpretensor=read_input(dg.generate());
-      //list<RefListPreTensor> listpretensor=read_input(filename);
-    
-      if (listpretensor.empty()) return 1;
-      list<RefVecTensor> listvectensor;
-   
-      for (auto iter = listpretensor.begin(); iter != listpretensor.end() ;++iter) { 
-        RefVecTensor newvectensor = (*iter)->analyze();
-        listvectensor.push_back(newvectensor);
-      }
-    
-      Equation equation(listvectensor);
-      const bool opt_memory = false;
-      equation.strength_reduction(opt_memory);
-      equation.form_tree();
-      equation.factorize();
-      cout << equation.tree_root()->show() << endl;
-
+    InputGenerator ig(filename);
+    DiagramGenerator dg(ig.generate());
+    //DiagramGenerator dg(filename);
+    list<RefListPreTensor> listpretensor=read_input(dg.generate());
+    //list<RefListPreTensor> listpretensor=read_input(filename);
+  
+    if (listpretensor.empty()) return 1;
+    list<RefVecTensor> listvectensor;
+ 
+    for (auto iter = listpretensor.begin(); iter != listpretensor.end() ;++iter) { 
+      RefVecTensor newvectensor = (*iter)->analyze();
+      listvectensor.push_back(newvectensor);
     }
+    
+    Equation equation(listvectensor);
+    const bool opt_memory = false;
+    equation.strength_reduction(opt_memory);
+    equation.form_tree();
+    equation.factorize();
+    cout << equation.tree_root()->show() << endl;
 
   } catch (const runtime_error& e) {
     cout << "  ----" << endl;

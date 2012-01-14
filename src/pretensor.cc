@@ -10,7 +10,7 @@
 
 using namespace std;
 
-PreTensor::PreTensor(const string tensor_str, const Spaces& sp) {
+PreTensor::PreTensor(const string tensor_str) {
  
   boost::regex symbol_reg("(\\S+?)\\s\\(");
   boost::smatch what;
@@ -22,7 +22,7 @@ PreTensor::PreTensor(const string tensor_str, const Spaces& sp) {
   boost::regex index_reg("(\\S+?)\\s");
   while (regex_search(start, tensor_str.end(), what, index_reg)) {
     string indx_str(what[1].first, what[1].second);
-    Index indx(indx_str, sp); 
+    Index indx(indx_str); 
     indices_.push_back(indx);
     start = what[0].second;
   }

@@ -1,6 +1,6 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Feb 2009
+// Author : Toru Shiozaki
+// Date   : Feb 2009
 //
 #ifndef _smith_smartindex_h
 #define _smith_smartindex_h
@@ -19,7 +19,6 @@ class SmartIndexList;
 class SmartIndex {
 
   friend class Tensor;
-  friend class Block;
   friend class Index;
   friend class SmartIndexList;
 
@@ -28,8 +27,6 @@ class SmartIndex {
 
     std::shared_ptr<Tensor> my_tensor_; 
     std::shared_ptr<Tensor> target_tensor_;
-
-    int sindex_;
 
   public:
     SmartIndex(const std::list<Index>, std::shared_ptr<Tensor>, std::shared_ptr<Tensor>);
@@ -78,16 +75,6 @@ class SmartIndex {
 
     /// Sort indices..
     void sort() { indices_.sort(); };
-
-    ////////////////////////////////////////////
-    /// for implementation
-    const std::vector<std::vector<Block> > blocklist() const;
-
-    /// Setting sindex which will be used in implementation
-    void set_sindex(const int s) { sindex_ = s; };
-
-    /// Returns sindex
-    int sindex() const { return sindex_; };
 
 };
 

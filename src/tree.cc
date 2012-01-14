@@ -243,31 +243,3 @@ const string Tree::show(const int i) const {
   return out;
 }
 
-
-void Tree::set_outerloop() {
-  binc_.set_outerloop();
-
-  /// recursive calls
-  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->set_outerloop();
-
-  if (!subtrees_.first.empty()) {
-    stringstream error_message; error_message <<  "Currently Tree::subtree_.first is supposed to be empty. See file: "
-                               << __FILE__ << " line: " << __LINE__; 
-    throw logic_error(error_message.str());
-  }
-}
-
-
-void Tree::set_innerloop() {
-  binc_.set_innerloop();
-
-  /// recursive calls
-  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->set_innerloop();
-
-  if (!subtrees_.first.empty()) {
-    stringstream error_message; error_message << "Currently Tree::subtree_.first is supposed to be empty. See file: "
-                               << __FILE__ << " line: " << __LINE__; 
-    throw logic_error(error_message.str());
-  }
-}
-

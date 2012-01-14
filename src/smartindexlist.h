@@ -45,11 +45,6 @@ class SmartIndexList {
     int size() const { return si().size(); };
     bool empty() const { return si().empty(); };
 
-    // for implementation
-    std::vector<std::vector<Block> > create_loop(const SmartIndexList&);
-    // easy way to grub all the Index object as list<Index>
-    const std::list<Index> indexlist() const;
-
 };
 
 #endif

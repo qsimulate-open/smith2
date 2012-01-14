@@ -96,7 +96,6 @@ void BinaryContraction::determine_target_indices(const vector<shared_ptr<Tensor>
     // collecting indices that are not going to be summed...
     int counter = 0;
     for (auto siter = si_first.begin(); siter != si_first.end(); ++siter, ++counter) {
-      siter->set_sindex(counter);
       if (!siter->target_tensor() || !siter->target_tensor()->in_list(tensors.at(1)->regtensors()) )  // if not contraction indices
         target_indices.push_back(*siter);
       else
@@ -105,7 +104,6 @@ void BinaryContraction::determine_target_indices(const vector<shared_ptr<Tensor>
     list<SmartIndex> si_second = tensors.at(1)->smartindices()->si();
     counter = 0;
     for (auto siter = si_second.begin(); siter != si_second.end(); ++siter, ++counter) {
-      siter->set_sindex(counter);
       if (!siter->target_tensor() || !siter->target_tensor()->in_list(tensors.at(0)->regtensors()) ) // if not contraction indices 
         target_indices.push_back(*siter);
       else
@@ -147,7 +145,6 @@ void BinaryContraction::determine_target_indices(const vector<shared_ptr<Tensor>
   }
 
   
-  target_tensor_->set_rank(target_tensor_->indexinfo()->smartindices()->indexlist().size());
 }
 
 

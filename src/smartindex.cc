@@ -23,7 +23,10 @@ SmartIndex::~SmartIndex() {
 
 
 bool SmartIndex::operator<(const SmartIndex& o) const { 
+  // in a canonical ordering, daggered quantity comes first
   if (dagger() != o.dagger()) return dagger(); 
+  // next, we use the orbital orderings
+  // closed < hole < particle < complete-particle
   if (type() != o.type()) {
     if (type() == "h")        return true;
     else if (type() == "P")   return false;
@@ -145,39 +148,4 @@ const vector<int> SmartIndex::num_values(const int dagger) const {
   return out;
 }
 
-
-const vector<vector<Block> > SmartIndex::blocklist() const {
-  vector<vector<Block> > out;
-  vector<Block> bks = indices_.front().indexspace().blocks();
-  if (indices_.size() == 1) {
-    for (auto iter = bks.begin(); iter != bks.end(); ++iter) {
-      vector<Block> tmp(1, *iter); // vector of length 1
-      out.push_back(tmp);
-    }
-  } else {
-    const int block_size = bks.size(); 
-    const int num_index = indices_.size(); 
-    vector<int> buffer(block_size+num_index-1);
-    for (int i = 0; i != block_size+num_index-1; ++i) buffer[i] = i; 
-    do {
-      vector<Block> tmp(num_index);
-      for (int i = 0; i != num_index; ++i) tmp[i] = bks[buffer[i]-i];
-      out.push_back(tmp);
-    } while (boost::next_combination(buffer.begin(), buffer.begin()+num_index, buffer.end()));
-  } 
-
-  // adding shared_ptr<Tensor> target_tensor_.
-  // adding sindex information for restoring
-  for (auto iter = out.begin(); iter != out.end(); ++iter) {
-    for (auto iiter = iter->begin(); iiter != iter->end(); ++iiter) {
-      iiter->set_my_tensor(my_tensor_->depth());
-      iiter->set_restore_sindex(this->sindex());
-      if (target_tensor_)
-        iiter->set_target_tensor(target_tensor_->depth());
-      else
-        iiter->set_target_tensor(-1);
-    }
-  }
-  return out;
-}
 

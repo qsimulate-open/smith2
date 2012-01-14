@@ -18,15 +18,6 @@ class BinaryContraction {
     void determine_target_indices(const std::vector<std::shared_ptr<Tensor> >&);
     void refresh_indices();
 
-    // For implementation
-    std::vector<std::vector<Block> > outerloop_;
-    std::vector<std::vector<Block> > innerloop1_;
-    std::vector<std::vector<Block> > innerloop2_;
-    // Loop indices that reflects which index has come from which tensor etc.
-    std::shared_ptr<SmartIndexList> loop_indices_; 
-    std::shared_ptr<SmartIndexList> prod_indices_; 
-    std::shared_ptr<SmartIndexList> prod_indices2_; 
-
   public:
     BinaryContraction(std::vector<std::shared_ptr<Tensor> >&, std::shared_ptr<Tensor>);
     BinaryContraction() {};

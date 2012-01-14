@@ -1,6 +1,6 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Feb 2009
+// Author : Toru Shiozaki
+// Date   : Feb 2009
 //
 
 #include <cassert>

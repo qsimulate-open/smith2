@@ -13,7 +13,7 @@
 
 using namespace std;
 
-Index::Index(const string indx, const Spaces& sp) {
+Index::Index(const string indx) {
 
   const boost::regex dagger_reg("\\+");
   boost::smatch what;
@@ -33,16 +33,6 @@ Index::Index(const string indx, const Spaces& sp) {
   } else {
     stringstream error_message; error_message << "Something is wrong...: " <<  __FILE__ << " line: " << __LINE__;
     throw std::invalid_argument(error_message.str());
-  }
-
-  if (type_ == "h") {
-    indexspace_ = sp.occ_space();
-  } else if (type_ == "p") {
-    indexspace_ = sp.vir_space();
-  } else {
-    stringstream error_message; error_message << "index other than holes and particles hasn't been implemented in file: "
-                                 << __FILE__ << " line: " << __LINE__;
-    throw logic_error(error_message.str());
   }
 
 }

@@ -13,9 +13,6 @@
 #include <src/equation.h>
 #include <src/dg/dg.h>
 #include <src/ig/inputgenerator.h>
-#include <src/block.h>
-#include <src/spaces.h>
-//#include <src/storage/memorygrp.h>
 
 using namespace std;
 using namespace DG;
@@ -24,30 +21,9 @@ using namespace IG;
 list<RefListPreTensor>  read_input(string filename);
 list<RefListPreTensor>  read_input(list<string> content);
 
-Spaces generate_spaces() {
-  const long num_occ_blocks = 1;
-  const long num_vir_blocks = 1;
-  const vector<long> num_occ_orb(num_occ_blocks, 4); 
-  const vector<long> num_vir_orb(num_vir_blocks, 9); 
-  const vector<long> sym_occ(num_occ_blocks, 0); 
-  const vector<long> sym_vir(num_vir_blocks, 0); 
-
-  Spaces sp(num_occ_blocks, num_vir_blocks, num_occ_orb, num_vir_orb, sym_occ, sym_vir);
-  return sp;
-};
-
 int main(int argc, char** argv) {
 
-#if 0
-  // to be initialized by reading input
-  const size_t memory_each = 200000000LU;
-  shared_ptr<MemoryGrp> memgrp(new MemoryGrp(argc, argv, memory_each)); 
-  const int myrank = memgrp->n();
-  cout << myrank << endl;
-  memgrp->wait();
-#else
   const int myrank = 0;
-#endif
 
   try {
     
@@ -79,9 +55,6 @@ int main(int argc, char** argv) {
       equation.factorize();
       cout << equation.tree_root()->show() << endl;
 
-#if 0
-      equation.startup();
-#endif
     }
 
   } catch (const runtime_error& e) {
@@ -131,7 +104,7 @@ list<RefListPreTensor> read_input(string filename) {
  
       if (symbol != "Sum" && symbol != "P" ) { 
         string tensor(what[0].first,what[0].second);
-        pretensors.push_back(RefPreTensor(new PreTensor(tensor, generate_spaces())));
+        pretensors.push_back(RefPreTensor(new PreTensor(tensor)));
       }
       start = what[0].second;
       
@@ -165,7 +138,7 @@ list<RefListPreTensor> read_input(list<string> content) {
  
       if (symbol != "Sum" && symbol != "P" ) { 
         string tensor(what[0].first,what[0].second);
-        pretensors.push_back(RefPreTensor(new PreTensor(tensor, generate_spaces())));
+        pretensors.push_back(RefPreTensor(new PreTensor(tensor)));
       }
       start = what[0].second;
       

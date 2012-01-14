@@ -1,6 +1,6 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Feb 2009
+// Author : Toru Shiozaki
+// Date   : Feb 2009
 //
 #ifndef _smith_pretensor_h
 #define _smith_pretensor_h
@@ -11,7 +11,6 @@
 #include <memory>
 #include <src/index.h>
 #include <src/vectensor.h>
-#include <src/spaces.h>
 
 class PreTensor {
   /// temporary object which interfaces the input strings and the tensor objects
@@ -24,7 +23,7 @@ class PreTensor {
     int rank_;
 
   public:
-    PreTensor(const std::string, const Spaces&); 
+    PreTensor(const std::string); 
     ~PreTensor();
 
     const std::list<Index> indices() const {return indices_;};

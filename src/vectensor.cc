@@ -1,7 +1,8 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Feb 2009
+// Author : Toru Shiozaki
+// Date   : Feb 2009
 //
+
 #include <cassert>
 #include <algorithm>
 #include <iostream>
@@ -41,8 +42,13 @@ void VecTensor::strength_reduction(const bool opt_memory) {
   for (int i = 0; i < length; ++i) perm_length *= i + 1;
 
   Cost tmp;
-  const int large = 100;
-  if (notone) tmp.add_pcost(0, large, 0); /// must be large enough
+  {
+    Index_map ind;
+    vector<int> tt(ind.size());
+    tt[ind.type("p")] = 100;
+    PCost t(tt);
+    if (notone) tmp.add_pcost(t); /// must be large enough
+  }
   pair<Cost, Cost> keep_ = make_pair(tmp, tmp);
 
   while(1) { 
@@ -107,8 +113,8 @@ const pair<Cost, Cost> VecTensor::cost_evaluater(const vector<shared_ptr<Tensor>
   for (auto titer = tensors.begin(); titer != tensors.end(); ++titer) {
     if (titer != tensors.begin()) {
       // evaluate cost here
-      PCost pcop(0,0,0);
-      PCost pcmem(0,0,0);
+      PCost pcop;
+      PCost pcmem;
       list<SmartIndex> next; 
 
       for (auto siter = current.begin(); siter != current.end(); ++siter) {
@@ -171,13 +177,13 @@ void VecTensor::refresh_indices() {
 
       if (!current_si->target_tensor()) {
 //    if (current_si->target_tensor().get() == NULL) {
-        if (current_si->type() == "h") { 
+        if (current_si->type_str() == "h") { 
           vector<shared_ptr<int> > tmp = current_si->num_pointers(); 
           eh.insert(eh.end(), tmp.begin(), tmp.end());
-        } else if (current_si->type() == "p") {
+        } else if (current_si->type_str() == "p") {
           vector<shared_ptr<int> > tmp = current_si->num_pointers(); 
           ep.insert(ep.end(), tmp.begin(), tmp.end());
-        } else if (current_si->type() == "P") {
+        } else if (current_si->type_str() == "P") {
           vector<shared_ptr<int> > tmp = current_si->num_pointers(); 
           ecp.insert(ecp.end(), tmp.begin(), tmp.end());
         }
@@ -185,9 +191,9 @@ void VecTensor::refresh_indices() {
        // internal indices come here
         vector<shared_ptr<int> > tmp = current_si->num_pointers(); 
         vector<pair<shared_ptr<int> , shared_ptr<Tensor> > > iveci;
-        if (current_si->type() == "h")  iveci =  ih;
-        else if (current_si->type() == "p") iveci =  ip;
-        else if (current_si->type() == "P") iveci =  icp;
+        if (current_si->type_str() == "h")  iveci =  ih;
+        else if (current_si->type_str() == "p") iveci =  ip;
+        else if (current_si->type_str() == "P") iveci =  icp;
         for (auto iiter = tmp.begin(); iiter != tmp.end(); ++iiter) { 
           bool find_ = false;
           for (auto i = iveci.begin(); i != iveci.end(); ++i) { 
@@ -206,9 +212,9 @@ void VecTensor::refresh_indices() {
           if (!find_) iveci.push_back(make_pair(*iiter, *titer));
         }
         
-        if (current_si->type() == "h")  ih = iveci;
-        else if (current_si->type() == "p") ip =  iveci;
-        else if (current_si->type() == "P") icp =  iveci;
+        if (current_si->type_str() == "h")  ih = iveci;
+        else if (current_si->type_str() == "p") ip =  iveci;
+        else if (current_si->type_str() == "P") icp =  iveci;
       }
     }
   }

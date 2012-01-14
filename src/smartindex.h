@@ -2,6 +2,7 @@
 // Author : Toru Shiozaki
 // Date   : Feb 2009
 //
+
 #ifndef _smith_smartindex_h
 #define _smith_smartindex_h
 
@@ -43,8 +44,9 @@ class SmartIndex {
 
     /// Returns a copy of indices.
     const std::list<Index> indices() const { return indices_;}; 
-    /// Returns "h", "p", or "P"
-    const std::string type() const {return indices_.front().type();};
+    /// Returns index type 
+    const int type() const {return indices_.front().type();};
+    const std::string type_str() const {return indices_.front().type_str();};
     /// Returns whether this object has dagger or not
     const bool dagger() const {return indices_.front().dagger();};
     /// Returns the number of indices in this SmartIndex
@@ -73,8 +75,12 @@ class SmartIndex {
     /// Returns the "num" of the first index
     const int num() const { return indices().front().num(); }; 
     /// Returns the pointers of "num" of indices 
+    /// dagger = 1 returns only those with dagger, and
+    /// dagger = -1 returns only those without dagger
     std::vector<std::shared_ptr<int> > num_pointers(const int dagger = 0);
     /// Returns the values (copy) of "num" of indices 
+    /// dagger = 1 returns only those with dagger, and
+    /// dagger = -1 returns only those without dagger.
     const std::vector<int> num_values(const int dagger = 0) const;
 
     /// Sort indices..

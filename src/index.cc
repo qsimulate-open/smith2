@@ -44,7 +44,7 @@ Index::~Index() {
 const string Index::show() const {
 
   ostringstream buffer;
-  buffer << type() << num() << (dagger() ? "+" : "");
+  buffer << type_str() << num() << (dagger() ? "+" : "");
 
   return buffer.str();
 }

@@ -212,7 +212,7 @@ const vector<int> Tensor::num_values_hole() const {
 /// dagger = -1 returns only those without dagger
   vector<int> out;
   for (auto siter = indexinfo_->smartindices()->begin(); siter != indexinfo_->smartindices()->end(); ++siter) {
-    if (siter->type() == "h") {
+    if (siter->type_str() == "h") {
       vector<int> tmp = siter->num_values(0);
       out.insert(out.end(), tmp.begin(), tmp.end());    
     }

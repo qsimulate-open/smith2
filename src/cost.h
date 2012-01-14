@@ -11,39 +11,50 @@
 #include <algorithm>
 #include <functional>
 #include <tuple>
-
+#include <cassert>
 #include <iostream>
-
-// may be substituted by the actual numbers...
-#define NUM_COMP_PARTICLE 888
-#define NUM_PARTICLE 232
-#define NUM_HOLE 28
-
+#include <src/index.h>
 
 class PCost {
-  
-  protected: 
-    std::tuple<int,int,int> pcost_;// hole, particle, complete particle 
- 
+
+  protected:
+    // a vector of integers with length cat
+    std::vector<int> pcost_;
+    // mapping information. Maybe this is not the most beautiful way..
+    Index_map indmap_;
+
   public:
-    PCost(const std::tuple<int,int,int>& pcst): pcost_(pcst) { };
-    PCost(int i, int j, int k): pcost_(std::make_tuple(i,j,k)) {};
-    PCost() { };
+    PCost(const std::vector<int>& pcst): pcost_(pcst) { };
+    PCost() { pcost_.resize(indmap_.size()); };
     ~PCost() { };
 
-    bool operator<(const PCost& other) const { return pcost_total() < other.pcost_total(); };
-    bool operator>(const PCost& other) const  { return pcost_total() > other.pcost_total(); };
+    bool operator<(const PCost& other)  const { return pcost_total() < other.pcost_total(); };
+    bool operator>(const PCost& other)  const { return pcost_total() > other.pcost_total(); };
     bool operator==(const PCost& other) const { return pcost() == other.pcost(); };
     bool operator!=(const PCost& other) const { return !(*this == other);};
 
-    const double pcost_total() const { return
-       ::log(static_cast<double>(NUM_HOLE         ))*std::get<0>(pcost_) 
-     + ::log(static_cast<double>(NUM_PARTICLE     ))*std::get<1>(pcost_)
-     + ::log(static_cast<double>(NUM_COMP_PARTICLE))*std::get<2>(pcost_);
+    const double pcost_total() const {
+      double out = 0.0;
+      auto j = indmap_.begin();
+      for (auto i = pcost_.begin(); i != pcost_.end(); ++i, ++j)
+        out += ::log(static_cast<double>(j->second.second))* *i;
+      return out;
     }
-    const std::tuple<int,int,int> pcost() const { return pcost_;};
+    const std::vector<int> pcost() const { return pcost_;};
 
-    void add(int, int, int); 
+    void add(std::vector<int>& o) {
+      for (auto i = pcost_.begin(), j = o.begin(); i != pcost_.end(); ++i, ++j) *i += *j; 
+    };
+#if 0
+    void add(int i, int j, int k) {
+      assert(ORB_CLASS == 3);
+      pcost_[0] += i;
+      pcost_[1] += j;
+      pcost_[2] += k;
+    };
+#endif
+
+    int pcost(const int i) const { return pcost_[i]; };
 
     const std::string show() const;
 
@@ -52,8 +63,8 @@ class PCost {
 
 class Cost {
 
-  protected: 
-    std::vector<PCost> cost_; 
+  protected:
+    std::vector<PCost> cost_;
 
   public:
     Cost(const std::vector<PCost>& cst) : cost_(cst) { };
@@ -65,33 +76,20 @@ class Cost {
       std::vector<PCost> myc = cost();
       for (auto i = myc.begin(), j = otherc.begin(); i != myc.end(); ++i, ++j) {
         if (j == otherc.end()) return false;
-        if      (*i < *j)      return true; 
+        if      (*i < *j)      return true;
         else if (*i > *j)      return false;
       }
-      return true; 
+      return true;
     };
 
-#define use_old_code_cost 0
-#if use_old_code_cost
-    bool operator==(const Cost& other) const { 
-      std::vector<PCost> otherc = other.cost();
-      std::vector<PCost> myc = cost();
-      if (myc.size() != otherc.size()) return false;
-      for (auto i = myc.begin(), j = otherc.begin(); i != myc.end(); ++i, ++j) {
-        if (*i != *j ) return false;
-      }
-      return true;
-    }
-#else
     bool operator==(const Cost& other) const { return cost()==other.cost(); };
-#endif
     bool operator!=(const Cost& other) const { return !(*this == other);};
     bool operator>(const Cost& other)  const { return !(*this < other);};
 
     const std::vector<PCost> cost() const {return cost_;};
 
     void add_pcost(const PCost& p) { cost_.push_back(p); };
-    void add_pcost(int i, int j, int k) { PCost a(i, j, k); cost_.push_back(a); };
+//  void add_pcost(int i, int j, int k) { PCost a(i, j, k); cost_.push_back(a); };
 
     const std::string show() const;
 

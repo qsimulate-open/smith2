@@ -10,15 +10,11 @@
 using namespace std;
 
 
-void PCost::add(int i, int j, int k) {
-  get<0>(pcost_) += i;
-  get<1>(pcost_) += j;
-  get<2>(pcost_) += k;
-}
-
-
 const string PCost::show() const {
-  stringstream out; out << "h" << get<0>(pcost()) << "p" << get<1>(pcost()) << "P" << get<2>(pcost());
+  stringstream out;
+  auto j = pcost_.begin();
+  for (auto i = indmap_.begin(); i != indmap_.end(); ++i, ++j)
+    out << i->first <<  *j; 
   return out.str();
 }
 

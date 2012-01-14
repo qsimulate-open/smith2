@@ -1,7 +1,8 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Feb 2009
+// Author : Toru Shiozaki
+// Date   : Feb 2009
 //
+
 #include <src/binarycontraction.h>
 #include <src/smartindex.h>
 #include <iostream>
@@ -25,8 +26,8 @@ BinaryContraction::~BinaryContraction(){
 
 
 pair<PCost, PCost>  BinaryContraction::cost_evaluater(const vector<shared_ptr<Tensor> >& tensors) {
-  PCost pcop(0,0,0);
-  PCost pcmem(0,0,0);
+  PCost pcop;
+  PCost pcmem;
 
   if (one())  
     return make_pair(pcop, pcmem);

@@ -1,6 +1,6 @@
 //
-// Author:: Toru Shiozaki
-// Date  :: Apr 2009
+// Author : Toru Shiozaki
+// Date   : Apr 2009
 //
  
 #include <src/ig/inputgenerator.h>
@@ -107,7 +107,7 @@ const list<string> InputGenerator::generate() {
 
     for (auto i = totallist.begin(); i != totallist.end(); ++i) { 
       const string tmp_str = print_input(*i, bra_rank, ket_rank);
- cout << tmp_str << endl;
+      cout << tmp_str << endl;
       out.push_back(tmp_str);
     }
     
@@ -241,6 +241,14 @@ const string print_input(list<Operator> lo, const int bra, const int ket) {
       tens += ") ";
     }
   }
+
+  if (ket > 0) { 
+    op += "{ ";
+    for (int i = 0; i != ket; ++i, ++count) op += "p" + lexical_cast<string>(count) + "+ "; 
+    for (int i = 0; i != ket; ++i, ++count) op += "h" + lexical_cast<string>(count) + " "; 
+    op += "} ";
+  }
+
 
   return tens + op;
 } 

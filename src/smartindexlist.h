@@ -9,8 +9,7 @@
 #include <list>
 #include <src/smartindex.h>
 #include <src/tensor.h>
-
-// TODO I haven't understood fully the dependency and friendship... so far it works...
+#include <memory>
 
 class SmartIndex;
 class Tensor;
@@ -21,26 +20,30 @@ class SmartIndexList {
   friend class Tensor;
  
   protected:
-    std::list<SmartIndex> si_;
+    std::shared_ptr<std::list<SmartIndex> > si_;
 
   public:
-    SmartIndexList(const std::list<SmartIndex>& inp) : si_(inp) {};
+    SmartIndexList(const std::list<SmartIndex>& inp) : si_(new std::list<SmartIndex>(inp)) {};
+    SmartIndexList(const SmartIndexList& o) : si_(new std::list<SmartIndex>(o.si())) {};
     SmartIndexList() {};
     ~SmartIndexList() {};
 
-    const SmartIndexList operator=(const std::list<SmartIndex>& inp) { si_ = inp; };
-    const SmartIndexList operator=(const SmartIndexList& inp) { si_ = inp.si(); };
-    const std::list<SmartIndex> si() const { return si_; };
-    std::list<SmartIndex>* si_pointer() { return &si_; };
+    const SmartIndexList operator=(const std::list<SmartIndex>& inp) {
+      std::shared_ptr<std::list<SmartIndex> > tmp(new std::list<SmartIndex>(inp)); si_ = tmp; };
+    const SmartIndexList operator=(const SmartIndexList& inp) {
+      std::shared_ptr<std::list<SmartIndex> > tmp(new std::list<SmartIndex>(inp.si())); si_ = tmp; };
+    std::list<SmartIndex>& si() { return *si_; };
+    const std::list<SmartIndex>& si() const { return *si_; };
+    std::shared_ptr<std::list<SmartIndex> > si_pointer() { return si_; };
 
     // intrinsic functions in list<SmartIndex>
     void sort();
-    std::list<SmartIndex>::iterator begin() { return si_.begin(); };
-    std::list<SmartIndex>::const_iterator begin() const { return si_.begin(); };
-    std::list<SmartIndex>::iterator end() { return si_.end(); };
-    std::list<SmartIndex>::const_iterator end() const { return si_.end(); };
-    int size() const { return si_.size(); };
-    bool empty() const { return si_.empty(); };
+    std::list<SmartIndex>::iterator begin() { return si().begin(); };
+    std::list<SmartIndex>::const_iterator begin() const { return si().begin(); };
+    std::list<SmartIndex>::iterator end() { return si().end(); };
+    std::list<SmartIndex>::const_iterator end() const { return si().end(); };
+    int size() const { return si().size(); };
+    bool empty() const { return si().empty(); };
 
     // for implementation
     std::vector<std::vector<Block> > create_loop(const SmartIndexList&);

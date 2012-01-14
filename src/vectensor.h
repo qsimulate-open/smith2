@@ -29,7 +29,6 @@ class VecTensor {
     ~VecTensor();
 
     const std::vector<std::shared_ptr<Tensor> > tensor() const {return tensor_;};
-    std::vector<std::shared_ptr<Tensor> >* tensor_pointer() {return &tensor_;};
 
     /// For printing out.
     const std::string show() const;

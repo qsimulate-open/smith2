@@ -156,8 +156,8 @@ void BinaryContraction::refresh_indices() {
   shared_ptr<Tensor> t2 = second();
   vector<shared_ptr<Tensor> > r1 = t1->regtensors();  
   vector<shared_ptr<Tensor> > r2 = t2->regtensors();
-  list<SmartIndex>* s1 = t1->smartindices_pointer();
-  list<SmartIndex>* s2 = t2->smartindices_pointer();
+  shared_ptr<list<SmartIndex> > s1 = t1->smartindices_pointer();
+  shared_ptr<list<SmartIndex> > s2 = t2->smartindices_pointer();
   for (auto siter = s1->begin(); siter != s1->end(); ++siter) {
     if (find(r2.begin(), r2.end(), siter->target_tensor()) != r2.end())
       siter->set_target_tensor(t2); 

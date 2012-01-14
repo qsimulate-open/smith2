@@ -52,15 +52,10 @@ Index::~Index() {
 }
 
 const string Index::show() const {
-  string out;
 
   ostringstream buffer;
-  buffer << num();
-  string num_str=buffer.str();
+  buffer << type() << num() << (dagger() ? "+" : "");
 
-  out += type() + num_str;
-  if (dagger()) out += "+";
-
-  return out;
+  return buffer.str();
 }
  

@@ -12,13 +12,13 @@
 using namespace std;
 
 vector<vector<Block> > SmartIndexList::create_loop(const SmartIndexList& perm) {
-  // "this" has a list of SmartIndex in si_
+  // "this" has a list of SmartIndex in si()
   vector<vector<Block> > out;
 
   int counter = 0;
   int current_perm = 0;
   auto piter = perm.begin();
-  for (auto iter = si_.begin(); iter != si_.end(); ++iter) {
+  for (auto iter = si().begin(); iter != si().end(); ++iter) {
     const int thissize = iter->indices().size();
     if (current_perm == 0) {
       current_perm = piter->indices().size(); 
@@ -33,7 +33,7 @@ vector<vector<Block> > SmartIndexList::create_loop(const SmartIndexList& perm) {
       current_perm -= thissize;
     }
 
-    if (si_.begin() == iter) {
+    if (si().begin() == iter) {
       out = iter->blocklist();
     } else {
       vector<vector<Block> > next;
@@ -71,7 +71,7 @@ vector<vector<Block> > SmartIndexList::create_loop(const SmartIndexList& perm) {
 
 const list<Index> SmartIndexList::indexlist() const {
   list<Index> out;
-  for (auto iter = si_.begin(); iter != si_.end(); ++iter) {
+  for (auto iter = si().begin(); iter != si().end(); ++iter) {
     const list<Index> tmp = iter->indices();
     out.insert(out.end(), tmp.begin(), tmp.end()); 
   }
@@ -80,7 +80,7 @@ const list<Index> SmartIndexList::indexlist() const {
 
 
 void SmartIndexList::sort() {
-  si_.sort();
-  for (auto iter = si_.begin(); iter != si_.end(); ++iter) iter->sort();
+  si().sort();
+  for (auto iter = si().begin(); iter != si().end(); ++iter) iter->sort();
 }
 

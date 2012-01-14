@@ -77,9 +77,9 @@ class Tensor {
     /// Returns indexinfo_
     const std::shared_ptr<IndexInfo> indexinfo() const { return indexinfo_; };
     /// Returns the copy of smartindices_.
-    const std::shared_ptr<SmartIndexList> smartindices() const {return indexinfo_->smartindices();};
+    const std::shared_ptr<SmartIndexList> smartindices() const { return indexinfo_->smartindices();};
     /// Returns the pointer of the smartindices of this object.
-    std::list<SmartIndex>* smartindices_pointer() {return indexinfo_->smartindices()->si_pointer();};
+    std::shared_ptr<std::list<SmartIndex> > smartindices_pointer() { return indexinfo_->smartindices()->si_pointer();};
     /// Substitute into smartindices_
     void set_smartindices(const std::list<SmartIndex>& si) {
                                                              std::shared_ptr<SmartIndexList> tmp(new SmartIndexList(si));

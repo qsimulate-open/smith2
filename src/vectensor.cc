@@ -165,11 +165,12 @@ void VecTensor::refresh_indices() {
     shared_ptr<Tensor> current_tensor = *titer;
     current_tensor->sort_indices();
 
-    list<SmartIndex>* smartindices = current_tensor->smartindices_pointer(); 
+    shared_ptr<list<SmartIndex> > smartindices = current_tensor->smartindices_pointer(); 
     for (auto siter = smartindices->begin(); siter != smartindices->end(); ++siter) {
       SmartIndex* current_si = &*siter;
 
-      if (current_si->target_tensor().get() == NULL) {
+      if (!current_si->target_tensor()) {
+//    if (current_si->target_tensor().get() == NULL) {
         if (current_si->type() == "h") { 
           vector<shared_ptr<int> > tmp = current_si->num_pointers(); 
           eh.insert(eh.end(), tmp.begin(), tmp.end());
@@ -190,13 +191,13 @@ void VecTensor::refresh_indices() {
         for (auto iiter = tmp.begin(); iiter != tmp.end(); ++iiter) { 
           bool find_ = false;
           for (auto i = iveci.begin(); i != iveci.end(); ++i) { 
-            if (*((*i).first) == *(*iiter)) { 
-              auto mapiter = dupl.find((*i).first);
+            if (*(i->first) == **iiter) { 
+              auto mapiter = dupl.find(i->first);
               if (mapiter == dupl.end()) {
                 vector<shared_ptr<int> > tmpv(1, *iiter);
-                dupl.insert(make_pair((*i).first, tmpv));
+                dupl.insert(make_pair(i->first, tmpv));
               } else {
-                (*mapiter).second.push_back(*iiter);
+                mapiter->second.push_back(*iiter);
               }
               find_ = true;
               break;
@@ -220,9 +221,10 @@ void VecTensor::refresh_indices() {
     for (auto iiter = ecp.begin(); iiter != ecp.end(); ++iiter, ++count) {*(*iiter) = count;}
   }
   
-    /// numbering internal indices
+  /// numbering internal indices
   for (auto titer = tensor_.begin(); titer != tensor_.end(); ++titer) 
   {
+    // first hole
     for (auto iiter = ih.begin(); iiter != ih.end(); ++iiter)   {
       if (*titer != (*iiter).second) continue;
   
@@ -233,6 +235,7 @@ void VecTensor::refresh_indices() {
       }
       ++count;
     }
+    // then particle
     for (auto iiter = ip.begin(); iiter != ip.end(); ++iiter)   {
       if (*titer != (*iiter).second) continue;
   
@@ -243,6 +246,7 @@ void VecTensor::refresh_indices() {
       }
       ++count;
     }
+    // then complete particle
     for (auto iiter = icp.begin(); iiter != icp.end(); ++iiter) {
       if (*titer != (*iiter).second) continue;
   
@@ -264,7 +268,7 @@ void VecTensor::refresh_sign() {
   const int numholes = count_holes();
 
   const double factor = ((numloops + numholes) % 2 == 0) ? 1.0 : -1.0;
-  tensor_pointer()->back()->set_factor(factor); 
+  tensor_.back()->set_factor(factor); 
 }
 
 
@@ -301,7 +305,7 @@ void VecTensor::refresh_factor() {
     }
   }
 
-  tensor_pointer()->back()->mul_factor(factor);
+  tensor_.back()->mul_factor(factor);
 }
 
 

@@ -1,3 +1,9 @@
+This software aims to replace the predecesor SMITH ver1.0 written in python.
+
+Contributor (as of March 2012):
+  Toru Shiozaki <shiozaki@northwestern.edu>
+
+The program can be compiled by the following standard procedure:
 
  $> aclocal; automake -a; autoheader; autoconf
  $> mkdir obj

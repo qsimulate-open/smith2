@@ -3,7 +3,7 @@
 // Filename: smartindexlist.cc
 // Copyright (C) 2010 Toru Shiozaki
 //
-// Author: Toru Shiozaki <shiozaki.toru@gmail.com>
+// Author: Toru Shiozaki <shiozaki@northwestern.edu>
 // Maintainer: Shiozaki group
 //
 // This file is part of the SMITH2 package (to be renamed).

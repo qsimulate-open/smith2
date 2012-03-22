@@ -29,7 +29,7 @@
 #include <iostream>
 #include <src/cost.h>
 #include <src/smartindex.h>
-#include <boost/algorithm/combination.hpp>
+#include <src/_boost/combination.hpp>
 
 using namespace std;
 

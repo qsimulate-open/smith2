@@ -1,0 +1,8 @@
+o It seems to me that the permutation symmetry is determined so that the indices that are going to be contracted to different tensors are immediately unpacked. But one can have them packed until they need to be really unpacked. You can find in CCSD T2 amplitude equation:
+   [t(p4+ p7+ h1 h6 ; p4+p7+ h1h6) i(h5+ h6+ h2 p7 ; h5+ h6+ h2 p7) -> i(h5+ p4+ h1h2 ; h5+ p4+ h1h2)]
+     [t(p8+ h2 ; p8+ h2) v(h5+ h6+ p7 p8 ; h5+h6+ p7p8) * -1 -> i(h5+ h6+ h2 p7 ; h5+h6+ h2 p7)]
+     [v(h5+ h6+ h2 p7 ; h5+h6+ h2 p7) -> i(h5+ h6+ h2 p7 ; h5+h6+ h2 p7)]
+
+o Seems like the last character of the file name should not be the number... (can be fixed easily)
+
+o Perhaps the program goes broken when compiled with -O3 (if I remember)

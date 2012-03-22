@@ -8,6 +8,15 @@ AC_CONFIG_SRCDIR([src/main.cc])
 AC_CONFIG_HEADER([config.h])
 
 # Checks for programs.
+AC_CHECK_LIB(boost_regex-gcc-mt, main, , [
+    AC_CHECK_LIB(boost_regex-mt, main, , [
+        AC_CHECK_LIB(boost_regex, main, , [
+            AC_MSG_ERROR("Specify the path to libboost_regex using LDFLAGS")])
+    ])
+])
+AC_CHECK_LIB(blas, main, , [AC_MSG_ERROR("Specify the path to BLAS using LDFLAGS")])
+AC_CHECK_LIB(lapack, main, , [AC_MSG_ERROR("Specify the path to LAPACK using LDFLAGS")])
+
 CXXFLAGS="$CXXFLAGS -std=c++0x"
 AC_PROG_CXX
 AC_PROG_CC

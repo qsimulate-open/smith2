@@ -5,7 +5,7 @@ Contributor (as of March 2012):
 
 The program can be compiled by the following standard procedure:
 
- $> aclocal; automake -a; autoheader; autoconf
+ $> aclocal; autoheader; autoconf; automake -a
  $> mkdir obj
  $> ../configure
  $> make

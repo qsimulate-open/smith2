@@ -27,8 +27,7 @@
 #include <boost/regex.hpp>
 #include <iostream>
 #include <src/dg/diagram.h>
-/// this is included only in the boost_devel
-#include <boost/algorithm/combination.hpp>
+#include <src/_boost/combination.hpp>
 
 using namespace std;
 using namespace boost;

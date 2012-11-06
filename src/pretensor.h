@@ -33,6 +33,8 @@
 #include <src/index.h>
 #include <src/vectensor.h>
 
+namespace smith2 {
+
 class PreTensor {
   /// temporary object which interfaces the input strings and the tensor objects
 
@@ -72,6 +74,8 @@ class ListPreTensor {
 };
 
 typedef std::shared_ptr<ListPreTensor> RefListPreTensor;
+
+}
 
 #endif
 

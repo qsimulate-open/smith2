@@ -31,6 +31,7 @@
 #include <src/vectensor.h>
 #include <memory>
 
+namespace smith2 {
 
 class Tree {
   typedef std::shared_ptr<Tree> RefTree;
@@ -106,6 +107,8 @@ class Tree {
     /// set innerloop
     void set_innerloop();
 };
+
+}
 
 #endif
 

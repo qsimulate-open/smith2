@@ -29,7 +29,7 @@
 #include <src/cost.h>
 
 using namespace std;
-
+using namespace smith2;
 
 const string PCost::show() const {
   stringstream out;

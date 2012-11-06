@@ -31,6 +31,7 @@
 #include <src/cost.h>
 
 using namespace std;
+using namespace smith2;
 
 VecTensor::VecTensor(const vector<shared_ptr<Tensor> >& tensr): tensor_(tensr) {
 

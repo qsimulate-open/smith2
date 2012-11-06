@@ -34,7 +34,7 @@
 
 using namespace std;
 using namespace boost;
-using namespace IG;
+using namespace smith2::IG;
 
 /// utility functions
 const std::list<Operator> extract_operator(const std::string input, const int type);

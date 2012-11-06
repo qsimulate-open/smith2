@@ -36,6 +36,8 @@
 #include <iostream>
 #include <src/index.h>
 
+namespace smith2 {
+
 class PCost {
 
   protected:
@@ -118,6 +120,7 @@ class Cost {
 
 };
 
+}
 
 #endif
 

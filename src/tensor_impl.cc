@@ -29,6 +29,7 @@
 #include <src/tensor.h>
 
 using namespace std;
+using namespace smith2;
 
 size_t Tensor::memory_size_needed() const {
   // one can do either with smartindex or permutable

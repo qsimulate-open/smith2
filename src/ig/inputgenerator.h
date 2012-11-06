@@ -29,6 +29,7 @@
 #include <string>
 #include <list>
 
+namespace smith2 {
 namespace IG {
 
 class InputGenerator {
@@ -47,6 +48,7 @@ class InputGenerator {
 
 };
 
+}
 }
 
 #endif

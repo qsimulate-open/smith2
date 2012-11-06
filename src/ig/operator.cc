@@ -28,7 +28,7 @@
 #include <sstream>
 
 using namespace std;
-using namespace IG;
+using namespace smith2::IG;
 
 Operator::Operator(const string symbl, const int rnk, const bool gnrl, const bool de)
  : symbol_(symbl), rank_(rnk), general_(gnrl), deexcitation_(de) {

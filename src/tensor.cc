@@ -31,7 +31,7 @@
 #include <sstream>
 
 using namespace std;
-
+using namespace smith2;
 
 Tensor::Tensor(const string symb, const list<SmartIndex> sindx, const int dep, const double fac)
   : symbol_(symb), depth_(dep), factor_(fac) {

@@ -32,6 +32,7 @@
 #include <src/dg/operator.h>
 #include <src/dg/tensor.h>
 
+namespace smith2 {
 namespace DG {
 
 class Diagram {
@@ -68,6 +69,7 @@ class Diagram {
 
 };
 
+}
 }
 
 #endif

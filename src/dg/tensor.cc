@@ -29,7 +29,7 @@
 #include <src/dg/tensor.h>
 
 using namespace std;
-using namespace DG;
+using namespace smith2::DG;
 
 Tensor::Tensor(string input) {
   boost::regex symbl("(\\S+)\\(");

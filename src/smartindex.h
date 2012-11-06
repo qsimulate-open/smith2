@@ -36,6 +36,8 @@
 #include <memory>
 #include <cassert>
 
+namespace smith2 {
+
 class Tensor;
 class SmartIndexList;
 
@@ -108,5 +110,7 @@ class SmartIndex {
     void sort() { indices_.sort(); };
 
 };
+
+}
 
 #endif

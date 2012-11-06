@@ -33,6 +33,7 @@
 #include <boost/lexical_cast.hpp>
 
 using namespace std;
+using namespace smith2;
 
 Index::Index(const string indx) {
 

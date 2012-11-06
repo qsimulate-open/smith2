@@ -32,6 +32,7 @@
 #include <src/_boost/combination.hpp>
 
 using namespace std;
+using namespace smith2;
 
 SmartIndex::SmartIndex(const list<Index> indx, shared_ptr<Tensor> mytensr, shared_ptr<Tensor> targettensr)
   : indices_(indx), my_tensor_(mytensr), target_tensor_(targettensr) {

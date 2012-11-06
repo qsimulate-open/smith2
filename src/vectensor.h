@@ -34,6 +34,8 @@
 #include <src/cost.h>
 #include <src/tensor.h>
 
+namespace smith2 {
+
 class VecTensor {
 
   friend class Tensor;
@@ -74,5 +76,7 @@ class VecTensor {
 };
 
 typedef std::shared_ptr<VecTensor> RefVecTensor;
+
+}
 
 #endif

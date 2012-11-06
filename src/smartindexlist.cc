@@ -31,6 +31,7 @@
 #include <sstream>
 
 using namespace std;
+using namespace smith2;
 
 
 void SmartIndexList::sort() {

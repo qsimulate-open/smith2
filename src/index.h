@@ -34,6 +34,8 @@
 #include <list>
 #include <stdexcept>
 
+namespace smith2 {
+
 // This defines the index classes. If you want to generalize this generator
 // to more general cases (RASPT2, for instance), then just add some entry.
 // Indices will be sorted using these numbers when tensors are canonicalized.
@@ -97,6 +99,8 @@ class Index {
     bool operator>=(const Index& o) const { return num() >= o.num(); };
 
 };
+
+}
 
 #endif
 

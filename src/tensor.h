@@ -37,6 +37,8 @@
 #include <memory>
 #include <algorithm>
 
+namespace smith2 {
+
 class SmartIndex;
 class SmartIndexList;
 
@@ -155,5 +157,7 @@ class Tensor {
 
 
 };
+
+}
      
 #endif

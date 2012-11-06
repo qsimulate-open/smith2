@@ -29,6 +29,7 @@
 #include <vector>
 
 using namespace std;
+using namespace smith2;
 
 Tree::Tree(const BinaryContraction& bc, const pair<list<RefTree>, list<RefTree> >& sub, RefTree par) 
  : binc_(bc), subtrees_(sub), parent_(par) {

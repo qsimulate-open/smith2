@@ -31,7 +31,7 @@
 
 using namespace std;
 using namespace boost;
-using namespace DG;
+using namespace smith2::DG;
 
 Diagram::Diagram(const std::list<Operator>& o, const std::list<Tensor>& t) 
  : operators_(o), tensors_(t) {

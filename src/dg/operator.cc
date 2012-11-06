@@ -30,7 +30,7 @@
 
 using namespace std;
 using namespace boost;
-using namespace DG;
+using namespace smith2::DG;
 
 Operator::Operator(std::string input, int count){
   regex reg("\\s(\\S+?)\\s");

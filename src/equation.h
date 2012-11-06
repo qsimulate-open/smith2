@@ -31,6 +31,8 @@
 #include <src/tree.h>
 #include <memory>
 
+namespace smith2 {
+
 class Equation {
   typedef std::shared_ptr<Tree> RefTree;
 
@@ -69,6 +71,8 @@ class Equation {
     // set tile loop for contraction
     void set_innerloop() { assert(tree_root_); tree_root_->set_innerloop(); };
 };
+
+}
 
 #endif
 

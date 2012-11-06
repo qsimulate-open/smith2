@@ -31,6 +31,8 @@
 #include <memory>
 #include <src/smartindexlist.h>
 
+namespace smith2 {
+
 class IndexInfo {
   protected:
     std::shared_ptr<SmartIndexList> si_;
@@ -48,6 +50,8 @@ class IndexInfo {
     std::shared_ptr<SmartIndexList> permutables() { return perm_; };
 
 };
+
+}
 
 #endif
 

@@ -14,23 +14,12 @@ AC_CHECK_LIB(boost_regex-gcc-mt, main, , [
             AC_MSG_ERROR("Specify the path to libboost_regex using LDFLAGS")])
     ])
 ])
-AC_CHECK_LIB(blas, main, , [AC_MSG_ERROR("Specify the path to BLAS using LDFLAGS")])
-AC_CHECK_LIB(lapack, main, , [AC_MSG_ERROR("Specify the path to LAPACK using LDFLAGS")])
+
+LT_INIT
+AC_CONFIG_MACRO_DIR([m4])
 
 CXXFLAGS="$CXXFLAGS -std=c++0x"
 AC_PROG_CXX
-AC_PROG_CC
-AC_PROG_RANLIB
-
-# Checks for libraries.
-
-# Checks for header files.
-
-# Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_CONST
-
-# Checks for library functions.
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile

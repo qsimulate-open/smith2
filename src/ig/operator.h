@@ -28,6 +28,7 @@
 
 #include <string>
 
+namespace smith2 {
 namespace IG {
 
 class Operator {
@@ -51,6 +52,7 @@ class Operator {
     bool operator>(const Operator& o) const { if (rank() != o.rank()) return rank() > o.rank(); else return symbol() > o.symbol(); };
 };
 
+}
 }
 
 #endif

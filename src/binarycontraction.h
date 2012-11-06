@@ -28,6 +28,8 @@
 
 #include <src/tensor.h>
 
+namespace smith2 {
+
 class BinaryContraction {
   protected:
     std::vector<std::shared_ptr<Tensor> > tensor_;
@@ -72,6 +74,8 @@ class BinaryContraction {
     const bool factorizable(BinaryContraction&);
 
 };
+
+}
 
 #endif
 

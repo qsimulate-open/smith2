@@ -29,6 +29,7 @@
 #include <string>
 #include <list>
 
+namespace smith2 {
 namespace DG {
 
 class Indices {
@@ -68,6 +69,7 @@ class Indices {
 
 };
 
+}
 }
 
 #endif

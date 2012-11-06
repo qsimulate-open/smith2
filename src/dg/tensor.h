@@ -30,6 +30,7 @@
 #include <list>
 #include "indices.h"
 
+namespace smith2 {
 namespace DG {
 
 class Tensor {
@@ -66,6 +67,7 @@ class Tensor {
 
 };
 
+}
 }
 
 #endif

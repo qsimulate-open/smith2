@@ -31,7 +31,7 @@
 
 using namespace std;
 using namespace boost;
-using namespace DG;
+using namespace smith2::DG;
 
 Indices::Indices(const string input, const int s) : source_(s) {
   regex tp("[A-Za-z]+"); 

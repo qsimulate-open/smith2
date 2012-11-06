@@ -31,6 +31,7 @@
 #include <list>
 #include <src/dg/indices.h>
 
+namespace smith2 {
 namespace DG {
 
 class Operator {
@@ -50,6 +51,7 @@ class Operator {
     void delete_indices(const int, const int);
 };
 
+}
 }
 
 #endif

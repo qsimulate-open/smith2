@@ -32,6 +32,8 @@
 #include <src/tensor.h>
 #include <memory>
 
+namespace smith2 {
+
 class SmartIndex;
 class Tensor;
 
@@ -67,6 +69,8 @@ class SmartIndexList {
     bool empty() const { return si().empty(); };
 
 };
+
+}
 
 #endif
 

@@ -30,6 +30,7 @@
 #include <src/tree.h>
 
 using namespace std;
+using namespace smith2;
 
 Equation::Equation(const list<RefVecTensor> lvt) : vectensor_(lvt) {
 

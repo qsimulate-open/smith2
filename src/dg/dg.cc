@@ -32,7 +32,7 @@
 #include <src/dg/dg.h>
 
 using namespace std;
-using namespace DG;
+using namespace smith2::DG;
 
 list<string> DiagramGenerator::generate() {
   list<string> out;

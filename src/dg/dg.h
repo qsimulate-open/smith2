@@ -29,6 +29,7 @@
 #include <list>
 #include <src/dg/diagram.h>
 
+namespace smith2 {
 namespace DG {
 
 class DiagramGenerator {
@@ -50,6 +51,7 @@ class DiagramGenerator {
 
 };
 
+}
 }
 
 #endif

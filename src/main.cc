@@ -36,6 +36,7 @@
 #include <src/ig/inputgenerator.h>
 
 using namespace std;
+using namespace smith2;
 using namespace DG;
 using namespace IG;
 

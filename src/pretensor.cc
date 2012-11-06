@@ -30,6 +30,7 @@
 #include <src/pretensor.h>
 
 using namespace std;
+using namespace smith2;
 
 PreTensor::PreTensor(const string tensor_str) {
  

@@ -26,6 +26,8 @@
 #ifndef _src_tile_h
 #define _src_tile_h
 
+namespace smith2 {
+
 class Tile {
   protected:
     // tag of this tile
@@ -61,6 +63,8 @@ class Tile {
     bool operator<=(const Tile& other) { return tag_ <= other.tag_; };
     bool operator==(const Tile& other) { return tag_ == other.tag_; };
 };
+
+}
 
 #endif
 

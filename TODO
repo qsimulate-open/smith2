@@ -6,3 +6,5 @@ o It seems to me that the permutation symmetry is determined so that the indices
 o Seems like the last character of the file name should not be the number... (can be fixed easily)
 
 o Perhaps the program goes broken when compiled with -O3 (if I remember)
+
+o I feel that Tensor::regtensor_, SmartIndex and all those things creat cyclic references. I was not careful back then.

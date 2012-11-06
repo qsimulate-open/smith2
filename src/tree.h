@@ -43,7 +43,7 @@ class Tree {
     /// In the sequenctial optimization, first is empty 
     std::pair<std::list<RefTree>, std::list<RefTree> > subtrees_;
     /// Pointer to the parent node
-    RefTree parent_;
+    std::weak_ptr<Tree> parent_;
     /// if root or not 
     bool root_;
 
@@ -78,7 +78,7 @@ class Tree {
     /// set parent (used with Tree(BinaryContraction&, std::pair<std::list<RefTree>, std::list<RefTree> >))
     void set_parent(RefTree par) { parent_ = par; };
     /// returns a pointer to the parent node
-    RefTree parent() { return parent_; }; 
+    RefTree parent() { return parent_.lock(); }; 
 
     /// renew the target tensor of binc_;
     void renew_binc_target(std::shared_ptr<Tensor> t) { binc_.set_target_tensor(t); }; 

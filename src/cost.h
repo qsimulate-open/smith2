@@ -107,7 +107,9 @@ class Cost {
 
     bool operator==(const Cost& other) const { return cost()==other.cost(); }
     bool operator!=(const Cost& other) const { return !(*this == other);}
-    bool operator>(const Cost& other)  const { return !(*this < other);}
+    bool operator>(const Cost& other)  const { return !(*this <= other);}
+    bool operator<=(const Cost& other)  const { return *this < other || *this == other;}
+    bool operator>=(const Cost& other)  const { return !(*this < other);}
 
     const std::vector<PCost> cost() const {return cost_;}
 

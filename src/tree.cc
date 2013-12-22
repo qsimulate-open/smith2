@@ -179,14 +179,14 @@ const list<SmartIndex> Tree::permutables_in_factorize(RefTree other) {
 
 
   list<SmartIndex> primitive1;
-  for (auto i = permutables1.begin(); i != permutables1.end(); ++i) {
-    list<SmartIndex> ps = i->extract();
+  for (auto& i : permutables1) {
+    list<SmartIndex> ps = i.extract();
     primitive1.insert(primitive1.end(), ps.begin(), ps.end());
   }
 
   list<SmartIndex> primitive2;
-  for (auto i = permutables2.begin(); i != permutables2.end(); ++i) {
-    list<SmartIndex> ps = i->extract();
+  for (auto& i : permutables2) {
+    list<SmartIndex> ps = i.extract();
     primitive2.insert(primitive2.end(), ps.begin(), ps.end());
   }
 

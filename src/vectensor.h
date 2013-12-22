@@ -41,26 +41,26 @@ class VecTensor {
   friend class Tensor;
 
   protected:
-    std::vector<std::shared_ptr<Tensor> > tensor_; 
+    std::vector<std::shared_ptr<Tensor>> tensor_;
 
-    const int count_loops();
-    const int count_holes();
+    int count_loops();
+    int count_holes();
     const std::map<int, int> index_num_pair() const;
 
   public:
-    VecTensor(const std::vector<std::shared_ptr<Tensor> >&);
+    VecTensor(const std::vector<std::shared_ptr<Tensor>>&);
     ~VecTensor();
 
-    const std::vector<std::shared_ptr<Tensor> > tensor() const {return tensor_;};
+    const std::vector<std::shared_ptr<Tensor>> tensor() const {return tensor_;}
 
     /// For printing out.
     const std::string show() const;
     /// Perform strength reduction; tensor_ will be reordered to minimize the cost.
     void strength_reduction(const bool);
     /// Replace tensor_.
-    void set_tensor(const std::vector<std::shared_ptr<Tensor> >& tensor) {tensor_ = tensor;};
+    void set_tensor(const std::vector<std::shared_ptr<Tensor>>& tensor) {tensor_ = tensor;}
     /// Returns operation and memory cost.
-    const std::pair<Cost, Cost> cost_evaluater(const std::vector<std::shared_ptr<Tensor> >) const;
+    const std::pair<Cost, Cost> cost_evaluater(const std::vector<std::shared_ptr<Tensor>>) const;
 
     /// Refresh tensor::depth_ of tensors.
     void refresh_tensor_depth();
@@ -71,7 +71,7 @@ class VecTensor {
     /// Determine the factor by looking at the topological symmetry; tensor_.back() will have it
     void refresh_factor();
 
-    const bool identical(const VecTensor&) const;
+    bool identical(const VecTensor&) const;
 
 };
 

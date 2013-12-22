@@ -102,8 +102,8 @@ RefVecTensor ListPreTensor::analyze() {
   /// first create List<shared_ptr<Tensor> >
   vector<shared_ptr<Tensor> > vectensor;
   int depth = 0;
-  for (auto iter = pretensor_.begin(); iter != pretensor_.end(); ++iter, ++depth) {
-    auto newtensor = make_shared<Tensor>((*iter)->symbol(),depth);
+  for (auto& i : pretensor_) {
+    auto newtensor = make_shared<Tensor>(i->symbol(), depth++);
     newtensor->push_back_regtensors(newtensor);
     vectensor.push_back(newtensor);
   }
@@ -111,10 +111,10 @@ RefVecTensor ListPreTensor::analyze() {
   /// then initialize smartindex
   /// loop for self
   auto newiter = vectensor.begin();
-  for (auto iter = pretensor_.begin(); iter != pretensor_.end(); ++iter, ++newiter) {
-    shared_ptr<Tensor> mytensor = *newiter;
+  for (auto i1 : pretensor_) {
+    shared_ptr<Tensor> mytensor = *newiter++;
 
-    list<Index> listindex = (*iter)->indices();
+    list<Index> listindex = i1->indices();
 
     list<SmartIndex> smartindex;
 
@@ -128,12 +128,12 @@ RefVecTensor ListPreTensor::analyze() {
       auto newiter2 = vectensor.begin();
 
       bool found = false;
-      for (auto iter2 = pretensor_.begin(); iter2 != pretensor_.end(); ++iter2, ++newiter2) {
-        if (iter == iter2) continue;
+      for (auto& i2 : pretensor_) {
+        if (i1 == i2) { ++newiter2; continue; }
 
-        shared_ptr<Tensor> othertensor = *newiter2;
+        shared_ptr<Tensor> othertensor = *newiter2++;
 
-        list<Index> listindex2 = (*iter2)->indices();
+        list<Index> listindex2 = i2->indices();
 
         for (auto& index2 : listindex2) {
           if (index2.num() == current_num) {

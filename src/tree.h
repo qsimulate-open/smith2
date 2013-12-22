@@ -41,7 +41,7 @@ class Tree {
     BinaryContraction binc_;
     /// Subtrees for forming the input tensors
     /// In the sequenctial optimization, first is empty
-    std::pair<std::list<RefTree>, std::list<RefTree> > subtrees_;
+    std::pair<std::list<RefTree>, std::list<RefTree>> subtrees_;
     /// Pointer to the parent node
     RefTree parent_;
     /// if root or not
@@ -50,22 +50,22 @@ class Tree {
   public:
 
     /// A constructer
-    Tree(const BinaryContraction&, const std::pair<std::list<RefTree>, std::list<RefTree> >&, RefTree);
+    Tree(const BinaryContraction&, const std::pair<std::list<RefTree>, std::list<RefTree>>&, RefTree);
     /// A constructer with late initialization of parent
-    Tree(const BinaryContraction&, const std::pair<std::list<RefTree>, std::list<RefTree> >&);
+    Tree(const BinaryContraction&, const std::pair<std::list<RefTree>, std::list<RefTree>>&);
     /// A constructer for the bottom node; there is no contraction; no parent.
-    //Tree(std::pair<std::list<RefTree>, std::list<RefTree> >);
+    //Tree(std::pair<std::list<RefTree>, std::list<RefTree>>);
     /// for the first construction from the VecTensor;
     Tree(RefVecTensor, std::shared_ptr<Tensor>);
     /// deallocater
     ~Tree();
     /// for Tree(RefVecTensor)
-    void init(std::vector<std::shared_ptr<Tensor> >&, std::shared_ptr<Tensor>);
+    void init(std::vector<std::shared_ptr<Tensor>>&, std::shared_ptr<Tensor>);
 
     /// returns binarycontraction
     BinaryContraction binc() { return binc_; }
     /// returns subtrees
-    const std::pair<std::list<RefTree>, std::list<RefTree> > subtrees() const { return subtrees_; }
+    const std::pair<std::list<RefTree>, std::list<RefTree>> subtrees() const { return subtrees_; }
 
     /// returns if this is the root or not
     bool is_root() const { return root_; }
@@ -75,7 +75,7 @@ class Tree {
     bool first_is_input()  const { return subtrees_.first.empty(); }
     /// returns if the second tensor is an input tensor
     bool second_is_input() const { return subtrees_.second.empty(); }
-    /// set parent (used with Tree(BinaryContraction&, std::pair<std::list<RefTree>, std::list<RefTree> >))
+    /// set parent (used with Tree(BinaryContraction&, std::pair<std::list<RefTree>, std::list<RefTree>>))
     void set_parent(RefTree par) { parent_ = par; }
     /// returns a pointer to the parent node
     RefTree parent() { return parent_; }

@@ -39,15 +39,15 @@ class IndexInfo {
     std::shared_ptr<SmartIndexList> perm_;
 
   public:
-    IndexInfo(std::shared_ptr<SmartIndexList> a, std::shared_ptr<SmartIndexList> b) { si_ = a; perm_ = b; };
-    IndexInfo(std::shared_ptr<SmartIndexList> a) { si_ = a; };
-    ~IndexInfo() {};
+    IndexInfo(std::shared_ptr<SmartIndexList> a, std::shared_ptr<SmartIndexList> b) { si_ = a; perm_ = b; }
+    IndexInfo(std::shared_ptr<SmartIndexList> a) { si_ = a; }
+    ~IndexInfo() {}
 
-    void set_smartindices(std::shared_ptr<SmartIndexList>& inp) { si_ = inp; };
-    void set_permutables(std::shared_ptr<SmartIndexList>& inp) { perm_ = inp; };
+    void set_smartindices(std::shared_ptr<SmartIndexList>& inp) { si_ = inp; }
+    void set_permutables(std::shared_ptr<SmartIndexList>& inp) { perm_ = inp; }
 
-    std::shared_ptr<SmartIndexList> smartindices() { return si_; };
-    std::shared_ptr<SmartIndexList> permutables() { return perm_; };
+    std::shared_ptr<SmartIndexList> smartindices() { assert(si_); return si_; }
+    std::shared_ptr<SmartIndexList> permutables() { assert(perm_); return perm_; }
 
 };
 

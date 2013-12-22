@@ -103,7 +103,7 @@ const string Diagram::show_only_tensors() const {
 }
 
 
-const int Diagram::count_creation_indices() const {
+int Diagram::count_creation_indices() const {
   int out = 0;
   for (auto i = operators_.begin(); i != operators_.end(); ++i) { 
     list<Indices> iindices = i->listindices();
@@ -145,7 +145,7 @@ const list<Diagram> Diagram::contract_one() const {
 
       // see if possible or not, 
       bool possible = true;
-      list<pair<int, int> > index_map;
+      list<pair<int, int>> index_map;
       vector<string> ctype;
 
       count = 0;
@@ -185,7 +185,7 @@ const list<Diagram> Diagram::contract_one() const {
 }
 
 
-void Diagram::update_contracted_indices(const list<pair<int, int> > index_map, const vector<string> ctype) {
+void Diagram::update_contracted_indices(const list<pair<int, int>> index_map, const vector<string> ctype) {
   auto j = ctype.begin();
   for (auto i = index_map.begin(); i != index_map.end(); ++i, ++j) {
     const string current_type = *j;
@@ -201,7 +201,7 @@ void Diagram::update_contracted_indices(const list<pair<int, int> > index_map, c
 }
 
 
-const bool Diagram::connected(const pair<string, list<string> > rule) const {
+bool Diagram::connected(const pair<string, list<string>> rule) const {
   bool out = true;
   string source = rule.first;
   list<string> target = rule.second;

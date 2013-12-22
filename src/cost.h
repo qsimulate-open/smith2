@@ -59,14 +59,14 @@ class PCost {
     double pcost_total() const {
       double out = 0.0;
       auto j = indmap_.begin();
-      for (auto i = pcost_.begin(); i != pcost_.end(); ++i, ++j)
-        out += ::log(static_cast<double>(j->second.second))* *i;
+      for (auto& i : pcost_)
+        out += std::log(static_cast<double>(j++->second.second))* i;
       return out;
     }
     const std::vector<int> pcost() const { return pcost_;}
 
     void add(std::vector<int>& o) {
-      for (auto i = pcost_.begin(), j = o.begin(); i != pcost_.end(); ++i, ++j) *i += *j; 
+      std::transform(o.begin(), o.end(), pcost_.begin(), pcost_.begin(), [](int i, int j) { return i + j; });
     }
 #if 0
     void add(int i, int j, int k) {

@@ -47,7 +47,7 @@ Index::Index(const string indx) {
   const boost::regex type_reg("([^0-9]+)([0-9]+)");
   if (boost::regex_search(indx.begin(), indx.end(), what, type_reg)) {
     const string num_str(what[2].first,what[2].second); 
-    shared_ptr<int> tnum(new int(boost::lexical_cast<int>(num_str)));
+    auto tnum = make_shared<int>(boost::lexical_cast<int>(num_str));
     num_ = tnum;
 
     const string type_str(what[1].first,what[1].second); 

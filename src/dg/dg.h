@@ -41,11 +41,11 @@ class DiagramGenerator {
     std::list<Diagram> read_input(std::list<std::string>);
 
   public:
-    DiagramGenerator(std::list<std::string> l) : stringinput_(l) {};
-    DiagramGenerator(const std::string filename) : filename_(filename) {};
-    ~DiagramGenerator() {};
+    DiagramGenerator(std::list<std::string> l) : stringinput_(l) {}
+    DiagramGenerator(const std::string filename) : filename_(filename) {}
+    ~DiagramGenerator() {}
 
-    const std::string filename() const { return filename_; };
+    const std::string filename() const { return filename_; }
 
     std::list<std::string> generate();
 

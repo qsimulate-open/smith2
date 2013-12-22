@@ -34,8 +34,8 @@ using namespace smith2;
 const string PCost::show() const {
   stringstream out;
   auto j = pcost_.begin();
-  for (auto i = indmap_.begin(); i != indmap_.end(); ++i, ++j)
-    out << i->first <<  *j; 
+  for (auto& i : indmap_)
+    out << i.first <<  *j++;
   return out.str();
 }
 
@@ -47,7 +47,7 @@ void Cost::sort_pcost() {
 
 const string Cost::show() const {
   string out;
-  for (auto i = cost_.begin(); i != cost_.end(); ++i) out += i->show() + " ";
+  for (auto& i : cost_) out += i.show() + " ";
   return out;
 }
 

@@ -36,6 +36,6 @@ using namespace smith2;
 
 void SmartIndexList::sort() {
   si().sort();
-  for (auto iter = si().begin(); iter != si().end(); ++iter) iter->sort();
+  for (auto& i : si()) i.sort();
 }
 

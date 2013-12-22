@@ -41,22 +41,22 @@ class PreTensor {
   typedef std::shared_ptr<PreTensor> RefPreTensor;
 
   protected:
-    std::string symbol_;  
+    std::string symbol_;
     std::list<Index> indices_;
     int rank_;
 
   public:
-    PreTensor(const std::string); 
+    PreTensor(const std::string);
     ~PreTensor();
 
-    const std::list<Index> indices() const {return indices_;};
-    const std::string symbol() const {return symbol_;};
-    const int rank() const {return rank_;};
+    const std::list<Index> indices() const {return indices_;}
+    const std::string symbol() const {return symbol_;}
+    int rank() const {return rank_;}
 
     void find_com_num(RefPreTensor);
 };
 typedef std::shared_ptr<PreTensor> RefPreTensor;
-     
+
 
 class ListPreTensor {
 
@@ -67,10 +67,10 @@ class ListPreTensor {
     ListPreTensor(const std::list<RefPreTensor>&);
     ~ListPreTensor();
 
-    const std::list<RefPreTensor> pretensor() const { return pretensor_;}; 
+    const std::list<RefPreTensor> pretensor() const { return pretensor_;}
 
     RefVecTensor analyze();
-    void find_com_num(); 
+    void find_com_num();
 };
 
 typedef std::shared_ptr<ListPreTensor> RefListPreTensor;

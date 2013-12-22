@@ -43,35 +43,35 @@ class BinaryContraction {
 
   public:
     BinaryContraction(std::vector<std::shared_ptr<Tensor> >&, std::shared_ptr<Tensor>);
-    BinaryContraction() {};
+    BinaryContraction() {}
     ~BinaryContraction();
 
     /// returns if this is just an operator (no contraction)
-    const bool one() const {return tensor_.size() == 1;};
+    bool one() const {return tensor_.size() == 1;}
 
     /// operation count for this contraction
-    const PCost op()  const {return cost_.first; };
+    const PCost op()  const {return cost_.first; }
     /// memory cost for this contraction
-    const PCost mem() const {return cost_.second; };
+    const PCost mem() const {return cost_.second; }
 
     /// A pair of tensor for this binary contraction
-    const std::vector<std::shared_ptr<Tensor> > tensor() const {return tensor_; };
+    const std::vector<std::shared_ptr<Tensor> > tensor() const {return tensor_; }
     /// returns tensors
-    std::shared_ptr<Tensor> first() { return tensor_.at(0); };
-    std::shared_ptr<Tensor> second() { return tensor_.at(1); };
+    std::shared_ptr<Tensor> first() { return tensor_.at(0); }
+    std::shared_ptr<Tensor> second() { return tensor_.at(1); }
     /// set the second tensor
-    void set_second(std::shared_ptr<Tensor> i) { tensor_.at(1) = i; };
+    void set_second(std::shared_ptr<Tensor> i) { tensor_.at(1) = i; }
 
     /// pointer to the target tensor
-    std::shared_ptr<Tensor> target_tensor() {return target_tensor_; };
+    std::shared_ptr<Tensor> target_tensor() {return target_tensor_; }
     /// set target tensor
-    void set_target_tensor(std::shared_ptr<Tensor> t) { target_tensor_ = t; };
+    void set_target_tensor(std::shared_ptr<Tensor> t) { target_tensor_ = t; }
 
     /// for printing out
     const std::string show() const;
 
     /// returns if two BC can be factorized or not.
-    const bool factorizable(BinaryContraction&);
+    bool factorizable(BinaryContraction&);
 
 };
 

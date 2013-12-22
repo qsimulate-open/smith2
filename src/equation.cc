@@ -51,36 +51,34 @@ void Equation::strength_reduction(const bool opt_memory) {
         remove.push_back(vtiter);
         break;
       }
-    } 
+    }
   }
-  for (auto i = remove.begin(); i != remove.end(); ++i)
-    vectensor_.erase(*i);
+  for (auto& i : remove)
+    vectensor_.erase(i);
 }
 
 
 void Equation::form_tree() {
 
-  /// first, make a unfactorized tree (which has multiple edges at root_, 
-  /// while having only one elsewhere) 
+  /// first, make a unfactorized tree (which has multiple edges at root_,
+  /// while having only one elsewhere)
 
   list<RefTree> listtmptree, a;
 
-  shared_ptr<Tensor> target(new Tensor("D"));
-  target->push_back_regtensors(target); 
+  auto target = make_shared<Tensor>("D");
+  target->push_back_regtensors(target);
 
-  for (auto vtiter = vectensor_.begin(); vtiter != vectensor_.end(); ++vtiter){ 
-    RefVecTensor current = *vtiter;
-    RefTree tmptree(new Tree(current, target));
-    listtmptree.push_back(tmptree);
+  for (auto& vt : vectensor_){
+    listtmptree.push_back(make_shared<Tree>(vt, target));
   }
 
-  vector<shared_ptr<Tensor> > rb(1, target);
+  vector<shared_ptr<Tensor>> rb(1, target);
   BinaryContraction rootb(rb, target);
 
-  RefTree root(new Tree(rootb, make_pair(a, listtmptree)));
-  list<RefTree> child = listtmptree; 
-  for (auto titer = child.begin(); titer != child.end(); ++titer) 
-    (*titer)->set_parent(root);
+  auto root = make_shared<Tree>(rootb, make_pair(a, listtmptree));
+  list<RefTree> child = listtmptree;
+  for (auto& t : child)
+    t->set_parent(root);
 
 
   tree_root_ = root;

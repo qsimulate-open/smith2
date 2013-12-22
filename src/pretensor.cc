@@ -33,18 +33,18 @@ using namespace std;
 using namespace smith2;
 
 PreTensor::PreTensor(const string tensor_str) {
- 
+
   boost::regex symbol_reg("(\\S+?)\\s\\(");
   boost::smatch what;
   boost::regex_search(tensor_str.begin(), tensor_str.end(), what, symbol_reg);
   string symb(what[1].first, what[1].second);
   symbol_ = symb;
- 
+
   auto start = what[0].second;
   boost::regex index_reg("(\\S+?)\\s");
   while (regex_search(start, tensor_str.end(), what, index_reg)) {
     string indx_str(what[1].first, what[1].second);
-    Index indx(indx_str); 
+    Index indx(indx_str);
     indices_.push_back(indx);
     start = what[0].second;
   }
@@ -57,12 +57,12 @@ PreTensor::~PreTensor() {
 
 
 void PreTensor::find_com_num(RefPreTensor o) {
-  for (auto iiter = indices_.begin(); iiter != indices_.end(); ++iiter) { 
-    for (auto iiter2 = o->indices_.begin(); iiter2 != o->indices_.end(); ++iiter2) { 
-      if (iiter->num() == iiter2->num()) {
-        shared_ptr<int> num2 = iiter2->num_pointer();
-        num2 = iiter->num_pointer();
-      } 
+  for (auto& ii : indices_) {
+    for (auto& jj : o->indices_) {
+      if (ii.num() == jj.num()) {
+        shared_ptr<int> num2 = jj.num_pointer();
+        num2 = ii.num_pointer();
+      }
     }
   }
 }
@@ -79,8 +79,8 @@ ListPreTensor::ListPreTensor(const list<RefPreTensor>& pretensr): pretensor_(pre
 
 
 void ListPreTensor::find_com_num() {
-  for (auto ptiter = pretensor_.begin(); ptiter != pretensor_.end(); ++ptiter) { 
-    auto ptiter2 = ptiter; 
+  for (auto ptiter = pretensor_.begin(); ptiter != pretensor_.end(); ++ptiter) {
+    auto ptiter2 = ptiter;
     ++ptiter2;
     const auto ptiter_start = ptiter2;
 
@@ -103,7 +103,7 @@ RefVecTensor ListPreTensor::analyze() {
   vector<shared_ptr<Tensor> > vectensor;
   int depth = 0;
   for (auto iter = pretensor_.begin(); iter != pretensor_.end(); ++iter, ++depth) {
-    shared_ptr<Tensor> newtensor(new Tensor((*iter)->symbol(),depth));
+    auto newtensor = make_shared<Tensor>((*iter)->symbol(),depth);
     newtensor->push_back_regtensors(newtensor);
     vectensor.push_back(newtensor);
   }
@@ -118,11 +118,11 @@ RefVecTensor ListPreTensor::analyze() {
 
     list<SmartIndex> smartindex;
 
-    for (auto index_iter = listindex.begin(); index_iter != listindex.end(); ++index_iter) {
-      const int current_num = (*index_iter).num();
+    for (auto& index : listindex) {
+      const int current_num = index.num();
 
       list<Index> list_by_current_index;
-      list_by_current_index.push_back(*index_iter); 
+      list_by_current_index.push_back(index);
 
       /// loop for other
       auto newiter2 = vectensor.begin();
@@ -135,26 +135,26 @@ RefVecTensor ListPreTensor::analyze() {
 
         list<Index> listindex2 = (*iter2)->indices();
 
-        for (auto index_iter2 = listindex2.begin(); index_iter2 != listindex2.end(); ++index_iter2) {
-          if (index_iter2->num() == current_num) {
+        for (auto& index2 : listindex2) {
+          if (index2.num() == current_num) {
             found = true;
             break;
           }
         }
         if (found) {
-          SmartIndex current_smartindex(list_by_current_index, mytensor, othertensor); 
+          SmartIndex current_smartindex(list_by_current_index, mytensor, othertensor);
           smartindex.push_back(current_smartindex);
           break;
-        } 
+        }
       }
       if (!found) {
         /// NULL means that it is external
         shared_ptr<Tensor> null_shared_ptr;
-        SmartIndex current_smartindex(list_by_current_index, mytensor, null_shared_ptr); 
+        SmartIndex current_smartindex(list_by_current_index, mytensor, null_shared_ptr);
         smartindex.push_back(current_smartindex);
-      } 
+      }
     }
- 
+
     /// merge if possible
     vector<list<SmartIndex>::iterator> removelist;
     for (auto siter = smartindex.begin(); siter != smartindex.end(); ++siter) {
@@ -166,12 +166,12 @@ RefVecTensor ListPreTensor::analyze() {
         if(siter->permutable(*siter2)) siter->merge(*siter2);
       }
     }
-    for (auto i = removelist.begin(); i != removelist.end(); ++i) 
-      smartindex.erase(*i);
+    for (auto& i : removelist)
+      smartindex.erase(i);
 
     mytensor->index_init(smartindex);
-  } 
+  }
 
-  return RefVecTensor(new VecTensor(vectensor));
+  return make_shared<VecTensor>(vectensor);
 }
 

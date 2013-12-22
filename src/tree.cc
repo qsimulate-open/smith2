@@ -31,76 +31,76 @@
 using namespace std;
 using namespace smith2;
 
-Tree::Tree(const BinaryContraction& bc, const pair<list<RefTree>, list<RefTree> >& sub, RefTree par) 
+Tree::Tree(const BinaryContraction& bc, const pair<list<RefTree>, list<RefTree>>& sub, RefTree par)
  : binc_(bc), subtrees_(sub), parent_(par) {
 
   root_ = false;
 }
 
 
-Tree::Tree(const BinaryContraction& bc, const pair<list<RefTree>, list<RefTree> >& sub) 
+Tree::Tree(const BinaryContraction& bc, const pair<list<RefTree>, list<RefTree>>& sub)
  : binc_(bc), subtrees_(sub) {
 
   root_ = false;
 }
 
 
-Tree::Tree(RefVecTensor input, shared_ptr<Tensor> par) 
+Tree::Tree(RefVecTensor input, shared_ptr<Tensor> par)
 {
 
-  vector<shared_ptr<Tensor> > vectensor = input->tensor();
+  vector<shared_ptr<Tensor>> vectensor = input->tensor();
   init(vectensor, par);
   root_ = false;
 
 }
 
 
-void Tree::init(vector<shared_ptr<Tensor> >& vectensor, shared_ptr<Tensor> par) {
-  shared_ptr<Tensor> current; 
+void Tree::init(vector<shared_ptr<Tensor>>& vectensor, shared_ptr<Tensor> par) {
+  shared_ptr<Tensor> current;
   shared_ptr<Tensor> previous = vectensor.back();
   list<RefTree> a;
-  pair<list<RefTree>, list<RefTree> > prevtree = make_pair(a, a);
+  pair<list<RefTree>, list<RefTree>> prevtree = make_pair(a, a);
 
   auto titer_end = vectensor.rend();
   --titer_end;
 
-  for (auto titer = vectensor.rbegin(); titer != titer_end; ++titer) { 
+  for (auto titer = vectensor.rbegin(); titer != titer_end; ++titer) {
     if (titer != vectensor.rbegin()) {
-      current = *titer; 
-      shared_ptr<Tensor> target(new Tensor("i"));
+      current = *titer;
+      auto target = make_shared<Tensor>("i");
       target->push_back_regtensors(target);
-      vector<shared_ptr<Tensor> > btensors;
+      vector<shared_ptr<Tensor>> btensors;
       btensors.push_back(current);
       btensors.push_back(previous);
       BinaryContraction bc(btensors, target);
       target->push_back_regtensors(current->regtensors());
       target->push_back_regtensors(previous->regtensors());
-    
-      RefTree tmptree(new Tree(bc, prevtree));
-      
+
+      RefTree tmptree = make_shared<Tree>(bc, prevtree);
+
       list<RefTree> first = prevtree.first;
-      for (auto titer = first.begin(); titer != first.end(); ++titer) 
-        (*titer)->set_parent(tmptree); 
+      for (auto& t : first)
+        t->set_parent(tmptree);
       list<RefTree> second = prevtree.second;
-      for (auto titer = second.begin(); titer != second.end(); ++titer) 
-        (*titer)->set_parent(tmptree); 
+      for (auto& t : second)
+        t->set_parent(tmptree);
 
       list<RefTree> b(1, tmptree);
-      prevtree = make_pair(a, b); 
+      prevtree = make_pair(a, b);
       previous = target;
     }
   }
 
-  if (vectensor.size() > 1) { 
-    vector<shared_ptr<Tensor> > btensors;
+  if (vectensor.size() > 1) {
+    vector<shared_ptr<Tensor>> btensors;
     btensors.push_back(*titer_end);
     btensors.push_back(previous);
-    BinaryContraction binc(btensors, par); 
+    BinaryContraction binc(btensors, par);
     binc_ = binc;
-  } else { 
-    vector<shared_ptr<Tensor> > btensors;
+  } else {
+    vector<shared_ptr<Tensor>> btensors;
     btensors.push_back(previous);
-    BinaryContraction binc(btensors, par); 
+    BinaryContraction binc(btensors, par);
     binc_ = binc;
   }
 
@@ -120,11 +120,11 @@ void Tree::factorize() {
 
   vector<list<RefTree>::iterator> remove_list;
 
-  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i) { 
+  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i) {
     if (find(remove_list.begin(), remove_list.end(), i) != remove_list.end()) continue;
     auto tmpi = i;
     ++tmpi;
-    RefTree mysubtree = *i; 
+    RefTree mysubtree = *i;
     BinaryContraction mybinc = mysubtree->binc();
 
     for (auto j = tmpi; j != subtrees_.second.end(); ++j) {
@@ -139,23 +139,23 @@ void Tree::factorize() {
     }
   }
 
-  for (auto k = remove_list.begin(); k != remove_list.end(); ++k)
-    subtrees_.second.erase(*k);
+  for (auto& k : remove_list)
+    subtrees_.second.erase(k);
 
 
   /// recursive calls
-  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i)  (*i)->factorize();
+  for (auto& i : subtrees_.second)  i->factorize();
   assert(subtrees_.first.empty());
-  
+
 
 }
 
 
 void Tree::merge_second_subtree(RefTree other) {
 
-  if (second_is_input()) 
+  if (second_is_input())
     prepare_merge_second();
-  if (other->second_is_input()) 
+  if (other->second_is_input())
     other->prepare_merge_second();
 
   list<RefTree> othersub = other->subtrees_.second;
@@ -166,8 +166,8 @@ void Tree::merge_second_subtree(RefTree other) {
   list<SmartIndex> target_permutables = permutables_in_factorize(other);
   target->set_permutables(target_permutables);
 
-  for (auto i = subtrees_.second.begin(); i != subtrees_.second.end(); ++i) 
-    (*i)->renew_binc_target(target); 
+  for (auto& i : subtrees_.second)
+    i->renew_binc_target(target);
 
 }
 
@@ -206,7 +206,7 @@ const list<SmartIndex> Tree::permutables_in_factorize(RefTree other) {
       target_permutables.push_back(s1);
       s1 = *i;
       s2 = *j;
-    } 
+    }
   }
   target_permutables.push_back(s1);
 
@@ -216,30 +216,30 @@ const list<SmartIndex> Tree::permutables_in_factorize(RefTree other) {
 
 void Tree::prepare_merge_second() {
 
-  vector<shared_ptr<Tensor> > b(1, binc_.second());
-  shared_ptr<Tensor> target(new Tensor("i"));
+  vector<shared_ptr<Tensor>> b(1, binc_.second());
+  auto target = make_shared<Tensor>("i");
   target->push_back_regtensors(target);
-  BinaryContraction bc(b, target); 
+  BinaryContraction bc(b, target);
 
   list<RefTree> dummy;
   RefTree parent(this);
-  RefTree sub(new Tree(bc, make_pair(dummy, dummy), parent)); 
+  RefTree sub = make_shared<Tree>(bc, make_pair(dummy, dummy), parent);
 
   binc_.set_second(target);
-  subtrees_.second.push_back(sub); 
+  subtrees_.second.push_back(sub);
 
 }
 
 
-const int Tree::num_nodes() const {
+int Tree::num_nodes() const {
   int out = 1;
-//if (!is_root()) 
-//  cout << binc_.show() << endl; 
+//if (!is_root())
+//  cout << binc_.show() << endl;
   list<RefTree> subtree1 = subtrees_.first;
   list<RefTree> subtree2 = subtrees_.second;
 
-  for (auto titer = subtree1.begin(); titer != subtree1.end(); ++titer) out += (*titer)->num_nodes();
-  for (auto titer = subtree2.begin(); titer != subtree2.end(); ++titer) out += (*titer)->num_nodes();
+  for (auto& t : subtree1) out += t->num_nodes();
+  for (auto& t : subtree2) out += t->num_nodes();
 
   return out;
 }
@@ -247,20 +247,20 @@ const int Tree::num_nodes() const {
 
 const string Tree::show(const int i) const {
   string out;
-  string indent(i*2, ' '); 
+  string indent(i*2, ' ');
 
   out += indent;
   out += binc_.show();
   out += "\n";
 
   list<RefTree> s1, s2;
-  s1 = subtrees_.first; 
+  s1 = subtrees_.first;
   s2 = subtrees_.second;
 
   int next = i;
   ++next;
-  for (auto titer = s1.begin(); titer != s1.end(); ++titer) out += (*titer)->show(next);
-  for (auto titer = s2.begin(); titer != s2.end(); ++titer) out += (*titer)->show(next);
+  for (auto& t : s1) out += t->show(next);
+  for (auto& t : s2) out += t->show(next);
 
   return out;
 }

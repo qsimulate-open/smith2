@@ -47,37 +47,37 @@ class PCost {
     Index_map indmap_;
 
   public:
-    PCost(const std::vector<int>& pcst): pcost_(pcst) { };
-    PCost() { pcost_.resize(indmap_.size()); };
-    ~PCost() { };
+    PCost(const std::vector<int>& pcst): pcost_(pcst) { }
+    PCost() { pcost_.resize(indmap_.size()); }
+    ~PCost() { }
 
-    bool operator<(const PCost& other)  const { return pcost_total() < other.pcost_total(); };
-    bool operator>(const PCost& other)  const { return pcost_total() > other.pcost_total(); };
-    bool operator==(const PCost& other) const { return pcost() == other.pcost(); };
-    bool operator!=(const PCost& other) const { return !(*this == other);};
+    bool operator<(const PCost& other)  const { return pcost_total() < other.pcost_total(); }
+    bool operator>(const PCost& other)  const { return pcost_total() > other.pcost_total(); }
+    bool operator==(const PCost& other) const { return pcost() == other.pcost(); }
+    bool operator!=(const PCost& other) const { return !(*this == other);}
 
-    const double pcost_total() const {
+    double pcost_total() const {
       double out = 0.0;
       auto j = indmap_.begin();
       for (auto i = pcost_.begin(); i != pcost_.end(); ++i, ++j)
         out += ::log(static_cast<double>(j->second.second))* *i;
       return out;
     }
-    const std::vector<int> pcost() const { return pcost_;};
+    const std::vector<int> pcost() const { return pcost_;}
 
     void add(std::vector<int>& o) {
       for (auto i = pcost_.begin(), j = o.begin(); i != pcost_.end(); ++i, ++j) *i += *j; 
-    };
+    }
 #if 0
     void add(int i, int j, int k) {
       assert(ORB_CLASS == 3);
       pcost_[0] += i;
       pcost_[1] += j;
       pcost_[2] += k;
-    };
+    }
 #endif
 
-    int pcost(const int i) const { return pcost_[i]; };
+    int pcost(const int i) const { return pcost_[i]; }
 
     const std::string show() const;
 
@@ -90,9 +90,9 @@ class Cost {
     std::vector<PCost> cost_;
 
   public:
-    Cost(const std::vector<PCost>& cst) : cost_(cst) { };
-    Cost() { };
-    ~Cost() {};
+    Cost(const std::vector<PCost>& cst) : cost_(cst) { }
+    Cost() { }
+    ~Cost() {}
 
     bool operator<(const Cost& other) const {
       std::vector<PCost> otherc = other.cost();
@@ -103,16 +103,16 @@ class Cost {
         else if (*i > *j)      return false;
       }
       return true;
-    };
+    }
 
-    bool operator==(const Cost& other) const { return cost()==other.cost(); };
-    bool operator!=(const Cost& other) const { return !(*this == other);};
-    bool operator>(const Cost& other)  const { return !(*this < other);};
+    bool operator==(const Cost& other) const { return cost()==other.cost(); }
+    bool operator!=(const Cost& other) const { return !(*this == other);}
+    bool operator>(const Cost& other)  const { return !(*this < other);}
 
-    const std::vector<PCost> cost() const {return cost_;};
+    const std::vector<PCost> cost() const {return cost_;}
 
-    void add_pcost(const PCost& p) { cost_.push_back(p); };
-//  void add_pcost(int i, int j, int k) { PCost a(i, j, k); cost_.push_back(a); };
+    void add_pcost(const PCost& p) { cost_.push_back(p); }
+//  void add_pcost(int i, int j, int k) { PCost a(i, j, k); cost_.push_back(a); }
 
     const std::string show() const;
 

@@ -85,7 +85,7 @@ bool SmartIndex::operator==(const SmartIndex& other) const {
 }
 
 
-const bool SmartIndex::identical(const SmartIndex& other) const {
+bool SmartIndex::identical(const SmartIndex& other) const {
 
   return type() == other.type()
       && dagger() == other.dagger()
@@ -94,7 +94,7 @@ const bool SmartIndex::identical(const SmartIndex& other) const {
 }
 
 
-const bool SmartIndex::permutable(const SmartIndex& other) const {
+bool SmartIndex::permutable(const SmartIndex& other) const {
   bool perm = true;
 
   const bool bothnull = !target_tensor() && !other.target_tensor();
@@ -124,8 +124,8 @@ void SmartIndex::merge(SmartIndex& other) {
 
 const list<SmartIndex> SmartIndex::extract() const {
   list<SmartIndex> out;
-  for (auto i = indices_.begin(); i != indices_.end(); ++i) {
-    list<Index> li(1, *i);
+  for (auto& i : indices_) {
+    list<Index> li(1, i);
     SmartIndex s(li, my_tensor(), target_tensor());
     out.push_back(s);
   }
@@ -136,8 +136,8 @@ const list<SmartIndex> SmartIndex::extract() const {
 
 const string SmartIndex::show() const {
   string out;
-  for (auto iiter = indices_.begin(); iiter != indices_.end(); ++iiter)
-    out += iiter->show();
+  for (auto& ii : indices_)
+    out += ii.show();
   return out;
 }
 
@@ -154,9 +154,9 @@ vector<shared_ptr<int> > SmartIndex::num_pointers(const int dagger) {
 /// dagger = 1 returns only those with dagger,
 /// dagger = -1 returns only those without dagger
   vector<shared_ptr<int> > out;
-  for (auto iiter = indices_.begin(); iiter != indices_.end(); ++iiter)
-    if (dagger == 0 || (dagger == 1 && (*iiter).dagger()) || (dagger == -1 && !(*iiter).dagger()))
-      out.push_back(iiter->num_pointer());
+  for (auto& ii : indices_)
+    if (dagger == 0 || (dagger == 1 && ii.dagger()) || (dagger == -1 && !ii.dagger()))
+      out.push_back(ii.num_pointer());
   return out;
 }
 
@@ -165,9 +165,9 @@ const vector<int> SmartIndex::num_values(const int dagger) const {
 /// dagger = 1 returns only those with dagger,
 /// dagger = -1 returns only those without dagger
   vector<int> out;
-  for (auto iiter = indices_.begin(); iiter != indices_.end(); ++iiter) {
-    if (dagger == 0 || (dagger == 1 && (*iiter).dagger()) || (dagger == -1 && !(*iiter).dagger()))
-      out.push_back(iiter->num());
+  for (auto& ii : indices_) {
+    if (dagger == 0 || (dagger == 1 && ii.dagger()) || (dagger == -1 && !ii.dagger()))
+      out.push_back(ii.num());
   }
   return out;
 }

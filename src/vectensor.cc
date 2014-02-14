@@ -48,6 +48,8 @@ const string VecTensor::show() const {
   for (auto& t : tensor_)
     out += t->show() + " ";
   out.erase(out.size()-1,1);
+  out += "\n";
+  out += "  Operation: " + mincost_.first.show() + "  Memory: " + mincost_.second.show();
   return out;
 }
 
@@ -71,7 +73,7 @@ void VecTensor::strength_reduction(const bool opt_memory) {
     PCost t(tt);
     if (notone) tmp.add_pcost(t); /// must be large enough
   }
-  pair<Cost, Cost> keep_ = make_pair(tmp, tmp);
+  mincost_ = make_pair(tmp, tmp);
 
   while(1) {
 
@@ -86,19 +88,19 @@ void VecTensor::strength_reduction(const bool opt_memory) {
 
       pair<Cost, Cost> eval = cost_evaluater(perm_tensor);
       if (!opt_memory) {
-        if (eval.first < keep_.first) {
-          keep_ = eval;
+        if (eval.first < mincost_.first) {
+          mincost_ = eval;
           save_tensor = perm_tensor;
-        } else if (eval.first == keep_.first && eval.second < keep_.second) {
-          keep_ = eval;
+        } else if (eval.first == mincost_.first && eval.second < mincost_.second) {
+          mincost_ = eval;
           save_tensor = perm_tensor;
         }
       } else {
-        if (eval.second < keep_.second) {
-          keep_ = eval;
+        if (eval.second < mincost_.second) {
+          mincost_ = eval;
           save_tensor = perm_tensor;
-        } else if (eval.second == keep_.second && eval.first < keep_.first) {
-          keep_ = eval;
+        } else if (eval.second == mincost_.second && eval.first < mincost_.first) {
+          mincost_ = eval;
           save_tensor = perm_tensor;
         }
       }
@@ -116,12 +118,6 @@ void VecTensor::strength_reduction(const bool opt_memory) {
   refresh_indices();
   refresh_sign();
   refresh_factor();
-
-  cout << endl;
-  cout << "  " << show() << endl;
-  cout << "  Operation: " << keep_.first.show() << "  Memory: " << keep_.second.show() << endl << endl;
-
-
 
 }
 

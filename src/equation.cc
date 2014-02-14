@@ -55,6 +55,9 @@ void Equation::strength_reduction(const bool opt_memory) {
   }
   for (auto& i : remove)
     vectensor_.erase(i);
+
+  for (auto& i : vectensor_)
+    cout << i->show() << endl << endl;
 }
 
 

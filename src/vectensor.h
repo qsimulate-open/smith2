@@ -47,6 +47,8 @@ class VecTensor {
     int count_holes();
     const std::map<int, int> index_num_pair() const;
 
+    std::pair<Cost, Cost> mincost_;
+
   public:
     VecTensor(const std::vector<std::shared_ptr<Tensor>>&);
     ~VecTensor();
